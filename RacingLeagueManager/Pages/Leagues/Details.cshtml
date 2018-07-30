@@ -1,0 +1,77 @@
+﻿@page
+@model RacingLeagueManager.Pages.Leagues.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>@Html.DisplayFor(model => model.League.Name)</h2>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.League.Description)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.League.IsPublic)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.League.IsPublic)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.League.CreatedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.League.CreatedDate)
+        </dd>
+    </dl>
+    <h3>Series</h3>
+    <p>
+        <a asp-page="../Series/Create">Create New</a>
+    </p>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.League.Series)
+        {
+            <tr>
+                <td>
+                    <a asp-page="../Series/Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                @*<td>
+                        <a asp-page="../Series/Edit" asp-route-id="@item.Id">Edit</a> |
+
+                        <a asp-page="../Series/Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>*@
+            </tr>
+        }
+    </table>
+    <h3>Members</h3>
+    @*<p>
+        <a asp-page="../Series/Create">Add Member</a>
+    </p>*@
+    <table class="table">
+        <tr>
+            <th>Name</th>
+        </tr>
+        @foreach (var item in Model.League.Drivers)
+        {
+            <tr>
+                <td>
+                    <a asp-page="../Series/Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.UserName)</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.League.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -1,0 +1,47 @@
+﻿@page
+@model RacingLeagueManager.Pages.Leagues.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>League</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.League.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.League.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.League.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.League.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.League.IsPublic)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.League.IsPublic)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.League.CreatedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.League.CreatedDate)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="League.Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

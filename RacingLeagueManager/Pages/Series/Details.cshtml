@@ -1,0 +1,38 @@
+﻿@page
+@model RacingLeagueManager.Pages.Series.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Series</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Series.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Series.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Series.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Series.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Series.League)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Series.League.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Series.Id">Edit</a> |
+    <a asp-page="../Leagues/Details" asp-route-id="@Model.Series.LeagueId">Back to League</a>
+</div>
