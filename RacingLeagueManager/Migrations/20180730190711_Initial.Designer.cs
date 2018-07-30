@@ -10,7 +10,7 @@ using RacingLeagueManager.Data;
 namespace RacingLeagueManager.Migrations
 {
     [DbContext(typeof(RacingLeagueManagerContext))]
-    [Migration("20180727170152_Initial")]
+    [Migration("20180730190711_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,8 +159,6 @@ namespace RacingLeagueManager.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<Guid?>("LeagueId");
-
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -177,8 +175,6 @@ namespace RacingLeagueManager.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<int>("RaceNumber");
-
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -187,8 +183,6 @@ namespace RacingLeagueManager.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LeagueId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -214,9 +208,26 @@ namespace RacingLeagueManager.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<Guid>("OwnerId");
+
                     b.HasKey("Id");
 
                     b.ToTable("League");
+                });
+
+            modelBuilder.Entity("RacingLeagueManager.Data.Models.LeagueDriver", b =>
+                {
+                    b.Property<Guid>("LeagueId");
+
+                    b.Property<Guid>("DriverId");
+
+                    b.Property<int>("RaceNumber");
+
+                    b.HasKey("LeagueId", "DriverId");
+
+                    b.HasIndex("DriverId");
+
+                    b.ToTable("LeagueDriver");
                 });
 
             modelBuilder.Entity("RacingLeagueManager.Data.Models.Race", b =>
@@ -271,6 +282,8 @@ namespace RacingLeagueManager.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
 
                     b.Property<Guid>("LeagueId");
 
@@ -357,11 +370,17 @@ namespace RacingLeagueManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RacingLeagueManager.Data.Models.Driver", b =>
+            modelBuilder.Entity("RacingLeagueManager.Data.Models.LeagueDriver", b =>
                 {
-                    b.HasOne("RacingLeagueManager.Data.Models.League")
-                        .WithMany("Drivers")
-                        .HasForeignKey("LeagueId");
+                    b.HasOne("RacingLeagueManager.Data.Models.Driver", "Driver")
+                        .WithMany("LeagueDrivers")
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RacingLeagueManager.Data.Models.League", "League")
+                        .WithMany("LeagueDrivers")
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("RacingLeagueManager.Data.Models.Race", b =>

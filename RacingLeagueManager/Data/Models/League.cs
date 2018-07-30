@@ -15,7 +15,8 @@ namespace RacingLeagueManager.Data.Models
         public Guid OwnerId { get; set; }
 
         public ICollection<Series> Series { get; set; }
-        public ICollection<Driver> Drivers { get; set; }
+        //public ICollection<Driver> Drivers { get; set; }
+        public ICollection<LeagueDriver> LeagueDrivers { get; set; }
         
     }
 }

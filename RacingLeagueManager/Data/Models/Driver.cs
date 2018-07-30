@@ -8,7 +8,7 @@ namespace RacingLeagueManager.Data.Models
 {
     public class Driver : IdentityUser<Guid>
     {
-        public int RaceNumber { get; set; }
+        public ICollection<LeagueDriver> LeagueDrivers { get; set; }
 
         public Driver() : base()
         {

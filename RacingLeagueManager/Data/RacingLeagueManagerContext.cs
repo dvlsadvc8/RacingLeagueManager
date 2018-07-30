@@ -22,6 +22,7 @@ namespace RacingLeagueManager.Data
         public DbSet<Models.SeriesEntry> SeriesEntry { get; set; }
         public DbSet<Models.Race> Race { get; set; }
         public DbSet<Models.Series> Series { get; set; }
+        public DbSet<Models.LeagueDriver> LeagueDriver { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +30,9 @@ namespace RacingLeagueManager.Data
 
             builder.Entity<Models.SeriesEntry>()
                 .HasKey(se => new { se.SeriesId, se.DriverId, se.CarId });
+
+            builder.Entity<Models.LeagueDriver>()
+                .HasKey(ld => new { ld.LeagueId, ld.DriverId });
         }
     }
 }

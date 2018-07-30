@@ -19,11 +19,15 @@ namespace RacingLeagueManager.Data
             using (var context = new RacingLeagueManagerContext(
                 serviceProvider.GetRequiredService<DbContextOptions<RacingLeagueManagerContext>>()))
             {
+                
+                
                 // look for any tracks
                 if (context.Track.Any())
                 {
                     return; // db has been seeded
                 }
+
+                #region Tracks
 
                 context.Track.AddRange(
                     new Track
@@ -41,6 +45,25 @@ namespace RacingLeagueManager.Data
                 );
 
                 context.SaveChanges();
+
+                #endregion
+
+                #region Cars
+
+                context.Car.AddRange(
+                    new Car
+                    {
+                        Name = "Porsche 911"
+                    },
+                    new Car
+                    {
+                        Name = "Audi R8"
+                    }
+                );
+
+                context.SaveChanges();
+
+                #endregion
             }
 
             GenerateDGML();

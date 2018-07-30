@@ -27,7 +27,7 @@
     </dl>
     <h3>Series</h3>
     <p>
-        <a asp-page="../Series/Create">Create New</a>
+        <a asp-page="../Series/Create" asp-route-leagueId="@Model.League.Id">Create New</a>
     </p>
     <table class="table">
         <tr>
@@ -45,6 +45,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
+                <td>
+                    <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@item.Id">Join</a>
+                </td>
                 @*<td>
                         <a asp-page="../Series/Edit" asp-route-id="@item.Id">Edit</a> |
 
@@ -61,11 +64,11 @@
         <tr>
             <th>Name</th>
         </tr>
-        @foreach (var item in Model.League.Drivers)
+        @foreach (var item in Model.League.LeagueDrivers)
         {
             <tr>
                 <td>
-                    <a asp-page="../Series/Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.UserName)</a>
+                    <a asp-page="../Driver/Details" asp-route-id="@item.Driver.Id">@Html.DisplayFor(modelItem => item.Driver.UserName)</a>
                 </td>
             </tr>
         }

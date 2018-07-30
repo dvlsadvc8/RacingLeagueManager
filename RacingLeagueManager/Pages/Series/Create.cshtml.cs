@@ -19,9 +19,17 @@ namespace RacingLeagueManager.Pages.Series
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(Guid leagueId)
         {
-        ViewData["LeagueId"] = new SelectList(_context.League, "Id", "Id");
+            //ViewData["LeagueId"] = new SelectList(_context.League, "Id", "Id");
+            League league = _context.League.FirstOrDefault(l => l.Id == leagueId);
+            if(league == null)
+            {
+                return NotFound();
+            }
+
+            Series = new Data.Models.Series() { LeagueId = leagueId };
+
             return Page();
         }
 

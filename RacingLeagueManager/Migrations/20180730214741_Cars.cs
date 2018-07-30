@@ -2,7 +2,7 @@
 
 namespace RacingLeagueManager.Migrations
 {
-    public partial class RemovedLeagueDriverId : Migration
+    public partial class Cars : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

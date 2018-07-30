@@ -6,31 +6,46 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Series Details</h2>
 
 <div>
-    <h4>Series</h4>
+    <h4>@Html.DisplayFor(model => model.Series.Name)</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Series.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Series.Name)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Series.Description)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Series.Description)
         </dd>
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Series.League)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Series.League.Id)
-        </dd>
+            @Html.DisplayFor(model => model.Series.LeagueId)
+        </dd>*@
     </dl>
+    <h3>Entries</h3>
+    @*<p>
+        <a asp-page="../Series/Create">Add Member</a>
+    </p>*@
+    <table class="table">
+        <tr>
+            <th>Driver</th>
+            <th>Car</th>
+        </tr>
+        @foreach (var item in Model.Series.Entries)
+        {
+            <tr>
+                <td>
+                    <a asp-page="../Driver/Details" asp-route-id="@item.Driver.Id">@Html.DisplayFor(modelItem => item.Driver.UserName)</a>
+                </td>
+                <td>
+                    <a asp-page="../Car/Details" asp-route-id="@item.Car.Id">@Html.DisplayFor(modelItem => item.Car.Name)</a>
+                </td>
+            </tr>
+        }
+    </table>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Series.Id">Edit</a> |
