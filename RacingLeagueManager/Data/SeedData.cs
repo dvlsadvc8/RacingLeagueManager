@@ -32,15 +32,31 @@ namespace RacingLeagueManager.Data
                 context.Track.AddRange(
                     new Track
                     {
-                        Name = "Catalyuna GP"
+                        Name = "Bathurst Mount Panorama Circuit"
                     },
                     new Track
                     {
-                        Name = "Catalyuna Short"
+                        Name = "Bernese Alps Festival Circuit"
                     },
                     new Track
                     {
-                        Name = "Sonoma Full"
+                        Name = "Bernese Alps Stadtplatz Circuit"
+                    },
+                    new Track
+                    {
+                        Name = "Bernese Alps Club Circuit"
+                    },
+                    new Track
+                    {
+                        Name = "Bernese Alps Festival Circuit Reverse"
+                    },
+                    new Track
+                    {
+                        Name = "Bernese Alps Stadtplatz Circuit Reverse"
+                    },
+                    new Track
+                    {
+                        Name = "Bernese Alps Club Circuit Reverse"
                     }
                 );
 
@@ -53,11 +69,51 @@ namespace RacingLeagueManager.Data
                 context.Car.AddRange(
                     new Car
                     {
-                        Name = "Porsche 911"
+                        Name = "Aston Martin V12 Vantage GT3 (2017)"
                     },
                     new Car
                     {
-                        Name = "Audi R8"
+                        Name = "Audi R8 LMS Ultra (2014)"
+                    },
+                    new Car
+                    {
+                        Name = "Bentley Continental GT3 (2017)"
+                    },
+                    new Car
+                    {
+                        Name = "BMW M6 GTLM (2017)"
+                    },
+                    new Car
+                    {
+                        Name = "Chevrolet Corvette C7.R (2014)"
+                    },
+                    new Car
+                    {
+                        Name = "Dodge Viper GTS-R (2014)"
+                    },
+                    new Car
+                    {
+                        Name = "Jaguar XK GT3 (2014)"
+                    },
+                    new Car
+                    {
+                        Name = "Lamborghini Huracán LP620-2 Super Trofeo (2015)"
+                    },
+                    new Car
+                    {
+                        Name = "McLaren 12C GT3 (2014)"
+                    },
+                    new Car
+                    {
+                        Name = "Mercedes-Benz SLS AMG GT3 (2014)"
+                    },
+                    new Car
+                    {
+                        Name = "Nissan GT-R (2015)"
+                    },
+                    new Car
+                    {
+                        Name = "Porsche 911 RSR (2017)"
                     }
                 );
 

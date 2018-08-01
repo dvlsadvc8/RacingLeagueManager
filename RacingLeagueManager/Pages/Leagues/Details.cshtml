@@ -62,10 +62,18 @@
     </p>*@
     <table class="table">
         <tr>
+            <th>Race Number</th>
+        </tr>
+        <tr>
             <th>Name</th>
         </tr>
         @foreach (var item in Model.League.LeagueDrivers)
         {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RaceNumber)
+                </td>
+            </tr>
             <tr>
                 <td>
                     <a asp-page="../Driver/Details" asp-route-id="@item.Driver.Id">@Html.DisplayFor(modelItem => item.Driver.UserName)</a>

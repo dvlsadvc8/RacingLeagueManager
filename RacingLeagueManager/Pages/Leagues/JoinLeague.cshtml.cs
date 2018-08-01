@@ -64,7 +64,7 @@ namespace RacingLeagueManager.Pages.Leagues
             Driver driver = await _userManager.GetUserAsync(User);
             League league = await _context.League.FirstOrDefaultAsync(m => m.Id == LeagueId);
 
-            LeagueDriver leagueDriver = new LeagueDriver { LeagueId = league.Id, DriverId = driver.Id };
+            Data.Models.LeagueDriver leagueDriver = new LeagueDriver { LeagueId = league.Id, DriverId = driver.Id };
 
             //await _userManager.UpdateAsync(driver);
             await _context.AddAsync(leagueDriver);

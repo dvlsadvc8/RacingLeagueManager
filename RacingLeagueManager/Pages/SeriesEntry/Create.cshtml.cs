@@ -32,8 +32,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
 
             SeriesEntry = new Data.Models.SeriesEntry() { SeriesId = series.Id };
             ViewData["CarId"] = new SelectList(_context.Car, "Id", "Name");
-            //ViewData["DriverId"] = new SelectList(_context.Users, "Id", "Id");
-            //ViewData["SeriesId"] = new SelectList(_context.Series, "Id", "Id");
+            
             return Page();
         }
 
@@ -53,7 +52,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             _context.SeriesEntry.Add(SeriesEntry);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("../Series/Details");
+            return RedirectToPage("../Series/Details", new { id = SeriesEntry.SeriesId });
         }
     }
 }
