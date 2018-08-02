@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
 
@@ -13,16 +15,30 @@ namespace RacingLeagueManager.Pages.LeagueDriver
     public class CreateModel : PageModel
     {
         private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
+        private readonly UserManager<Driver> _userManager;
 
-        public CreateModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public CreateModel(UserManager<Driver> userManager, RacingLeagueManager.Data.RacingLeagueManagerContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync(Guid leagueId)
         {
-        ViewData["DriverId"] = new SelectList(_context.Users, "Id", "Id");
-        ViewData["LeagueId"] = new SelectList(_context.League, "Id", "Id");
+            if(leagueId == null)
+            {
+                return NotFound();
+            }
+
+            League league = await _context.League.FirstOrDefaultAsync(m => m.Id == leagueId);
+
+            if (league == null)
+            {
+                return NotFound();
+            }
+
+            LeagueDriver = new Data.Models.LeagueDriver() { LeagueId = leagueId, League = league  };
+            
             return Page();
         }
 
@@ -36,7 +52,17 @@ namespace RacingLeagueManager.Pages.LeagueDriver
                 return Page();
             }
 
-            _context.LeagueDriver.Add(LeagueDriver);
+            Driver driver = await _userManager.GetUserAsync(User);
+            League league = await _context.League.FirstOrDefaultAsync(m => m.Id == LeagueDriver.LeagueId);
+
+            if(driver == null || league == null)
+            {
+                return NotFound();
+            }
+
+            LeagueDriver.DriverId = driver.Id;
+            
+            await _context.LeagueDriver.AddAsync(LeagueDriver);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

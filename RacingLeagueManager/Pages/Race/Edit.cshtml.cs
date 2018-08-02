@@ -37,7 +37,7 @@ namespace RacingLeagueManager.Pages.Race
             {
                 return NotFound();
             }
-           ViewData["TrackId"] = new SelectList(_context.Track, "Id", "Id");
+           ViewData["TrackId"] = new SelectList(_context.Track, "Id", "Name");
             return Page();
         }
 

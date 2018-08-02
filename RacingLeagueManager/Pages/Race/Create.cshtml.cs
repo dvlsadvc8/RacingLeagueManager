@@ -27,9 +27,8 @@ namespace RacingLeagueManager.Pages.Race
                 return NotFound();
             }
 
-
             ViewData["TrackId"] = new SelectList(_context.Track, "Id", "Name");
-            Race.SeriesId = seriesId;
+            Race = new Data.Models.Race() { SeriesId = seriesId, RaceDate = DateTime.Today };
 
             return Page();
         }
