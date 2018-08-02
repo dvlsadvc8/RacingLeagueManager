@@ -1,0 +1,40 @@
+﻿@page
+@model RacingLeagueManager.Pages.Race.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Race</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Race.Track)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Race.Track.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Race.RaceDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Race.RaceDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Race.Laps)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Race.Laps)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Race.Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

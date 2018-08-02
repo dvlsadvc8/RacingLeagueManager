@@ -15,7 +15,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SeriesEntry[0].Driver)
+                @Html.DisplayNameFor(model => model.SeriesEntry[0].LeagueDriver)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SeriesEntry[0].Series)
@@ -30,7 +30,7 @@
 @foreach (var item in Model.SeriesEntry) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Driver.Id)
+                @Html.DisplayFor(modelItem => item.DriverId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Series.Id)

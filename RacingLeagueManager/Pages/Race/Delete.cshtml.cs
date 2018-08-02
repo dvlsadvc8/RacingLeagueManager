@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
 
-namespace RacingLeagueManager.Pages.SeriesEntry
+namespace RacingLeagueManager.Pages.Race
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
         }
 
         [BindProperty]
-        public Data.Models.SeriesEntry SeriesEntry { get; set; }
+        public Data.Models.Race Race { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -29,12 +29,10 @@ namespace RacingLeagueManager.Pages.SeriesEntry
                 return NotFound();
             }
 
-            SeriesEntry = await _context.SeriesEntry
-                .Include(s => s.Car)
-                .Include(s => s.LeagueDriver).ThenInclude(ld => ld.Driver)
-                .Include(s => s.Series).FirstOrDefaultAsync(m => m.SeriesId == id);
+            Race = await _context.Race
+                .Include(r => r.Track).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (SeriesEntry == null)
+            if (Race == null)
             {
                 return NotFound();
             }
@@ -48,11 +46,11 @@ namespace RacingLeagueManager.Pages.SeriesEntry
                 return NotFound();
             }
 
-            SeriesEntry = await _context.SeriesEntry.FindAsync(id);
+            Race = await _context.Race.FindAsync(id);
 
-            if (SeriesEntry != null)
+            if (Race != null)
             {
-                _context.SeriesEntry.Remove(SeriesEntry);
+                _context.Race.Remove(Race);
                 await _context.SaveChangesAsync();
             }
 

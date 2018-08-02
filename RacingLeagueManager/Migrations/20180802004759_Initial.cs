@@ -246,7 +246,7 @@ namespace RacingLeagueManager.Migrations
                     TrackId = table.Column<Guid>(nullable: false),
                     RaceDate = table.Column<DateTime>(nullable: false),
                     Laps = table.Column<int>(nullable: false),
-                    SeriesId = table.Column<Guid>(nullable: true)
+                    SeriesId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -256,7 +256,7 @@ namespace RacingLeagueManager.Migrations
                         column: x => x.SeriesId,
                         principalTable: "Series",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Race_Track_TrackId",
                         column: x => x.TrackId,
@@ -270,22 +270,17 @@ namespace RacingLeagueManager.Migrations
                 columns: table => new
                 {
                     DriverId = table.Column<Guid>(nullable: false),
+                    LeagueId = table.Column<Guid>(nullable: false),
                     SeriesId = table.Column<Guid>(nullable: false),
                     CarId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SeriesEntry", x => new { x.SeriesId, x.DriverId, x.CarId });
+                    table.PrimaryKey("PK_SeriesEntry", x => new { x.SeriesId, x.LeagueId, x.DriverId });
                     table.ForeignKey(
                         name: "FK_SeriesEntry_Car_CarId",
                         column: x => x.CarId,
                         principalTable: "Car",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SeriesEntry_AspNetUsers_DriverId",
-                        column: x => x.DriverId,
-                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -294,35 +289,12 @@ namespace RacingLeagueManager.Migrations
                         principalTable: "Series",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Result",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    RaceId = table.Column<Guid>(nullable: false),
-                    DriverId = table.Column<Guid>(nullable: false),
-                    SeriesId = table.Column<Guid>(nullable: false),
-                    CarId = table.Column<Guid>(nullable: false),
-                    Place = table.Column<int>(nullable: false),
-                    Points = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Result", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Result_Race_RaceId",
-                        column: x => x.RaceId,
-                        principalTable: "Race",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Result_SeriesEntry_SeriesId_DriverId_CarId",
-                        columns: x => new { x.SeriesId, x.DriverId, x.CarId },
-                        principalTable: "SeriesEntry",
-                        principalColumns: new[] { "SeriesId", "DriverId", "CarId" },
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_SeriesEntry_LeagueDriver_LeagueId_DriverId",
+                        columns: x => new { x.LeagueId, x.DriverId },
+                        principalTable: "LeagueDriver",
+                        principalColumns: new[] { "LeagueId", "DriverId" },
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -380,16 +352,6 @@ namespace RacingLeagueManager.Migrations
                 column: "TrackId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Result_RaceId",
-                table: "Result",
-                column: "RaceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Result_SeriesId_DriverId_CarId",
-                table: "Result",
-                columns: new[] { "SeriesId", "DriverId", "CarId" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Series_LeagueId",
                 table: "Series",
                 column: "LeagueId");
@@ -400,9 +362,9 @@ namespace RacingLeagueManager.Migrations
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SeriesEntry_DriverId",
+                name: "IX_SeriesEntry_LeagueId_DriverId",
                 table: "SeriesEntry",
-                column: "DriverId");
+                columns: new[] { "LeagueId", "DriverId" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -423,19 +385,13 @@ namespace RacingLeagueManager.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "LeagueDriver");
-
-            migrationBuilder.DropTable(
-                name: "Result");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
                 name: "Race");
 
             migrationBuilder.DropTable(
                 name: "SeriesEntry");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Track");
@@ -444,10 +400,13 @@ namespace RacingLeagueManager.Migrations
                 name: "Car");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Series");
 
             migrationBuilder.DropTable(
-                name: "Series");
+                name: "LeagueDriver");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "League");

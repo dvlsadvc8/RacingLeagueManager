@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
 
-namespace RacingLeagueManager.Pages.Series
+namespace RacingLeagueManager.Pages.Race
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace RacingLeagueManager.Pages.Series
             _context = context;
         }
 
-        public Data.Models.Series Series { get; set; }
+        public Data.Models.Race Race { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -28,13 +28,10 @@ namespace RacingLeagueManager.Pages.Series
                 return NotFound();
             }
 
-            Series = await _context.Series
-                .Include(s => s.Entries).ThenInclude(s => s.Car)
-                .Include(s => s.Entries).ThenInclude(s => s.LeagueDriver).ThenInclude(ld => ld.Driver)
-                .Include(s => s.Races).ThenInclude(s => s.Track)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Race = await _context.Race
+                .Include(r => r.Track).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Series == null)
+            if (Race == null)
             {
                 return NotFound();
             }

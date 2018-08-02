@@ -28,11 +28,25 @@ namespace RacingLeagueManager.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Models.SeriesEntry>()
-                .HasKey(se => new { se.SeriesId, se.DriverId, se.CarId });
-
+            
             builder.Entity<Models.LeagueDriver>()
                 .HasKey(ld => new { ld.LeagueId, ld.DriverId });
+
+            builder.Entity<Models.SeriesEntry>()
+                .HasKey(se => new { se.SeriesId, se.LeagueId, se.DriverId });
+
+            builder.Entity<SeriesEntry>()
+                .HasOne(se => se.LeagueDriver)
+                .WithMany(ld => ld.SeriesEntries)
+                .HasForeignKey(se => new { se.LeagueId, se.DriverId })
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<SeriesEntry>()
+                .HasOne(se => se.Series)
+                .WithMany(s => s.Entries)
+                .OnDelete(DeleteBehavior.Cascade);
+            
         }
     }
 }

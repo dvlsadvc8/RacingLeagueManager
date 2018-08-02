@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
 
@@ -47,7 +48,15 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             }
 
             Driver driver = await _userManager.GetUserAsync(User);
+            Data.Models.Series series = await _context.Series.FirstOrDefaultAsync(s => s.Id == SeriesEntry.SeriesId);
+
+            if((driver == null) || series == null)
+            {
+                return NotFound();
+            }
+
             SeriesEntry.DriverId = driver.Id;
+            SeriesEntry.LeagueId = series.LeagueId;
 
             _context.SeriesEntry.Add(SeriesEntry);
             await _context.SaveChangesAsync();

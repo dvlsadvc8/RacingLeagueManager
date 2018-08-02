@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
 
-namespace RacingLeagueManager.Pages.SeriesEntry
+namespace RacingLeagueManager.Pages.Race
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
         }
 
         [BindProperty]
-        public Data.Models.SeriesEntry SeriesEntry { get; set; }
+        public Data.Models.Race Race { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -30,18 +30,14 @@ namespace RacingLeagueManager.Pages.SeriesEntry
                 return NotFound();
             }
 
-            SeriesEntry = await _context.SeriesEntry
-                .Include(s => s.Car)
-                .Include(s => s.LeagueDriver).ThenInclude(ld => ld.Driver)
-                .Include(s => s.Series).FirstOrDefaultAsync(m => m.SeriesId == id);
+            Race = await _context.Race
+                .Include(r => r.Track).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (SeriesEntry == null)
+            if (Race == null)
             {
                 return NotFound();
             }
-           ViewData["CarId"] = new SelectList(_context.Car, "Id", "Id");
-           ViewData["DriverId"] = new SelectList(_context.Users, "Id", "Id");
-           ViewData["SeriesId"] = new SelectList(_context.Series, "Id", "Id");
+           ViewData["TrackId"] = new SelectList(_context.Track, "Id", "Id");
             return Page();
         }
 
@@ -52,7 +48,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
                 return Page();
             }
 
-            _context.Attach(SeriesEntry).State = EntityState.Modified;
+            _context.Attach(Race).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +56,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SeriesEntryExists(SeriesEntry.SeriesId))
+                if (!RaceExists(Race.Id))
                 {
                     return NotFound();
                 }
@@ -73,9 +69,9 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             return RedirectToPage("./Index");
         }
 
-        private bool SeriesEntryExists(Guid id)
+        private bool RaceExists(Guid id)
         {
-            return _context.SeriesEntry.Any(e => e.SeriesId == id);
+            return _context.Race.Any(e => e.Id == id);
         }
     }
 }
