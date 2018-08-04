@@ -42,11 +42,21 @@ namespace RacingLeagueManager
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(
             //        Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<RacingLeagueManagerContext>(options =>
+
+            if (Environment.EnvironmentName == "Production")
+                services.AddDbContext<RacingLeagueManagerContext>(options =>
+                        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            else
+
+                services.AddDbContext<RacingLeagueManagerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<Driver>()
                 .AddEntityFrameworkStores<RacingLeagueManagerContext>();
+
+            // Automatically perform database migration
+            services.BuildServiceProvider().GetService<RacingLeagueManagerContext>().Database.Migrate();
+
 
             var skipHTTPS = Configuration.GetValue<bool>("LocalTest:skipHTTPS");
             services.Configure<MvcOptions>(options =>
