@@ -1,0 +1,61 @@
+﻿@page
+@model RacingLeagueManager.Pages.RaceResult.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<h4>RaceResult</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RaceResult.Id" />
+            <div class="form-group">
+                <label asp-for="RaceResult.RaceId" class="control-label"></label>
+                <select asp-for="RaceResult.RaceId" class="form-control" asp-items="ViewBag.RaceId"></select>
+                <span asp-validation-for="RaceResult.RaceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RaceResult.DriverId" class="control-label"></label>
+                <select asp-for="RaceResult.DriverId" class="form-control" asp-items="ViewBag.DriverId"></select>
+                <span asp-validation-for="RaceResult.DriverId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RaceResult.LeagueId" class="control-label"></label>
+                <select asp-for="RaceResult.LeagueId" class="form-control" asp-items="ViewBag.LeagueId"></select>
+                <span asp-validation-for="RaceResult.LeagueId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RaceResult.SeriesId" class="control-label"></label>
+                <select asp-for="RaceResult.SeriesId" class="form-control" asp-items="ViewBag.SeriesId"></select>
+                <span asp-validation-for="RaceResult.SeriesId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RaceResult.Place" class="control-label"></label>
+                <input asp-for="RaceResult.Place" class="form-control" />
+                <span asp-validation-for="RaceResult.Place" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RaceResult.Points" class="control-label"></label>
+                <input asp-for="RaceResult.Points" class="form-control" />
+                <span asp-validation-for="RaceResult.Points" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

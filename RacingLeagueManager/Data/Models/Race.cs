@@ -15,7 +15,7 @@ namespace RacingLeagueManager.Data.Models
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime RaceDate { get; set; }
         public int Laps { get; set; }
-        //public ICollection<Result> Results { get; set; }
+        public ICollection<RaceResult> Results { get; set; }
 
         public Guid SeriesId { get; set; }
         public Series Series { get; set; }

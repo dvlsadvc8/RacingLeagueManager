@@ -49,6 +49,7 @@
             <th>Track</th>
             <th>Laps</th>
             <th>Date</th>
+            <th></th>
         </tr>
         @foreach (var item in Model.Series.Races)
         {
@@ -61,6 +62,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RaceDate)
+                </td>
+                <td>
+                    <a asp-page="../Race/Details" asp-route-id="@item.Id">Results</a>
                 </td>
             </tr>
         }

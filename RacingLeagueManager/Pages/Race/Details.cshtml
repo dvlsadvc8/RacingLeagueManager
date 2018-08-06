@@ -30,6 +30,58 @@
             @Html.DisplayFor(model => model.Race.Laps)
         </dd>
     </dl>
+    <h3>Results</h3>
+    <p>
+        <a asp-page="../Race/Create">Add Race</a>
+    </p>
+    <table class="table">
+        <tr>
+            <th>Place</th>
+            <th>UserName</th>
+            <th>RaceNumber</th>
+            <th>Car</th>
+            <th>Points</th>
+        </tr>
+        @foreach (var item in Model.Race.Results)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Place)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeriesEntry.LeagueDriver.Driver.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeriesEntry.LeagueDriver.RaceNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeriesEntry.Car.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Points)
+                </td>
+            </tr>
+        }
+        @foreach (var item in Model.Race.Series.Entries)
+        {
+            <tr>
+                <td>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeagueDriver.Driver.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeagueDriver.RaceNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.Name)
+                </td>
+                <td>
+                    0
+                </td>
+            </tr>
+        }
+    </table>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Race.Id">Edit</a> |

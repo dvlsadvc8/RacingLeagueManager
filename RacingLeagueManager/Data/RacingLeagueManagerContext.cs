@@ -23,6 +23,7 @@ namespace RacingLeagueManager.Data
         public DbSet<Models.Race> Race { get; set; }
         public DbSet<Models.Series> Series { get; set; }
         public DbSet<Models.LeagueDriver> LeagueDriver { get; set; }
+        public DbSet<Models.RaceResult> RaceResult { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -45,6 +46,17 @@ namespace RacingLeagueManager.Data
             builder.Entity<SeriesEntry>()
                 .HasOne(se => se.Series)
                 .WithMany(s => s.Entries)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<RaceResult>()
+                .HasOne(r => r.SeriesEntry)
+                .WithMany(se => se.Results)
+                .HasForeignKey(r => new { r.SeriesId, r.LeagueId, r.DriverId })
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<RaceResult>()
+                .HasOne(r => r.Race)
+                .WithMany(r => r.Results)
                 .OnDelete(DeleteBehavior.Cascade);
             
         }

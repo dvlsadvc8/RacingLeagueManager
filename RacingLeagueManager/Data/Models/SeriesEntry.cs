@@ -15,6 +15,8 @@ namespace RacingLeagueManager.Data.Models
         public Car Car { get; set; }
         public Guid CarId { get; set; }
 
+        public ICollection<RaceResult> Results { get; set; }
+
 
     }
 }

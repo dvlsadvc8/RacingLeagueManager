@@ -10,8 +10,8 @@ using RacingLeagueManager.Data;
 namespace RacingLeagueManager.Migrations
 {
     [DbContext(typeof(RacingLeagueManagerContext))]
-    [Migration("20180802220816_AdditionalLeagueDriverFields_PreQualifiedTime_TrueSkillRating")]
-    partial class AdditionalLeagueDriverFields_PreQualifiedTime_TrueSkillRating
+    [Migration("20180806212837_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -256,6 +256,32 @@ namespace RacingLeagueManager.Migrations
                     b.ToTable("Race");
                 });
 
+            modelBuilder.Entity("RacingLeagueManager.Data.Models.RaceResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("DriverId");
+
+                    b.Property<Guid>("LeagueId");
+
+                    b.Property<int>("Place");
+
+                    b.Property<int>("Points");
+
+                    b.Property<Guid>("RaceId");
+
+                    b.Property<Guid>("SeriesId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RaceId");
+
+                    b.HasIndex("SeriesId", "LeagueId", "DriverId");
+
+                    b.ToTable("RaceResult");
+                });
+
             modelBuilder.Entity("RacingLeagueManager.Data.Models.Series", b =>
                 {
                     b.Property<Guid>("Id")
@@ -374,6 +400,19 @@ namespace RacingLeagueManager.Migrations
                         .WithMany("Races")
                         .HasForeignKey("TrackId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RacingLeagueManager.Data.Models.RaceResult", b =>
+                {
+                    b.HasOne("RacingLeagueManager.Data.Models.Race", "Race")
+                        .WithMany("Results")
+                        .HasForeignKey("RaceId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RacingLeagueManager.Data.Models.SeriesEntry", "SeriesEntry")
+                        .WithMany("Results")
+                        .HasForeignKey("SeriesId", "LeagueId", "DriverId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("RacingLeagueManager.Data.Models.Series", b =>

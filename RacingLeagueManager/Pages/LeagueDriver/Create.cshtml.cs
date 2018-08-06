@@ -65,7 +65,7 @@ namespace RacingLeagueManager.Pages.LeagueDriver
             await _context.LeagueDriver.AddAsync(LeagueDriver);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Leagues/Details", new { Id = LeagueDriver.LeagueId });
         }
     }
 }

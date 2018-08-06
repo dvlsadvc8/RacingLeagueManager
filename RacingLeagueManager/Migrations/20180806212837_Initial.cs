@@ -199,7 +199,9 @@ namespace RacingLeagueManager.Migrations
                 {
                     LeagueId = table.Column<Guid>(nullable: false),
                     DriverId = table.Column<Guid>(nullable: false),
-                    RaceNumber = table.Column<int>(nullable: false)
+                    RaceNumber = table.Column<int>(nullable: false),
+                    PreQualifiedTime = table.Column<TimeSpan>(nullable: false),
+                    TrueSkillRating = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -297,6 +299,35 @@ namespace RacingLeagueManager.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RaceResult",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RaceId = table.Column<Guid>(nullable: false),
+                    DriverId = table.Column<Guid>(nullable: false),
+                    LeagueId = table.Column<Guid>(nullable: false),
+                    SeriesId = table.Column<Guid>(nullable: false),
+                    Place = table.Column<int>(nullable: false),
+                    Points = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RaceResult", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RaceResult_Race_RaceId",
+                        column: x => x.RaceId,
+                        principalTable: "Race",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RaceResult_SeriesEntry_SeriesId_LeagueId_DriverId",
+                        columns: x => new { x.SeriesId, x.LeagueId, x.DriverId },
+                        principalTable: "SeriesEntry",
+                        principalColumns: new[] { "SeriesId", "LeagueId", "DriverId" },
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -352,6 +383,16 @@ namespace RacingLeagueManager.Migrations
                 column: "TrackId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RaceResult_RaceId",
+                table: "RaceResult",
+                column: "RaceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RaceResult_SeriesId_LeagueId_DriverId",
+                table: "RaceResult",
+                columns: new[] { "SeriesId", "LeagueId", "DriverId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Series_LeagueId",
                 table: "Series",
                 column: "LeagueId");
@@ -385,13 +426,16 @@ namespace RacingLeagueManager.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "RaceResult");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
                 name: "Race");
 
             migrationBuilder.DropTable(
                 name: "SeriesEntry");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Track");
