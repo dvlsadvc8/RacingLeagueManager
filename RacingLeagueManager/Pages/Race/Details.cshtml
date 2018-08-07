@@ -62,7 +62,7 @@
                 </td>
             </tr>
         }
-        @foreach (var item in Model.Race.Series.Entries)
+        @foreach (var item in Model.Race.Series.Entries.Where(e => e.Results.Where(r => r.RaceId == Model.Race.Id).Count() == 0))
         {
             <tr>
                 <td>
@@ -77,7 +77,9 @@
                     @Html.DisplayFor(modelItem => item.Car.Name)
                 </td>
                 <td>
-                    0
+                </td>
+                <td>
+                    <a asp-page="../RaceResult/Create" asp-route-raceId="@Model.Race.Id" asp-route-driverId="@item.DriverId">Add Result</a>
                 </td>
             </tr>
         }

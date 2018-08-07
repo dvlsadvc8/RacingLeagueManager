@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore.Internal;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
 
@@ -28,13 +29,27 @@ namespace RacingLeagueManager.Pages.Race
                 return NotFound();
             }
 
-            var raceQuery = _context.Race
+            Race = await _context.Race
                 .Include(r => r.Results)
                 .Include(r => r.Track)
                 .Include(r => r.Series)
-                    .ThenInclude(s => s.Entries.Select(e => !_context.RaceResult.Any(r => r.SeriesId == e.SeriesId && r.LeagueId == e.LeagueId && r.DriverId == e.DriverId)));
-                    
-            Race = await raceQuery.FirstOrDefaultAsync(m => m.Id == id);
+                    .ThenInclude(s => s.Entries)
+                        .ThenInclude(e => e.LeagueDriver)
+                            .ThenInclude(ld => ld.Driver)
+                .Include(r => r.Series)
+                    .ThenInclude(s => s.Entries)
+                        .ThenInclude(e => e.Results)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            //.ThenInclude(s => s.Entries.Select(e => e.!_context.RaceResult.Any(r => r.SeriesId == e.SeriesId && r.LeagueId == e.LeagueId && r.DriverId == e.DriverId)));
+
+            //var entriesWithoutResult = _context.SeriesEntry.Include(se => se.SeriesId == Race.SeriesId)
+
+
+
+            //Race.Series.Entries = entriesWithoutResult;
+
+                //_context.SeriesEntry.Where(se => se.SeriesId == Race.SeriesId && se.Results.Any(se.Results.Where(r => r.Race.Id == Race.Id)));
 
             if (Race == null)
             {
