@@ -34,7 +34,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Car.Name)
                 </td>
-                <td><a asp-page="../SeriesEntryDriver/Create" asp-route-seriesId="@item.Id">Add Driver</a>
+                <td><a asp-page="../SeriesEntryDriver/Create" asp-route-seriesEntryId="@item.Id">Add Driver</a>
                     @for (int i = 0; i < item.SeriesEntryDrivers.Count; i++)
                     {
                         @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).LeagueDriver.Driver.UserName)
