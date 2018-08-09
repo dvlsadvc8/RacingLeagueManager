@@ -12,7 +12,7 @@ namespace RacingLeagueManager.Data.Models
         public string Description { get; set; }
         public Guid LeagueId { get; set; }
         public League League { get; set; }
-        public ICollection<SeriesEntry> Entries { get; set; }
+        public ICollection<SeriesEntry> SeriesEntries { get; set; }
         public ICollection<Race> Races { get; set; }
     }
 }

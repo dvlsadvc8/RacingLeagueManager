@@ -32,15 +32,13 @@ namespace RacingLeagueManager.Pages.SeriesEntry
 
             SeriesEntry = await _context.SeriesEntry
                 .Include(s => s.Car)
-                .Include(s => s.LeagueDriver).ThenInclude(ld => ld.Driver)
-                .Include(s => s.Series).FirstOrDefaultAsync(m => m.SeriesId == id);
+                .Include(s => s.Series).FirstOrDefaultAsync(m => m.Id == id);
 
             if (SeriesEntry == null)
             {
                 return NotFound();
             }
            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Id");
-           ViewData["DriverId"] = new SelectList(_context.Users, "Id", "Id");
            ViewData["SeriesId"] = new SelectList(_context.Series, "Id", "Id");
             return Page();
         }
@@ -60,7 +58,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SeriesEntryExists(SeriesEntry.SeriesId))
+                if (!SeriesEntryExists(SeriesEntry.Id))
                 {
                     return NotFound();
                 }
@@ -75,7 +73,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
 
         private bool SeriesEntryExists(Guid id)
         {
-            return _context.SeriesEntry.Any(e => e.SeriesId == id);
+            return _context.SeriesEntry.Any(e => e.Id == id);
         }
     }
 }

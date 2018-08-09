@@ -3,30 +3,31 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h2>Create Entry</h2>
+<h2>Create</h2>
 
-<h4>Please select a car...</h4>
+<h4>SeriesEntry</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-            @*<div class="form-group">
-                <label asp-for="SeriesEntry.DriverId" class="control-label"></label>
-                <select asp-for="SeriesEntry.DriverId" class ="form-control" asp-items="ViewBag.DriverId"></select>
-            </div>*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 @*<label asp-for="SeriesEntry.SeriesId" class="control-label"></label>
-                <select asp-for="SeriesEntry.SeriesId" class ="form-control" asp-items="ViewBag.SeriesId"></select>*@
+                <select asp-for="SeriesEntry.SeriesId" class="form-control" asp-items="ViewBag.SeriesId"></select>*@
                 <input asp-for="SeriesEntry.SeriesId" type="hidden" />
             </div>
             <div class="form-group">
-                @*<label asp-for="SeriesEntry.Cari" class="control-label"></label>*@
-                <select asp-for="SeriesEntry.CarId" class ="form-control" asp-items="ViewBag.CarId"></select>
+                <label asp-for="SeriesEntry.RaceNumber" class="control-label"></label>
+                <input asp-for="SeriesEntry.RaceNumber" class="form-control" />
+                <span asp-validation-for="SeriesEntry.RaceNumber" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="SeriesEntry.CarId" class="control-label"></label>
+                <select asp-for="SeriesEntry.CarId" class="form-control" asp-items="ViewBag.CarId"></select>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>

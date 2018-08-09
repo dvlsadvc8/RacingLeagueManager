@@ -7,15 +7,16 @@ namespace RacingLeagueManager.Data.Models
 {
     public class SeriesEntry
     {
-        public Guid DriverId { get; set; }
-        public Guid LeagueId { get; set; }
-        public LeagueDriver LeagueDriver { get; set; }
+        public Guid Id { get; set; }
+        public ICollection<SeriesEntryDriver> SeriesEntryDrivers { get; set; }
         public Guid SeriesId { get; set; }
         public Series Series { get; set; }
         public Car Car { get; set; }
         public Guid CarId { get; set; }
 
-        public ICollection<RaceResult> Results { get; set; }
+        public string RaceNumber { get; set; }
+
+        public ICollection<RaceResult> RaceResults { get; set; }
 
 
     }

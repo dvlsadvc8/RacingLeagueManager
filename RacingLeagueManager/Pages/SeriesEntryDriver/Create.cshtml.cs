@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
 
-namespace RacingLeagueManager.Pages.SeriesEntry
+namespace RacingLeagueManager.Pages.SeriesEntryDriver
 {
     public class CreateModel : PageModel
     {
@@ -19,18 +19,18 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             _context = context;
         }
 
-        public IActionResult OnGet(Guid seriesId)
+        public IActionResult OnGet(Guid seriesEntryId)
         {
-            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Name");
-            //ViewData["SeriesId"] = new SelectList(_context.Series, "Id", "Id");
+        ViewData["LeagueId"] = new SelectList(_context.LeagueDriver, "LeagueId", "LeagueId");
+            //ViewData["SeriesEntryId"] = new SelectList(_context.SeriesEntry, "Id", "Id");
 
-            SeriesEntry = new Data.Models.SeriesEntry() { SeriesId = seriesId };
+            SeriesEntryDriver = new Data.Models.SeriesEntryDriver() { SeriesEntryId = seriesEntryId };
 
             return Page();
         }
 
         [BindProperty]
-        public Data.Models.SeriesEntry SeriesEntry { get; set; }
+        public Data.Models.SeriesEntryDriver SeriesEntryDriver { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -39,7 +39,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
                 return Page();
             }
 
-            _context.SeriesEntry.Add(SeriesEntry);
+            _context.SeriesEntryDriver.Add(SeriesEntryDriver);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

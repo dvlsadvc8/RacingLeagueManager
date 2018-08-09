@@ -33,12 +33,14 @@ namespace RacingLeagueManager.Pages.Race
                 .Include(r => r.Results)
                 .Include(r => r.Track)
                 .Include(r => r.Series)
-                    .ThenInclude(s => s.Entries)
-                        .ThenInclude(e => e.LeagueDriver)
-                            .ThenInclude(ld => ld.Driver)
-                .Include(r => r.Series)
-                    .ThenInclude(s => s.Entries)
-                        .ThenInclude(e => e.Results)
+                    .ThenInclude(s => s.SeriesEntries)
+                        .ThenInclude(s => s.SeriesEntryDrivers)
+                            .ThenInclude(s => s.LeagueDriver)
+                                .ThenInclude(ld => ld.Driver)
+                            
+                //.Include(r => r.Series)
+                //    .ThenInclude(s => s.Entries)
+                //        .ThenInclude(e => e.Results)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             //.ThenInclude(s => s.Entries.Select(e => e.!_context.RaceResult.Any(r => r.SeriesId == e.SeriesId && r.LeagueId == e.LeagueId && r.DriverId == e.DriverId)));

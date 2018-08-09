@@ -21,22 +21,40 @@
         </p>*@
     <table class="table">
         <tr>
-            <th>Race Number</th>
-            <th>Driver Name</th>
+            <th>Number</th>
             <th>Car</th>
+            <th>Drivers</th>
         </tr>
-        @foreach (var item in Model.Series.Entries)
+        @foreach (var item in Model.Series.SeriesEntries)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LeagueDriver.RaceNumber)
-                </td>
-                <td>
-                    <a asp-page="../Driver/Details" asp-route-id="@item.LeagueDriver.DriverId">@Html.DisplayFor(modelItem => item.LeagueDriver.Driver.UserName)</a>
+                    @Html.DisplayFor(modelItem => item.RaceNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Car.Name)
                 </td>
+                <td><a asp-page="../SeriesEntryDriver/Create" asp-route-seriesId="@item.Id">Add Driver</a>
+                    @for (int i = 0; i < item.SeriesEntryDrivers.Count; i++)
+                    {
+                        @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).LeagueDriver.Driver.UserName)
+                        if((item.SeriesEntryDrivers.Count - i) > 1)
+                        {
+                            @Html.Raw(",<br />");
+                        }
+                    }
+
+
+                    @*@foreach (var driver in item.SeriesEntryDrivers)
+                    {
+                        @Html.DisplayFor(modelItem => driver.LeagueDriver.Driver.UserName)
+                    }*@
+
+                </td>
+                @*<td>
+                    <a asp-page="../Driver/Details" asp-route-id="@item.LeagueDriver.DriverId">@Html.DisplayFor(modelItem => item.LeagueDriver.Driver.UserName)</a>
+                </td>*@
+
             </tr>
         }
     </table>

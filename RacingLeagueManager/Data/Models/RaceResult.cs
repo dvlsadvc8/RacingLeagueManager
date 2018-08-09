@@ -14,9 +14,7 @@ namespace RacingLeagueManager.Data.Models
         public Guid RaceId { get; set; }
         public Race Race { get; set; }
 
-        public Guid DriverId { get; set; }
-        public Guid LeagueId { get; set; }
-        public Guid SeriesId { get; set; }
+        public Guid SeriesEntryId { get; set; }
         public SeriesEntry SeriesEntry { get; set; }
 
 

@@ -29,9 +29,14 @@ namespace RacingLeagueManager.Pages.Series
             }
 
             Series = await _context.Series
-                .Include(s => s.Entries).ThenInclude(s => s.Car)
-                .Include(s => s.Entries).ThenInclude(s => s.LeagueDriver).ThenInclude(ld => ld.Driver)
-                .Include(s => s.Races).ThenInclude(s => s.Track)
+                .Include(s => s.SeriesEntries)
+                    .ThenInclude(s => s.Car)
+                .Include(s => s.SeriesEntries)
+                    .ThenInclude(s => s.SeriesEntryDrivers)
+                        .ThenInclude(s => s.LeagueDriver)
+                            .ThenInclude(ld => ld.Driver)
+                .Include(s => s.Races)
+                    .ThenInclude(s => s.Track)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Series == null)

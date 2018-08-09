@@ -47,7 +47,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@item.Id">Join</a>
+                    <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@item.Id">New Entry</a>
                 </td>
                 @*<td>
                         <a asp-page="../Series/Edit" asp-route-id="@item.Id">Edit</a> |
@@ -63,15 +63,15 @@
         </p>*@
     <table class="table">
         <tr>
-            <th>Race Number</th>
+            @*<th>Race Number</th>*@
             <th>Name</th>
         </tr>
         @foreach (var item in Model.League.LeagueDrivers)
         {
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.RaceNumber)
-                </td>
+                </td>*@
                 <td>
                     <a asp-page="../Driver/Details" asp-route-id="@item.Driver.Id">@Html.DisplayFor(modelItem => item.Driver.UserName)</a>
                 </td>

@@ -1,5 +1,5 @@
 ﻿@page
-@model RacingLeagueManager.Pages.LeagueDriver.IndexModel
+@model RacingLeagueManager.Pages.SeriesEntryDriver.IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -14,29 +14,29 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.LeagueDriver[0].Driver)
+                @Html.DisplayNameFor(model => model.SeriesEntryDriver[0].LeagueDriver)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LeagueDriver[0].League)
+                @Html.DisplayNameFor(model => model.SeriesEntryDriver[0].SeriesEntry)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.LeagueDriver[0].RaceNumber)
-            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.SeriesEntryDriver[0].DriverType)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.LeagueDriver) {
+@foreach (var item in Model.SeriesEntryDriver) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Driver.Id)
+                @Html.DisplayFor(modelItem => item.LeagueDriver.LeagueId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.League.Id)
+                @Html.DisplayFor(modelItem => item.SeriesEntry.Id)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.RaceNumber)
-            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverType)
+            </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |

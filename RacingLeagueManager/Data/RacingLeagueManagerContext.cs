@@ -24,6 +24,7 @@ namespace RacingLeagueManager.Data
         public DbSet<Models.Series> Series { get; set; }
         public DbSet<Models.LeagueDriver> LeagueDriver { get; set; }
         public DbSet<Models.RaceResult> RaceResult { get; set; }
+        public DbSet<Models.SeriesEntryDriver> SeriesEntryDriver { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -33,32 +34,33 @@ namespace RacingLeagueManager.Data
             builder.Entity<Models.LeagueDriver>()
                 .HasKey(ld => new { ld.LeagueId, ld.DriverId });
 
-            builder.Entity<Models.SeriesEntry>()
-                .HasKey(se => new { se.SeriesId, se.LeagueId, se.DriverId });
 
-            builder.Entity<SeriesEntry>()
-                .HasOne(se => se.LeagueDriver)
-                .WithMany(ld => ld.SeriesEntries)
-                .HasForeignKey(se => new { se.LeagueId, se.DriverId })
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Models.SeriesEntryDriver>()
+                .HasKey(s => new { s.LeagueId, s.DriverId, s.SeriesEntryId });
+
+            //builder.Entity<SeriesEntry>()
+            //    .HasOne(se => se.LeagueDriver)
+            //    .WithMany(ld => ld.SeriesEntries)
+            //    .HasForeignKey(se => new { se.LeagueId, se.DriverId })
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<SeriesEntry>()
                 .HasOne(se => se.Series)
-                .WithMany(s => s.Entries)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<RaceResult>()
-                .HasOne(r => r.SeriesEntry)
-                .WithMany(se => se.Results)
-                .HasForeignKey(r => new { r.SeriesId, r.LeagueId, r.DriverId })
+                .WithMany(s => s.SeriesEntries)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<RaceResult>()
-                .HasOne(r => r.Race)
-                .WithMany(r => r.Results)
-                .OnDelete(DeleteBehavior.Cascade);
-            
+            //builder.Entity<RaceResult>()
+            //    .HasOne(r => r.SeriesEntry)
+            //    .WithMany(se => se.RaceResults)
+            //    .HasForeignKey(r => new { r.SeriesId, r.LeagueId, r.DriverId })
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<RaceResult>()
+            //    .HasOne(r => r.Race)
+            //    .WithMany(r => r.Results)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

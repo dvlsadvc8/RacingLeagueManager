@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <h2>Edit</h2>
@@ -14,9 +13,22 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="SeriesEntry.DriverId" />
-            <input type="hidden" asp-for="SeriesEntry.SeriesId" />
-            <input type="hidden" asp-for="SeriesEntry.CarId" />
+            <input type="hidden" asp-for="SeriesEntry.Id" />
+            <div class="form-group">
+                <label asp-for="SeriesEntry.SeriesId" class="control-label"></label>
+                <select asp-for="SeriesEntry.SeriesId" class="form-control" asp-items="ViewBag.SeriesId"></select>
+                <span asp-validation-for="SeriesEntry.SeriesId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SeriesEntry.CarId" class="control-label"></label>
+                <select asp-for="SeriesEntry.CarId" class="form-control" asp-items="ViewBag.CarId"></select>
+                <span asp-validation-for="SeriesEntry.CarId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SeriesEntry.RaceNumber" class="control-label"></label>
+                <input asp-for="SeriesEntry.RaceNumber" class="form-control" />
+                <span asp-validation-for="SeriesEntry.RaceNumber" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>

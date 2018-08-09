@@ -14,10 +14,9 @@ namespace RacingLeagueManager.Data.Models
         public Driver Driver { get; set; }
         public League League { get; set; }
 
-        public int RaceNumber { get; set; }
         public TimeSpan PreQualifiedTime { get; set; }
         public int? TrueSkillRating { get; set; }
 
-        public ICollection<SeriesEntry> SeriesEntries { get; set; }
+        public ICollection<SeriesEntryDriver> SeriesEntryDrivers { get; set; }
     }
 }

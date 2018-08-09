@@ -10,7 +10,7 @@ using RacingLeagueManager.Data;
 namespace RacingLeagueManager.Migrations
 {
     [DbContext(typeof(RacingLeagueManagerContext))]
-    [Migration("20180806212837_Initial")]
+    [Migration("20180809045546_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,8 +223,6 @@ namespace RacingLeagueManager.Migrations
 
                     b.Property<TimeSpan>("PreQualifiedTime");
 
-                    b.Property<int>("RaceNumber");
-
                     b.Property<int?>("TrueSkillRating");
 
                     b.HasKey("LeagueId", "DriverId");
@@ -261,23 +259,19 @@ namespace RacingLeagueManager.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("DriverId");
-
-                    b.Property<Guid>("LeagueId");
-
                     b.Property<int>("Place");
 
                     b.Property<int>("Points");
 
                     b.Property<Guid>("RaceId");
 
-                    b.Property<Guid>("SeriesId");
+                    b.Property<Guid>("SeriesEntryId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RaceId");
 
-                    b.HasIndex("SeriesId", "LeagueId", "DriverId");
+                    b.HasIndex("SeriesEntryId");
 
                     b.ToTable("RaceResult");
                 });
@@ -302,21 +296,39 @@ namespace RacingLeagueManager.Migrations
 
             modelBuilder.Entity("RacingLeagueManager.Data.Models.SeriesEntry", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("CarId");
+
+                    b.Property<string>("RaceNumber");
+
                     b.Property<Guid>("SeriesId");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("SeriesId");
+
+                    b.ToTable("SeriesEntry");
+                });
+
+            modelBuilder.Entity("RacingLeagueManager.Data.Models.SeriesEntryDriver", b =>
+                {
                     b.Property<Guid>("LeagueId");
 
                     b.Property<Guid>("DriverId");
 
-                    b.Property<Guid>("CarId");
+                    b.Property<Guid>("SeriesEntryId");
 
-                    b.HasKey("SeriesId", "LeagueId", "DriverId");
+                    b.Property<int>("DriverType");
 
-                    b.HasIndex("CarId");
+                    b.HasKey("LeagueId", "DriverId", "SeriesEntryId");
 
-                    b.HasIndex("LeagueId", "DriverId");
+                    b.HasIndex("SeriesEntryId");
 
-                    b.ToTable("SeriesEntry");
+                    b.ToTable("SeriesEntryDriver");
                 });
 
             modelBuilder.Entity("RacingLeagueManager.Data.Models.Track", b =>
@@ -410,9 +422,9 @@ namespace RacingLeagueManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("RacingLeagueManager.Data.Models.SeriesEntry", "SeriesEntry")
-                        .WithMany("Results")
-                        .HasForeignKey("SeriesId", "LeagueId", "DriverId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany("RaceResults")
+                        .HasForeignKey("SeriesEntryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("RacingLeagueManager.Data.Models.Series", b =>
@@ -431,14 +443,22 @@ namespace RacingLeagueManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("RacingLeagueManager.Data.Models.Series", "Series")
-                        .WithMany("Entries")
+                        .WithMany("SeriesEntries")
                         .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("RacingLeagueManager.Data.Models.SeriesEntryDriver", b =>
+                {
+                    b.HasOne("RacingLeagueManager.Data.Models.SeriesEntry", "SeriesEntry")
+                        .WithMany("SeriesEntryDrivers")
+                        .HasForeignKey("SeriesEntryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("RacingLeagueManager.Data.Models.LeagueDriver", "LeagueDriver")
-                        .WithMany("SeriesEntries")
+                        .WithMany("SeriesEntryDrivers")
                         .HasForeignKey("LeagueId", "DriverId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Delete";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <h2>Delete</h2>
@@ -13,12 +12,6 @@
     <h4>SeriesEntry</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.SeriesEntry.LeagueDriver.Driver.UserName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SeriesEntry.DriverId)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.SeriesEntry.Series)
         </dt>
@@ -31,12 +24,16 @@
         <dd>
             @Html.DisplayFor(model => model.SeriesEntry.Car.Id)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SeriesEntry.RaceNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SeriesEntry.RaceNumber)
+        </dd>
     </dl>
     
     <form method="post">
-        <input type="hidden" asp-for="SeriesEntry.DriverId" />
-        <input type="hidden" asp-for="SeriesEntry.SeriesId" />
-        <input type="hidden" asp-for="SeriesEntry.CarId" />
+        <input type="hidden" asp-for="SeriesEntry.Id" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
         <a asp-page="./Index">Back to List</a>
     </form>
