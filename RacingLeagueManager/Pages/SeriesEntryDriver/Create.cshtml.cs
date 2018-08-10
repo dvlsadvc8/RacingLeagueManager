@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
 
@@ -19,12 +20,17 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             _context = context;
         }
 
-        public IActionResult OnGet(Guid seriesEntryId)
+        public async Task<IActionResult> OnGet(Guid seriesEntryId)
         {
-        ViewData["LeagueId"] = new SelectList(_context.LeagueDriver, "LeagueId", "LeagueId");
-            //ViewData["SeriesEntryId"] = new SelectList(_context.SeriesEntry, "Id", "Id");
+            var seriesEntry = await _context.SeriesEntry.Include(s => s.Series).FirstOrDefaultAsync(s => s.Id == seriesEntryId);
+            if(seriesEntry == null)
+            {
+                return NotFound();
+            }
 
-            SeriesEntryDriver = new Data.Models.SeriesEntryDriver() { SeriesEntryId = seriesEntryId };
+            ViewData["DriverId"] = new SelectList(await _context.LeagueDriver.Include(l => l.Driver).Where(l => l.LeagueId == seriesEntry.Series.LeagueId).ToListAsync(), "DriverId", "Driver.UserName");            
+
+            SeriesEntryDriver = new Data.Models.SeriesEntryDriver() { SeriesEntryId = seriesEntry.Id, LeagueId = seriesEntry.Series.LeagueId };
 
             return Page();
         }

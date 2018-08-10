@@ -1,5 +1,6 @@
 ﻿@page
 @model RacingLeagueManager.Pages.SeriesEntryDriver.CreateModel
+@using RacingLeagueManager.Data.Models
 
 @{
     ViewData["Title"] = "Create";
@@ -29,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="SeriesEntryDriver.DriverType" class="control-label"></label>
-                <select asp-for="SeriesEntryDriver.DriverType" class="form-control"></select>
+                <select asp-for="SeriesEntryDriver.DriverType" class="form-control" asp-items="Html.GetEnumSelectList<DriverType>()"></select>
                 <span asp-validation-for="SeriesEntryDriver.DriverType" class="text-danger"></span>
             </div>
             <div class="form-group">
