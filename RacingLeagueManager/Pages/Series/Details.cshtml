@@ -9,6 +9,7 @@
 <h2>@Html.DisplayFor(model => model.Series.Name)</h2>
 
 <div>
+    <a asp-page="../Team/Index" asp-route-seriesId="@Model.Series.Id">Teams</a>
     <hr />
     @Html.DisplayFor(model => model.Series.Description)
 
@@ -17,8 +18,8 @@
 
     <h3>Entries</h3>
     @*<p>
-            <a asp-page="../Series/Create">Add Member</a>
-        </p>*@
+        <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@Model.Series.Id">New Entry</a>
+    </p>*@
     <table class="table">
         <tr>
             <th>Number</th>
