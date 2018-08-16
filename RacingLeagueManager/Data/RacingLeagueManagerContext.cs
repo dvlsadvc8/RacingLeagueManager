@@ -51,6 +51,30 @@ namespace RacingLeagueManager.Data
                 .WithMany(s => s.SeriesEntries)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Series>()
+                .HasOne(s => s.Owner)
+                .WithMany(o => o.OwnedSeries)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<League>()
+            //    .HasOne(l => l.Owner)
+            //    .WithOne(o => o.OwnedLeague)
+            //    .HasForeignKey<Driver>(l => l)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Driver>()
+                .HasOne(d => d.OwnedLeague)
+                .WithOne(o => o.Owner)
+                .HasForeignKey<League>(l => l.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<SeriesEntry>()
+                .HasOne(s => s.Team)
+                .WithMany(t => t.SeriesEntries)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+
             //builder.Entity<RaceResult>()
             //    .HasOne(r => r.SeriesEntry)
             //    .WithMany(se => se.RaceResults)

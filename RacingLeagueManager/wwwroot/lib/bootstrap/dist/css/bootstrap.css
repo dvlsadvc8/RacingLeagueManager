@@ -6755,3 +6755,13 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+.container dt, .container dd {
+    width: auto;
+    margin-left: auto;
+    /*display: inline-block;*/
+}
+
+.font-bold {
+    font-weight: bold;
+}

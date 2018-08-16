@@ -17,5 +17,6 @@ namespace RacingLeagueManager.Data.Models
         public Driver Owner { get; set; }
 
         public ICollection<SeriesEntry> SeriesEntries { get; set; }
+        
     }
 }

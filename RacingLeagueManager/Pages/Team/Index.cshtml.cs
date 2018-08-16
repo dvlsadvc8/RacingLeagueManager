@@ -21,13 +21,27 @@ namespace RacingLeagueManager.Pages.Team
 
         public IList<Data.Models.Team> Team { get;set; }
 
-        public async Task OnGetAsync(Guid seriesId)
+        public async Task<IActionResult> OnGetAsync(Guid seriesId)
         {
-            ViewData["SeriesId"] = seriesId;
+            if(seriesId == null)
+            {
+                return NotFound();
+            }
+
+            var series = await _context.Series.FirstOrDefaultAsync(s => s.Id == seriesId);
+            if(series == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["SeriesId"] = series.Id;
+            ViewData["SeriesName"] = series.Name;
 
             Team = await _context.Team
                 .Include(t => t.Owner)
                 .Include(t => t.Series).Where(t => t.SeriesId == seriesId).ToListAsync();
+
+            return Page();
         }
     }
 }

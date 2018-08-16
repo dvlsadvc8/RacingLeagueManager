@@ -29,6 +29,7 @@ namespace RacingLeagueManager.Pages.Series
             }
 
             Series = await _context.Series
+                .Include(s => s.Owner)
                 .Include(s => s.SeriesEntries)
                     .ThenInclude(s => s.Car)
                 .Include(s => s.SeriesEntries)

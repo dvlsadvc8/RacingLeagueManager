@@ -167,6 +167,8 @@ namespace RacingLeagueManager.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
+                    b.Property<Guid>("OwnedLeagueId");
+
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
@@ -209,6 +211,9 @@ namespace RacingLeagueManager.Migrations
                     b.Property<Guid>("OwnerId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId")
+                        .IsUnique();
 
                     b.ToTable("League");
                 });
@@ -257,6 +262,10 @@ namespace RacingLeagueManager.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<TimeSpan>("BestLap");
+
+                    b.Property<Guid>("DriverId");
+
                     b.Property<int>("Place");
 
                     b.Property<int>("Points");
@@ -265,7 +274,11 @@ namespace RacingLeagueManager.Migrations
 
                     b.Property<Guid>("SeriesEntryId");
 
+                    b.Property<TimeSpan>("TotalTime");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
 
                     b.HasIndex("RaceId");
 
@@ -285,9 +298,13 @@ namespace RacingLeagueManager.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<Guid>("OwnerId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LeagueId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Series");
                 });
@@ -303,7 +320,7 @@ namespace RacingLeagueManager.Migrations
 
                     b.Property<Guid>("SeriesId");
 
-                    b.Property<Guid?>("TeamId");
+                    b.Property<Guid>("TeamId");
 
                     b.HasKey("Id");
 
@@ -410,6 +427,14 @@ namespace RacingLeagueManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("RacingLeagueManager.Data.Models.League", b =>
+                {
+                    b.HasOne("RacingLeagueManager.Data.Models.Driver", "Owner")
+                        .WithOne("OwnedLeague")
+                        .HasForeignKey("RacingLeagueManager.Data.Models.League", "OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("RacingLeagueManager.Data.Models.LeagueDriver", b =>
                 {
                     b.HasOne("RacingLeagueManager.Data.Models.Driver", "Driver")
@@ -438,6 +463,11 @@ namespace RacingLeagueManager.Migrations
 
             modelBuilder.Entity("RacingLeagueManager.Data.Models.RaceResult", b =>
                 {
+                    b.HasOne("RacingLeagueManager.Data.Models.Driver", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("RacingLeagueManager.Data.Models.Race", "Race")
                         .WithMany("Results")
                         .HasForeignKey("RaceId")
@@ -455,6 +485,11 @@ namespace RacingLeagueManager.Migrations
                         .WithMany("Series")
                         .HasForeignKey("LeagueId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RacingLeagueManager.Data.Models.Driver", "Owner")
+                        .WithMany("OwnedSeries")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("RacingLeagueManager.Data.Models.SeriesEntry", b =>
@@ -469,9 +504,10 @@ namespace RacingLeagueManager.Migrations
                         .HasForeignKey("SeriesId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("RacingLeagueManager.Data.Models.Team")
+                    b.HasOne("RacingLeagueManager.Data.Models.Team", "Team")
                         .WithMany("SeriesEntries")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("RacingLeagueManager.Data.Models.SeriesEntryDriver", b =>

@@ -25,13 +25,18 @@ namespace RacingLeagueManager.Pages.Team
 
         public async Task<IActionResult> OnGet(Guid seriesId)
         {
-            var Series = await _context.Series.FirstOrDefaultAsync(s => s.Id == seriesId);
-            if(Series == null)
+            if(seriesId == null)
             {
                 return NotFound();
             }
 
-            Team = new Data.Models.Team() { SeriesId = Series.Id };
+            var series = await _context.Series.FirstOrDefaultAsync(s => s.Id == seriesId);
+            if(series == null)
+            {
+                return NotFound();
+            }
+
+            Team = new Data.Models.Team() { SeriesId = series.Id, Series = series };
 
             return Page();
         }
@@ -52,7 +57,7 @@ namespace RacingLeagueManager.Pages.Team
             _context.Team.Add(Team);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index", new { seriesId = Team.SeriesId });
+            return RedirectToPage("./Details", new { id = Team.Id });
         }
     }
 }

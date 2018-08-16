@@ -2,10 +2,11 @@
 @model RacingLeagueManager.Pages.Team.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Teams";
 }
 
-<h2>Index</h2>
+<h2>@ViewData["SeriesName"]</h2>
+<h3>Racing Teams</h3>
 
 <p>
     <a asp-page="Create" asp-route-seriesId="@ViewData["SeriesId"]">Create New</a>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,9 +14,11 @@ namespace RacingLeagueManager.Pages.Series
     public class CreateModel : PageModel
     {
         private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
+        private readonly UserManager<Driver> _userManager;
 
-        public CreateModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public CreateModel(UserManager<Driver> userManager, RacingLeagueManager.Data.RacingLeagueManagerContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -43,10 +46,13 @@ namespace RacingLeagueManager.Pages.Series
                 return Page();
             }
 
+            Driver driver = await _userManager.GetUserAsync(User);
+            Series.OwnerId = driver.Id;
+
             _context.Series.Add(Series);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Details", new { Id = Series.Id });
+            return RedirectToPage("./Details", new { id = Series.Id });
         }
     }
 }

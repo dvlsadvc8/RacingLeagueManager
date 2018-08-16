@@ -19,12 +19,24 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             _context = context;
         }
 
-        public IActionResult OnGet(Guid seriesId)
+        public IActionResult OnGet(Guid seriesId, Guid teamId)
         {
-            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Name");
-            //ViewData["SeriesId"] = new SelectList(_context.Series, "Id", "Id");
+            if(seriesId == null || teamId == null)
+            {
+                return NotFound();
+            }
 
-            SeriesEntry = new Data.Models.SeriesEntry() { SeriesId = seriesId };
+            var series = _context.Series.FirstOrDefault(s => s.Id == seriesId);
+            var team = _context.Team.FirstOrDefault(t => t.Id == teamId);
+
+            if(series == null || team == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Name");
+
+            SeriesEntry = new Data.Models.SeriesEntry() { SeriesId = seriesId, Series = series, TeamId = teamId, Team = team };
 
             return Page();
         }
@@ -42,7 +54,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             _context.SeriesEntry.Add(SeriesEntry);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Team/Details", new { id = SeriesEntry.TeamId });
         }
     }
 }

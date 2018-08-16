@@ -30,7 +30,14 @@ namespace RacingLeagueManager.Pages.Team
 
             Team = await _context.Team
                 .Include(t => t.Owner)
-                .Include(t => t.Series).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(t => t.Series)
+                .Include(t => t.SeriesEntries)
+                    .ThenInclude(s => s.Car)
+                .Include(s => s.SeriesEntries)
+                .ThenInclude(s => s.SeriesEntryDrivers)
+                    .ThenInclude(s => s.LeagueDriver)
+                        .ThenInclude(ld => ld.Driver)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Team == null)
             {

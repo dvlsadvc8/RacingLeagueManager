@@ -46,7 +46,7 @@ namespace RacingLeagueManager.Pages.Race
             _context.Race.Add(Race);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("../Series/Details", new { Id = Race.SeriesId });
+            return RedirectToPage("../Series/Details", new { id = Race.SeriesId });
         }
     }
 }

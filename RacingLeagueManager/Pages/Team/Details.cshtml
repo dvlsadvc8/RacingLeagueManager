@@ -5,33 +5,98 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.Team.Series.Name</h2>
+<h3>@Model.Team.Name</h3>
 
 <div>
     <h4>Team</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Team.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Team.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Team.Series)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Team.Series.Id)
-        </dd>
-        <dt>
+    @*<dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Team.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Team.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Team.Series)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Team.Series.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Team.Owner)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Team.Owner.Id)
+            </dd>
+        </dl>*@
+
+    <div class="row">
+        <div class="col-md-12 font-bold">
             @Html.DisplayNameFor(model => model.Team.Owner)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Team.Owner.Id)
-        </dd>
-    </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @Html.DisplayFor(model => model.Team.Owner.UserName)
+        </div>
+    </div>
 </div>
+
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Team.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
+
+<h3>Entries</h3>
+<p>
+    <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@Model.Team.SeriesId" asp-route-teamId="@Model.Team.Id">New Entry</a>
+</p>
+<table class="table">
+    <tr>
+        <th>Number</th>
+        <th>Car</th>
+        <th>Drivers</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.Team.SeriesEntries)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RaceNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car.Name)
+            </td>
+            <td>
+                @if (item.SeriesEntryDrivers != null)
+                {
+                    for (int i = 0; i < item.SeriesEntryDrivers.Count; i++)
+                    {
+                        @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).LeagueDriver.Driver.UserName)
+                        if ((item.SeriesEntryDrivers.Count - i) > 1)
+                        {
+                            @Html.Raw(",<br />");
+                        }
+                    }
+                }
+
+
+
+                @*@foreach (var driver in item.SeriesEntryDrivers)
+        {
+            @Html.DisplayFor(modelItem => driver.LeagueDriver.Driver.UserName)
+        }*@
+
+            </td>
+            <td>
+                <a asp-page="../SeriesEntryDriver/Create" asp-route-seriesEntryId="@item.Id">Add Driver</a>
+            </td>
+            @*<td>
+                    <a asp-page="../Driver/Details" asp-route-id="@item.LeagueDriver.DriverId">@Html.DisplayFor(modelItem => item.LeagueDriver.Driver.UserName)</a>
+                </td>*@
+
+        </tr>
+    }
+</table>

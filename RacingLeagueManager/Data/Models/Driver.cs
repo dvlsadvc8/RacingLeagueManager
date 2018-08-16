@@ -10,6 +10,10 @@ namespace RacingLeagueManager.Data.Models
     {
         public ICollection<LeagueDriver> LeagueDrivers { get; set; }
 
+        public ICollection<Series> OwnedSeries { get; set; }
+        public Guid OwnedLeagueId { get; set; }
+        public League OwnedLeague { get; set; }
+
         public Driver() : base()
         {
 
