@@ -33,6 +33,8 @@ namespace RacingLeagueManager.Pages.Series
                 .Include(s => s.SeriesEntries)
                     .ThenInclude(s => s.Car)
                 .Include(s => s.SeriesEntries)
+                    .ThenInclude(s => s.Team)
+                .Include(s => s.SeriesEntries)
                     .ThenInclude(s => s.SeriesEntryDrivers)
                         .ThenInclude(s => s.LeagueDriver)
                             .ThenInclude(ld => ld.Driver)
