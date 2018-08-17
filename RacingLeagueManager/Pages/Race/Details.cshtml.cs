@@ -37,10 +37,16 @@ namespace RacingLeagueManager.Pages.Race
                         .ThenInclude(s => s.SeriesEntryDrivers)
                             .ThenInclude(s => s.LeagueDriver)
                                 .ThenInclude(ld => ld.Driver)
-                            
-                //.Include(r => r.Series)
-                //    .ThenInclude(s => s.Entries)
-                //        .ThenInclude(e => e.Results)
+                
+                .Include(r => r.Series)
+                    .ThenInclude(s => s.SeriesEntries)
+                        .ThenInclude(e => e.RaceResults)
+                .Include(r => r.Series)
+                    .ThenInclude(s => s.SeriesEntries)
+                        .ThenInclude(s => s.Car)
+                .Include(r => r.Series)
+                    .ThenInclude(s => s.SeriesEntries)
+                        .ThenInclude(s => s.Team)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             //.ThenInclude(s => s.Entries.Select(e => e.!_context.RaceResult.Any(r => r.SeriesId == e.SeriesId && r.LeagueId == e.LeagueId && r.DriverId == e.DriverId)));
@@ -59,5 +65,25 @@ namespace RacingLeagueManager.Pages.Race
             }
             return Page();
         }
+
+        //public class RaceDetailViewModel
+        //{
+        //    public Guid RaceId { get; set; }
+        //    public string TrackName { get; set; }
+        //    public Guid SeriesId { get; set; }
+        //    public string SeriesName { get; set; }
+        //    public int Laps { get; set; }
+        //    public DateTime RaceDate { get; set; }
+
+        //    public List<RaceResultViewModel> Results { get; set; }
+        //}
+
+        //public class RaceResultViewModel
+        //{
+        //    public Guid RaceId { get; set; }
+        //    public Guid SeriesEntryId { get; set; }
+
+            
+        //}
     }
 }

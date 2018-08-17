@@ -25,6 +25,12 @@
         <dd>
             @Html.DisplayFor(model => model.League.CreatedDate)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.League.Owner)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.League.Owner.UserName)
+        </dd>
     </dl>
     <h3>Series</h3>
     <p>
@@ -34,6 +40,7 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Owner</th>
             <th></th>
         </tr>
         @foreach (var item in Model.League.Series)
@@ -47,8 +54,11 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@item.Id">New Entry</a>
+                    @Html.DisplayFor(modelItem => item.Owner.UserName)
                 </td>
+                @*<td>
+                    <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@item.Id">New Entry</a>
+                </td>*@
                 @*<td>
                         <a asp-page="../Series/Edit" asp-route-id="@item.Id">Edit</a> |
 
@@ -65,6 +75,7 @@
         <tr>
             @*<th>Race Number</th>*@
             <th>Name</th>
+            <th>PreQualified Time</th>
         </tr>
         @foreach (var item in Model.League.LeagueDrivers)
         {
@@ -74,6 +85,9 @@
                 </td>*@
                 <td>
                     <a asp-page="../Driver/Details" asp-route-id="@item.Driver.Id">@Html.DisplayFor(modelItem => item.Driver.UserName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PreQualifiedTime)
                 </td>
             </tr>
         }

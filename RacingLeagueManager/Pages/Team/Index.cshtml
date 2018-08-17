@@ -6,6 +6,7 @@
 }
 
 <h2>@ViewData["SeriesName"]</h2>
+<a asp-page="../Series/Details" asp-route-id="@ViewData["SeriesId"]">Back to Series</a>
 <h3>Racing Teams</h3>
 
 <p>
@@ -45,5 +46,6 @@
             </td>
         </tr>
 }
+
     </tbody>
 </table>
