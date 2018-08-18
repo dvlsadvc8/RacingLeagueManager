@@ -76,6 +76,8 @@
                     for (int i = 0; i < item.SeriesEntryDrivers.Count; i++)
                     {
                         @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).LeagueDriver.Driver.UserName)
+                        @Html.Raw(" - ")
+                        @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).DriverType )
                         if ((item.SeriesEntryDrivers.Count - i) > 1)
                         {
                             @Html.Raw(",<br />");

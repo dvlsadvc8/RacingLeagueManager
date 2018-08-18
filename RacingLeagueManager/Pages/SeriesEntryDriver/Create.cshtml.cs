@@ -22,15 +22,16 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
 
         public async Task<IActionResult> OnGet(Guid seriesEntryId)
         {
-            var seriesEntry = await _context.SeriesEntry.Include(s => s.Series).FirstOrDefaultAsync(s => s.Id == seriesEntryId);
+            var seriesEntry = await _context.SeriesEntry.Include(s => s.Series).Include(s => s.Team).FirstOrDefaultAsync(s => s.Id == seriesEntryId);
             if(seriesEntry == null)
             {
                 return NotFound();
             }
 
-            ViewData["DriverId"] = new SelectList(await _context.LeagueDriver.Include(l => l.Driver).Where(l => l.LeagueId == seriesEntry.Series.LeagueId).ToListAsync(), "DriverId", "Driver.UserName");            
+            ViewData["DriverId"] = new SelectList(await _context.LeagueDriver.Include(l => l.Driver).Where(l => l.LeagueId == seriesEntry.Series.LeagueId).ToListAsync(), "DriverId", "Driver.UserName");
+            //ViewData["TeamId"] = seriesEntry.Team.Id;
 
-            SeriesEntryDriver = new Data.Models.SeriesEntryDriver() { SeriesEntryId = seriesEntry.Id, LeagueId = seriesEntry.Series.LeagueId };
+            SeriesEntryDriver = new Data.Models.SeriesEntryDriver() { SeriesEntryId = seriesEntry.Id, LeagueId = seriesEntry.Series.LeagueId, SeriesEntry = seriesEntry};
 
             return Page();
         }
@@ -45,10 +46,13 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                 return Page();
             }
 
+            var teamId = SeriesEntryDriver.SeriesEntry.Team.Id;
+            SeriesEntryDriver.SeriesEntry = null;
+
             _context.SeriesEntryDriver.Add(SeriesEntryDriver);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Team/Details", new { id = teamId });
         }
     }
 }

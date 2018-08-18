@@ -18,6 +18,7 @@
                 @*<label asp-for="SeriesEntryDriver.LeagueId" class="control-label"></label>
                 <select asp-for="SeriesEntryDriver.LeagueId" class ="form-control" asp-items="ViewBag.LeagueId"></select>*@
                 <input asp-for="SeriesEntryDriver.LeagueId" type="hidden" />
+                <input asp-for="SeriesEntryDriver.SeriesEntry.Team.Id" type="hidden" />
             </div>
             <div class="form-group">
                 <label asp-for="SeriesEntryDriver.DriverId" class="control-label"></label>
@@ -41,7 +42,7 @@
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="../Team/Details" asp-route-id="@Model.SeriesEntryDriver.SeriesEntry.Team.Id">Back to Team</a>
 </div>
 
 @section Scripts {
