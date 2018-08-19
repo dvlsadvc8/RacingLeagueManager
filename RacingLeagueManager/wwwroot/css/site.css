@@ -36,4 +36,26 @@ body {
     }
 }
 
+.orange-carousel {
+    background-color: orange;
+    color: white;
+    padding: 10px;
+    border-radius: 10px 10px 10px 10px;
+    overflow: hidden;
+}
+.blue-carousel {
+    background-color: deepskyblue;
+    color: white;
+    padding: 10px;
+    border-radius: 10px 10px 10px 10px;
+    overflow: hidden;
+}
+.green-carousel {
+    background-color: yellowgreen;
+    color: white;
+    padding: 10px;
+    border-radius: 10px 10px 10px 10px;
+    overflow: hidden;
+}
+
 

@@ -6,97 +6,182 @@
 
 <br />
 <br />
-<h3>Welcome to Racing League Manager! (name likely to change)</h3>
-<p>Future Home page content.</p>
+<p class="alert-warning">This site is currently in development.</p>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="jumbotron">
+        <h2>Welcome to Pitboard!</h2>
+        
+        <p>
+            Pitboard provides features to administer virtual racing leagues. It is currently built to support Forza Motorsport 7. You can create a league with your own rules, or join an existing league.
+            League members can create or join racing series, join teams, and track their performance as the series progresses.
+        </p>
+        <p>
+            <a asp-area="Identity" asp-page="/Account/Register">Register</a> and get busy racing!
+        </p>
+
+    </div>
+}
+
+<div Id="myCarousel" class="carousel slIde" data-rIde="carousel" data-interval="6000">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slIde-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slIde-to="1"></li>
+            <li data-target="#myCarousel" data-slIde-to="2"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            <div class="item active orange-carousel">
+                @*<div class="jumbotron myJumbotron">*@
+
+                @*</div>*@
+                <h2>Spotlight Carousel Item 1</h2>
+                <p>
+                    Color test. Spotlight text. Maybe a backgroun image here.
+                </p>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="carousel-caption" role="option">
+                    Caption.
+                </div>
+            </div>
+            <div class="item blue-carousel">
+                <h2>Spotlight Carousel Item 2</h2>
+                <p>
+                    Spotlight text. Maybe a backgroun image here.
+                </p>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="carousel-caption" role="option">
+                    Caption.
+                </div>
+            </div>
+            <div class="item green-carousel">
+                <h2>Spotlight Carousel Item 3</h2>
+                <p>
+                    Spotlight text. Maybe a backgroun image here.
+                </p>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="carousel-caption" role="option">
+                    Caption.
+                </div>
+            </div>
+
+            
 
 
-@*<div Id="myCarousel" class="carousel slIde" data-rIde="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slIde-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slIde-to="1"></li>
-        <li data-target="#myCarousel" data-slIde-to="2"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=525028&clcId=0x409">
-                        Learn More
-                    </a>
-                </p>
+            @*<div class="item">
+                <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
+                <div class="carousel-caption" role="option">
+                    <p>
+                        There are powerful new features in Visual Studio for building modern web apps.
+                        <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=525030&clcId=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
             </div>
+            <div class="item">
+                <img src="~/images/banner3.svg" alt="Microsoft Azure" class="img-responsive" />
+                <div class="carousel-caption" role="option">
+                    <p>
+                        Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
+                        <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=525027&clcId=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>*@
         </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=525030&clcId=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=525027&clcId=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slIde="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hIdden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slIde="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hIdden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slIde="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hIdden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slIde="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hIdden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core Razor Pages</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkId=398939">Bootstrap</a></li>
-        </ul>
+<br />
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">My Series</div>
+                <div class="panel-body">Content</div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">Feed Item</div>
+                <div class="panel-body">
+                    <p>
+                        Feed content
+                    </p>
+                    <p>
+                        Feed content
+                    </p>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Feed Item</div>
+                <div class="panel-body">Feed content</div>
+            </div>
+        </div>
+        
+
     </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?linkId=852130">Working with Razor Pages.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and mIddleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699321">Client sIde development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398609">Publish to Microsoft Azure App Service</a></li>
-        </ul>
-    </div>
-</div>*@
+
+    @*<div class="row">
+        <div class="col-md-3">
+            <h2>Application uses</h2>
+            <ul>
+                <li>Sample pages using ASP.NET Core Razor Pages</li>
+                <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkId=398939">Bootstrap</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <h2>How to</h2>
+            <ul>
+                <li><a href="https://go.microsoft.com/fwlink/?linkId=852130">Working with Razor Pages.</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <h2>Overview</h2>
+            <ul>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and mIddleware.</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699321">Client sIde development</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699322">Develop on different platforms</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699323">Read more on the documentation site</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <h2>Run &amp; Deploy</h2>
+            <ul>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=517851">Run your app</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=517853">Run tools such as EF migrations and more</a></li>
+                <li><a href="https://go.microsoft.com/fwlink/?LinkId=398609">Publish to Microsoft Azure App Service</a></li>
+            </ul>
+        </div>
+    </div>*@
