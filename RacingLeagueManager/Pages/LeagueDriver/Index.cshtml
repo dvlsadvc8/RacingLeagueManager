@@ -5,11 +5,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>League Name</h2>
+<h3>Member Index</h3>
 
-<p>
+@*<p>
     <a asp-page="Create">Create New</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
@@ -17,7 +18,13 @@
                 @Html.DisplayNameFor(model => model.LeagueDriver[0].Driver)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LeagueDriver[0].League)
+                @Html.DisplayNameFor(model => model.LeagueDriver[0].PreQualifiedTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeagueDriver[0].TrueSkillRating)
+            </th>
+            <th>
+                Attendance Percentage
             </th>
             @*<th>
                 @Html.DisplayNameFor(model => model.LeagueDriver[0].RaceNumber)
@@ -29,11 +36,15 @@
 @foreach (var item in Model.LeagueDriver) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Driver.Id)
+                @Html.DisplayFor(modelItem => item.Driver.UserName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.League.Id)
+                @Html.DisplayFor(modelItem => item.PreQualifiedTime)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrueSkillRating)
+            </td>
+            <td></td>
             @*<td>
                 @Html.DisplayFor(modelItem => item.RaceNumber)
             </td>*@

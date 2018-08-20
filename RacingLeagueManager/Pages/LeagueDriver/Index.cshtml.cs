@@ -21,11 +21,18 @@ namespace RacingLeagueManager.Pages.LeagueDriver
 
         public IList<Data.Models.LeagueDriver> LeagueDriver { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(Guid leagueId)
         {
+            if(leagueId == null)
+            {
+                NotFound();
+            }
+
             LeagueDriver = await _context.LeagueDriver
                 .Include(l => l.Driver)
-                .Include(l => l.League).ToListAsync();
+                .Include(l => l.League)
+                .Where(l => l.LeagueId == leagueId)
+                .ToListAsync();
         }
     }
 }

@@ -9,36 +9,90 @@
 <h2>@Html.DisplayFor(model => model.Series.Name)</h2>
 
 <div>
-    <a asp-page="../Team/Index" asp-route-seriesId="@Model.Series.Id">Teams</a>
-    <hr />
+    <a asp-page="../Team/Index" asp-route-seriesId="@Model.Series.Id">Teams</a> |
+    <a asp-page="../Team/Index" asp-route-seriesId="@Model.Series.Id">Standings</a>
+   <hr />
 
-    <div class="row">
-        <div class="col-md-2 font-bold">@Html.DisplayNameFor(model => model.Series.Owner)</div>
-        <div class="col-md-10 font-bold">@Html.DisplayNameFor(model => model.Series.Description)</div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><strong>Details</strong></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 font-bold">@Html.DisplayNameFor(model => model.Series.Owner)</div>
+                <div class="col-md-10 font-bold">@Html.DisplayNameFor(model => model.Series.Description)</div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">@Html.DisplayFor(model => model.Series.Owner.UserName)</div>
+                <div class="col-md-10">@Html.DisplayFor(model => model.Series.Description)</div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <div class="col-md-2">@Html.DisplayFor(model => model.Series.Owner.UserName)</div>
-        <div class="col-md-10">@Html.DisplayFor(model => model.Series.Description)</div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-10"><strong>Race Schedule</strong></div>
+                <div class="col-md-2"><a asp-page="../Race/Create" asp-route-seriesId="@Model.Series.Id">Add Race</a></div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                    <th>Track</th>
+                    <th>Laps</th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.Series.Races)
+                {
+                    <tr>
+                        <td>
+                            <a asp-page="../Race/Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Track.Name)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Laps)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RaceDate)
+                        </td>
+                        <td>
+                            <a asp-page="../Race/Details" asp-route-id="@item.Id">Results</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
+
+    
+    
+
+
+
     @*<dl>
-        <dt>@Html.DisplayNameFor(model => model.Series.Owner)</dt>
-        <dd>@Html.DisplayFor(model => model.Series.Owner.UserName)</dd>
-        <dt>@Html.DisplayNameFor(model => model.Series.Description)</dt>
-        <dd>@Html.DisplayFor(model => model.Series.Description)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Series.Owner)</dt>
+            <dd>@Html.DisplayFor(model => model.Series.Owner.UserName)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Series.Description)</dt>
+            <dd>@Html.DisplayFor(model => model.Series.Description)</dd>
 
-    </dl>*@
+        </dl>*@
 
-    <h3>Entries</h3>
-    @*<p>
-            <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@Model.Series.Id">New Entry</a>
-        </p>*@
+
+    @*
+
+        MOVE TO NEW SECTION
+
+    *@
+
+    @*<h3>Entries</h3>
+
     <table class="table">
         <tr>
             <th>Team</th>
             <th>Number</th>
             <th>Car</th>
             <th>Drivers</th>
-            @*<th></th>*@
+           
         </tr>
         @foreach (var item in Model.Series.SeriesEntries)
         {
@@ -64,54 +118,17 @@
                             }
                         }
                     }
-
-
-
-                    @*@foreach (var driver in item.SeriesEntryDrivers)
-        {
-            @Html.DisplayFor(modelItem => driver.LeagueDriver.Driver.UserName)
-        }*@
-
-                </td>
-                @*<td>
-                    <a asp-page="../SeriesEntryDriver/Create" asp-route-seriesEntryId="@item.Id">Add Driver</a>
-                </td>*@
-                @*<td>
-                        <a asp-page="../Driver/Details" asp-route-id="@item.LeagueDriver.DriverId">@Html.DisplayFor(modelItem => item.LeagueDriver.Driver.UserName)</a>
-                    </td>*@
-
-            </tr>
-        }
-    </table>
-    <h3>Race Schedule</h3>
-    <p>
-        <a asp-page="../Race/Create" asp-route-seriesId="@Model.Series.Id">Add Race</a>
-    </p>
-    <table class="table">
-        <tr>
-            <th>Track</th>
-            <th>Laps</th>
-            <th>Date</th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model.Series.Races)
-        {
-            <tr>
-                <td>
-                    <a asp-page="../Race/Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Track.Name)</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Laps)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RaceDate)
-                </td>
-                <td>
-                    <a asp-page="../Race/Details" asp-route-id="@item.Id">Results</a>
                 </td>
             </tr>
         }
-    </table>
+    </table>*@
+
+    @*
+
+        END MOVE
+    *@
+
+
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Series.Id">Edit</a> |

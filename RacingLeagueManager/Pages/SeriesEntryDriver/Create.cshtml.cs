@@ -28,7 +28,21 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                 return NotFound();
             }
 
-            ViewData["DriverId"] = new SelectList(await _context.LeagueDriver.Include(l => l.Driver).Where(l => l.LeagueId == seriesEntry.Series.LeagueId).ToListAsync(), "DriverId", "Driver.UserName");
+            var leagueId = seriesEntry.Series.LeagueId;
+            var takenDriverList = await _context.LeagueDriver
+                .Include(l => l.SeriesEntryDrivers)
+                .Where(l => l.SeriesEntryDrivers.Any(s => s.SeriesEntry.SeriesId == seriesEntry.SeriesId)).ToListAsync();
+
+            var availableDriverList = await _context.LeagueDriver
+                .Where(l => l.LeagueId == leagueId)
+                .Include(l => l.Driver)
+                .Except(takenDriverList)
+                .OrderBy(s => s.PreQualifiedTime)
+                .Select(s => new { DriverId = s.DriverId, DisplayValue = s.PreQualifiedTime + " " + s.Driver.UserName}).ToListAsync();
+
+            ViewData["DriverId"] = new SelectList(availableDriverList, "DriverId", "DisplayValue");
+
+            //ViewData["DriverId"] = new SelectList(await _context.LeagueDriver.Include(l => l.Driver).Where(l => l.LeagueId == seriesEntry.Series.LeagueId).ToListAsync(), "DriverId", "Driver.UserName");
             //ViewData["TeamId"] = seriesEntry.Team.Id;
 
             SeriesEntryDriver = new Data.Models.SeriesEntryDriver() { SeriesEntryId = seriesEntry.Id, LeagueId = seriesEntry.Series.LeagueId, SeriesEntry = seriesEntry};

@@ -9,89 +9,85 @@
 <h2>@Html.DisplayFor(model => model.League.Name)</h2>
 
 <div>
+    <a asp-page="../LeagueDriver/Index" asp-route-leagueId="@Model.League.Id">Members</a>
     <hr />
-    <p>@Html.DisplayFor(model => model.League.Description)</p>
 
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.League.IsPublic)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.League.IsPublic)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.League.CreatedDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.League.CreatedDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.League.Owner)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.League.Owner.UserName)
-        </dd>
-    </dl>
-    <h3>Series</h3>
-    <p>
-        <a asp-page="../Series/Create" asp-route-leagueId="@Model.League.Id">Create New</a>
-    </p>
-    <table class="table">
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Owner</th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model.League.Series)
-        {
+    <div class="panel panel-default">
+        <div class="panel-heading"><strong>Details</strong></div>
+        <div class="panel-body">
+            @Html.DisplayFor(model => model.League.Description)
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.League.IsPublic)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.League.IsPublic)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.League.CreatedDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.League.CreatedDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.League.Owner)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.League.Owner.UserName)
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-10">
+                <strong>Series</strong>
+            </div>
+            <div class="col-md-2">
+                <a asp-page="../Series/Create" asp-route-leagueId="@Model.League.Id">Create New</a>
+            </div>
+        </div>
+        
+   </div>
+    <div class="panel-body">
+        <table class="table">
             <tr>
-                <td>
-                    <a asp-page="../Series/Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Owner</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.League.Series)
+            {
+                <tr>
+                    <td>
+                        <a asp-page="../Series/Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
 
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Owner.UserName)
-                </td>
-                @*<td>
-                    <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@item.Id">New Entry</a>
-                </td>*@
-                @*<td>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Owner.UserName)
+                    </td>
+                    @*<td>
+                        <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@item.Id">New Entry</a>
+                    </td>*@
+                    @*<td>
                         <a asp-page="../Series/Edit" asp-route-id="@item.Id">Edit</a> |
 
                         <a asp-page="../Series/Delete" asp-route-id="@item.Id">Delete</a>
                     </td>*@
-            </tr>
-        }
-    </table>
-    <h3>Members</h3>
-    @*<p>
-            <a asp-page="../Series/Create">Add Member</a>
-        </p>*@
-    <table class="table">
-        <tr>
-            @*<th>Race Number</th>*@
-            <th>Name</th>
-            <th>PreQualified Time</th>
-        </tr>
-        @foreach (var item in Model.League.LeagueDrivers)
-        {
-            <tr>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.RaceNumber)
-                </td>*@
-                <td>
-                    <a asp-page="../Driver/Details" asp-route-id="@item.Driver.Id">@Html.DisplayFor(modelItem => item.Driver.UserName)</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PreQualifiedTime)
-                </td>
-            </tr>
-        }
-    </table>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.League.Id">Edit</a> |
