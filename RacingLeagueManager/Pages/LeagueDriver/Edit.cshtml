@@ -16,10 +16,15 @@
             <input type="hidden" asp-for="LeagueDriver.LeagueId" />
             <input type="hidden" asp-for="LeagueDriver.DriverId" />
             @*<div class="form-group">
-                <label asp-for="LeagueDriver.RaceNumber" class="control-label"></label>
-                <input asp-for="LeagueDriver.RaceNumber" class="form-control" />
-                <span asp-validation-for="LeagueDriver.RaceNumber" class="text-danger"></span>
-            </div>*@
+            <label asp-for="LeagueDriver.RaceNumber" class="control-label"></label>
+            <input asp-for="LeagueDriver.RaceNumber" class="form-control" />
+            <span asp-validation-for="LeagueDriver.RaceNumber" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="LeagueDriver.PreQualifiedTime" class="control-label"></label>
+                <input asp-for="LeagueDriver.PreQualifiedTime" class="form-control" />
+                <span asp-validation-for="LeagueDriver.PreQualifiedTime" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>

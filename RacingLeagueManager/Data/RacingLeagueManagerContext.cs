@@ -35,6 +35,10 @@ namespace RacingLeagueManager.Data
             builder.Entity<Models.LeagueDriver>()
                 .HasKey(ld => new { ld.LeagueId, ld.DriverId });
 
+            builder.Entity<Models.LeagueDriver>()
+                .Property(l => l.Status)
+                .HasDefaultValue("Pending");
+
 
             builder.Entity<Models.SeriesEntryDriver>()
                 .HasKey(s => new { s.LeagueId, s.DriverId, s.SeriesEntryId });

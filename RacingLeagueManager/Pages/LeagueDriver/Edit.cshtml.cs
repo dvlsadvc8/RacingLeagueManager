@@ -23,16 +23,16 @@ namespace RacingLeagueManager.Pages.LeagueDriver
         [BindProperty]
         public Data.Models.LeagueDriver LeagueDriver { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid leagueId, Guid driverId)
         {
-            if (id == null)
+            if (leagueId == null || driverId == null)
             {
                 return NotFound();
             }
 
             LeagueDriver = await _context.LeagueDriver
                 .Include(l => l.Driver)
-                .Include(l => l.League).FirstOrDefaultAsync(m => m.LeagueId == id);
+                .Include(l => l.League).FirstOrDefaultAsync(m => m.LeagueId == leagueId && m.DriverId == driverId);
 
             if (LeagueDriver == null)
             {
