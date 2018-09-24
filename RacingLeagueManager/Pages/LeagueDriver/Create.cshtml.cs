@@ -61,6 +61,12 @@ namespace RacingLeagueManager.Pages.LeagueDriver
             }
 
             LeagueDriver.DriverId = driver.Id;
+
+            // auto approve league owner
+            if(driver.Id == league.OwnerId)
+            {
+                LeagueDriver.Status = "Active";
+            }
             
             await _context.LeagueDriver.AddAsync(LeagueDriver);
             await _context.SaveChangesAsync();

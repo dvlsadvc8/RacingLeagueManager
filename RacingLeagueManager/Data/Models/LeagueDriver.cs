@@ -15,7 +15,7 @@ namespace RacingLeagueManager.Data.Models
         public Driver Driver { get; set; }
         public League League { get; set; }
 
-        [DisplayFormat(DataFormatString = @"{0:mm\:ss\.fff}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:mm\\:ss\\.fff}", ApplyFormatInEditMode = false)] 
         public TimeSpan PreQualifiedTime { get; set; }
         public int? TrueSkillRating { get; set; }
 

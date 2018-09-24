@@ -37,7 +37,7 @@ namespace RacingLeagueManager.Pages.Leagues
             _context.League.Add(League);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/LeagueDriver/Create", new { leagueId = League.Id });
         }
     }
 }
