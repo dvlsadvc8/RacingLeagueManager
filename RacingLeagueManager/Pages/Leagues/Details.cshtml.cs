@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +14,16 @@ namespace RacingLeagueManager.Pages.Leagues
     public class DetailsModel : PageModel
     {
         private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
+        private readonly UserManager<Driver> _userManager;
 
-        public DetailsModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public DetailsModel(UserManager<Driver> userManager, RacingLeagueManager.Data.RacingLeagueManagerContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
         public League League { get; set; }
+        public bool IsJoinable { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -41,7 +45,12 @@ namespace RacingLeagueManager.Pages.Leagues
             {
                 return NotFound();
             }
+
+            Driver driver = await _userManager.GetUserAsync(User);
+            IsJoinable = !League.LeagueDrivers.Any(ld => ld.DriverId == driver.Id);
+
             return Page();
         }
+
     }
 }

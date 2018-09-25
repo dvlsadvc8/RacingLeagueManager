@@ -17,12 +17,10 @@
         <div class="panel-heading"><strong>Details</strong></div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-2 font-bold">@Html.DisplayNameFor(model => model.Series.Owner)</div>
-                <div class="col-md-10 font-bold">@Html.DisplayNameFor(model => model.Series.Description)</div>
+                <div class="col-md-12"><span class="font-bold">@Html.DisplayNameFor(model => model.Series.Description):</span> @Html.DisplayFor(model => model.Series.Description)</div>
             </div>
             <div class="row">
-                <div class="col-md-2">@Html.DisplayFor(model => model.Series.Owner.UserName)</div>
-                <div class="col-md-10">@Html.DisplayFor(model => model.Series.Description)</div>
+                <div class="col-md-12"><span class="font-bold">@Html.DisplayNameFor(model => model.Series.Owner):</span> @Html.DisplayFor(model => model.Series.Owner.UserName)</div>
             </div>
         </div>
     </div>
@@ -32,7 +30,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-md-10"><strong>Race Schedule</strong></div>
-                <div class="col-md-2"><a asp-page="../Race/Create" asp-route-seriesId="@Model.Series.Id">Add Race</a></div>
+                <div class="col-md-2 text-right"><a asp-page="../Race/Create" asp-route-seriesId="@Model.Series.Id">Add Race</a></div>
             </div>
         </div>
         <div class="panel-body">

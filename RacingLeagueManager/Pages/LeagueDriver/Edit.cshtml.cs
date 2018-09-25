@@ -68,7 +68,7 @@ namespace RacingLeagueManager.Pages.LeagueDriver
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new { leagueId = LeagueDriver.LeagueId });
         }
 
         private bool LeagueDriverExists(Guid id)

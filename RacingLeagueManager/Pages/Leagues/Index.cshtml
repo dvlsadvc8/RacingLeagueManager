@@ -50,7 +50,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
-                <td>
+                @*<td>
                     @if (item.IsPublic)
                     {
                         <a asp-page="../LeagueDriver/Create" asp-route-leagueId="@item.Id" asp-route-driverId="@UserManager.GetUserId(User)">Join</a>
@@ -61,7 +61,7 @@
 
                     }
 
-                </td>
+                </td>*@
                 @*<td>
                         <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
 
