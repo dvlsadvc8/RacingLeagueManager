@@ -12,6 +12,12 @@ body {
     padding-right: 15px;
 }
 
+.carousel {
+    border-radius: 5px 5px 5px 5px;
+    overflow: hidden;
+    
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
@@ -40,21 +46,21 @@ body {
     background-color: orange;
     color: white;
     padding: 10px;
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 5px 5px 5px 5px;
     overflow: hidden;
 }
 .blue-carousel {
     background-color: deepskyblue;
     color: white;
     padding: 10px;
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 5px 5px 5px 5px;
     overflow: hidden;
 }
 .green-carousel {
     background-color: yellowgreen;
     color: white;
     padding: 10px;
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 5px 5px 5px 5px;
     overflow: hidden;
 }
 

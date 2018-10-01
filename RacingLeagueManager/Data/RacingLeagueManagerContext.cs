@@ -26,6 +26,7 @@ namespace RacingLeagueManager.Data
         public DbSet<Models.RaceResult> RaceResult { get; set; }
         public DbSet<Models.SeriesEntryDriver> SeriesEntryDriver { get; set; }
         public DbSet<Models.Team> Team { get; set; }
+        public DbSet<Models.Rule> Rule { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

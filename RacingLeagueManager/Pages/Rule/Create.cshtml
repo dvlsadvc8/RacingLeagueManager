@@ -1,0 +1,44 @@
+﻿@page
+@model RacingLeagueManager.Pages.Rule.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2><a asp-page="/Leagues/Details" asp-route-id="@Model.Rule.League.Id">@Model.Rule.League.Name</a> \ <a asp-page="/Rule/Index" asp-route-id="@Model.Rule.League.Id">Rules</a> \ Create Rule</h2>
+
+<h4>Create Rule</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @*<label asp-for="Rule.Number" class="control-label"></label>*@
+                @*<input asp-for="Rule.Number" type="hidden" />*@
+                @*<span asp-validation-for="Rule.Number" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="Rule.Description" class="control-label"></label>
+                <input asp-for="Rule.Description" class="form-control" />
+                <span asp-validation-for="Rule.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="Rule.LeagueId" class="control-label"></label>
+                <select asp-for="Rule.LeagueId" class ="form-control" asp-items="ViewBag.LeagueId"></select>*@
+                <input asp-for="Rule.LeagueId" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

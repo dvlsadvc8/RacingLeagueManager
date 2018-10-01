@@ -11,8 +11,9 @@
 <div>
     <div>
         <a asp-page="./Index">League Index</a> |
-        
-        <a asp-page="../LeagueDriver/Index" asp-route-leagueId="@Model.League.Id">Member List</a>
+
+        <a asp-page="../LeagueDriver/Index" asp-route-leagueId="@Model.League.Id">Members</a> |
+        <a asp-page="/Rule/Index" asp-route-leagueId="@Model.League.Id">Rules</a>
         @if (Model.IsJoinable)
         {
             <span> | </span>

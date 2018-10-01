@@ -1,0 +1,37 @@
+﻿@page
+@model RacingLeagueManager.Pages.Rule.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Rule</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Rule.Number)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Rule.Number)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Rule.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Rule.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Rule.League)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Rule.League.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Rule.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
