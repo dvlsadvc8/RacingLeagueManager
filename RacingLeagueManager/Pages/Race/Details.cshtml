@@ -8,117 +8,114 @@
 <h2>@Model.RaceDetailsViewModel.SeriesName \ @Model.RaceDetailsViewModel.TrackName</h2>
 
 <div>
-    <h4>Race Details</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.RaceDetailsViewModel.RaceDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RaceDetailsViewModel.RaceDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.RaceDetailsViewModel.Laps)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RaceDetailsViewModel.Laps)
-        </dd>
-    </dl>
-    <h3>Results</h3>
-    @*<p>
-        <a asp-page="../Race/Create">Add Race</a>
-    </p>*@
-    <table class="table">
-        <tr>
-            <th>Place</th>
-            <th>Driver</th>
-            <th>Race No.</th>
-            <th>Team</th>
-            <th>Car</th>
 
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-10">
+                    <strong>Race Details</strong>
+                </div>
+                <div class="col-md-2 text-right">
+                    <a asp-page="./Edit" asp-route-id="@Model.RaceDetailsViewModel.RaceId">Edit</a>
+                </div>
+            </div>
+        </div>
 
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.RaceDetailsViewModel.RaceDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RaceDetailsViewModel.RaceDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RaceDetailsViewModel.Laps)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RaceDetailsViewModel.Laps)
+                </dd>
+            </dl>
+        </div>
+    </div>
 
-            <th>Best Lap</th>
-            <th>Total Time</th>
-            <th>Penalty Seconds</th>
-            <th>Official Time</th>
-            <th>Points</th>
-            <th></th>
-            <th></th>
-        </tr>
-        @*@foreach (var item in Model.Race.Results)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Place)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SeriesEntry.LeagueDriver.Driver.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SeriesEntry.LeagueDriver.RaceNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SeriesEntry.Car.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Points)
-                </td>
-            </tr>
-        }*@
-        @foreach (var item in Model.RaceDetailsViewModel.Results)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Place)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-10">
+                    <strong>Results</strong>
+                </div>
+                <div class="col-md-2 text-right">
+                    
+                </div>
+            </div>
+        </div>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.RaceNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TeamName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarName)
-            </td>
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                    <th>Place</th>
+                    <th>Driver</th>
+                    <th>Race No.</th>
+                    <th>Team</th>
+                    <th>Car</th>
+                    <th>Best Lap</th>
+                    <th>Total Time</th>
+                    <th>Penalty Seconds</th>
+                    <th>Official Time</th>
+                    <th>Points</th>
+                    <th></th>
+                    <th></th>
+                </tr>
 
-
-
-            <td>
-                @Html.DisplayFor(modelItem => item.BestLap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PenaltySeconds)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OfficialTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Points)
-            </td>
-
-            <td>
-                <a asp-page="../RaceResult/Create" asp-route-raceId="@Model.RaceDetailsViewModel.RaceId" asp-route-seriesEntryId="@item.SeriesEntryId">Add Result</a>
-            </td>
-            @if (item.TotalTime != null)
-            {
-                <td>
-                    <a asp-page="../Penalty/Create" asp-route-raceResultId="@item.RaceResultId">Add Penalty</a>
-                </td>
-            }
-
-        </tr>
-        }
-    </table>
+                @foreach (var item in Model.RaceDetailsViewModel.Results)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Place)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Username)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RaceNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TeamName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CarName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BestLap)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PenaltySeconds)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OfficialTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Points)
+                        </td>
+                        <td>
+                            <a asp-page="../RaceResult/Create" asp-route-raceId="@Model.RaceDetailsViewModel.RaceId" asp-route-seriesEntryId="@item.SeriesEntryId">Add Result</a>
+                        </td>
+                        @if (item.TotalTime != null)
+                        {
+                            <td>
+                                <a asp-page="../Penalty/Create" asp-route-raceResultId="@item.RaceResultId">Add Penalty</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.RaceDetailsViewModel.RaceId">Edit</a> |
     <a asp-page="/Series/Details" asp-route-id="@Model.RaceDetailsViewModel.SeriesId">Back to Series</a>
 </div>
