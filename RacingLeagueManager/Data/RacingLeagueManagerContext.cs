@@ -27,6 +27,7 @@ namespace RacingLeagueManager.Data
         public DbSet<Models.SeriesEntryDriver> SeriesEntryDriver { get; set; }
         public DbSet<Models.Team> Team { get; set; }
         public DbSet<Models.Rule> Rule { get; set; }
+        public DbSet<Models.Penalty> Penalty { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
