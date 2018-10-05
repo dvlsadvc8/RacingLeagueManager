@@ -36,14 +36,17 @@
         <div class="panel-body">
             <table class="table">
                 <tr>
+                    <th>Date</th>
                     <th>Track</th>
                     <th>Laps</th>
-                    <th>Date</th>
-                    <th></th>
+                    <th>Status</th>
                 </tr>
-                @foreach (var item in Model.Series.Races)
+                @foreach (var item in Model.Series.Races.OrderBy(r => r.RaceDate))
                 {
                     <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RaceDate)
+                        </td>
                         <td>
                             <a asp-page="../Race/Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Track.Name)</a>
                         </td>
@@ -51,10 +54,7 @@
                             @Html.DisplayFor(modelItem => item.Laps)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.RaceDate)
-                        </td>
-                        <td>
-                            <a asp-page="../Race/Details" asp-route-id="@item.Id">Results</a>
+                            <span class="@Model.GetStatusCssClass(item.Status)">@Html.DisplayFor(modelItem => item.Status)</span>
                         </td>
                     </tr>
                 }

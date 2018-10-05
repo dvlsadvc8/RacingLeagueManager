@@ -5,7 +5,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>@Model.RaceDetailsViewModel.SeriesName \ @Model.RaceDetailsViewModel.TrackName</h2>
+<h2><a asp-page="/Series/Details" asp-route-id="@Model.RaceDetailsViewModel.SeriesId">@Model.RaceDetailsViewModel.SeriesName</a> \ @Model.RaceDetailsViewModel.TrackName</h2>
 
 <div>
 
@@ -22,6 +22,10 @@
         </div>
 
         <div class="panel-body">
+            
+            <span class="@Model.RaceDetailsViewModel.GetStatusCssClass()">
+                @Html.DisplayFor(model => model.RaceDetailsViewModel.Status)
+            </span>
             <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.RaceDetailsViewModel.RaceDate)
@@ -46,7 +50,12 @@
                     <strong>Results</strong>
                 </div>
                 <div class="col-md-2 text-right">
-                    
+                    @if (Model.RaceDetailsViewModel.Status != Data.Models.RaceStatus.Certified)
+                    {
+                        <form method="post">
+                            @Html.Raw(Model.RaceDetailsViewModel.GetStatusButtonHtml())
+                        </form>
+                    }
                 </div>
             </div>
         </div>

@@ -46,7 +46,30 @@ namespace RacingLeagueManager.Pages.Series
             {
                 return NotFound();
             }
+
             return Page();
+        }
+
+        public string GetStatusCssClass(RaceStatus? status)
+        {
+            string statusCssClass = string.Empty;
+            switch (status)
+            {
+                case RaceStatus.Pending:
+                    statusCssClass = "label label-default";
+                    break;
+                case RaceStatus.Open:
+                    statusCssClass = "label label-success";
+                    break;
+                case RaceStatus.Closed:
+                    statusCssClass = "label label-danger";
+                    break;
+                default:
+                    statusCssClass = "label label-info";
+                    break;
+            }
+
+            return statusCssClass;
         }
     }
 }

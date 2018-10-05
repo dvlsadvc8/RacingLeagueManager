@@ -94,6 +94,7 @@ namespace RacingLeagueManager.Pages.Race
                 SeriesName = Race.Series.Name,
                 Laps = Race.Laps,
                 RaceDate = Race.RaceDate,
+                Status = Race.Status,
                 Results = ResultsList.OrderBy(r => r.OfficialTime).Select((x, index) => 
                     new RaceResultViewModel()
                     {
@@ -124,8 +125,51 @@ namespace RacingLeagueManager.Pages.Race
         public string SeriesName { get; set; }
         public int Laps { get; set; }
         public DateTime RaceDate { get; set; }
+        public RaceStatus? Status { get; set; }
 
         public List<RaceResultViewModel> Results { get; set; }
+        public string GetStatusButtonHtml()
+        {
+            string statusButtonHtml = string.Empty;
+            switch(this.Status)
+            {
+                case RaceStatus.Pending:
+                    statusButtonHtml = "<input type='submit' value='Open Race' class='btn-link' />";
+                    break;
+                case RaceStatus.Open:
+                    statusButtonHtml = "<input type='submit' value='Close Race' class='btn-link' />";
+                    break;
+                case RaceStatus.Closed:
+                    statusButtonHtml = "<input type='submit' value='Certify Race' class='btn-link' />";
+                    break;
+                default:
+                    break;
+            }
+
+            return statusButtonHtml;
+        }
+
+        public string GetStatusCssClass()
+        {
+            string statusCssClass = string.Empty;
+            switch (this.Status)
+            {
+                case RaceStatus.Pending:
+                    statusCssClass = "label label-default";
+                    break;
+                case RaceStatus.Open:
+                    statusCssClass = "label label-success";
+                    break;
+                case RaceStatus.Closed:
+                    statusCssClass = "label label-danger";
+                    break;
+                default:
+                    statusCssClass = "label label-info";
+                    break;
+            }
+
+            return statusCssClass;
+        }
     }
 
     public class RaceResultViewModel
