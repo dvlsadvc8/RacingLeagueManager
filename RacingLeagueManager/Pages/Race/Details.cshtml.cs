@@ -115,6 +115,27 @@ namespace RacingLeagueManager.Pages.Race
 
             return Page();
         }
+
+        public async Task<IActionResult> OnPostStatusAsync(Guid raceId)
+        {
+            if(raceId == null)
+            {
+                return NotFound();
+            }
+
+            var race = await _context.Race.FirstOrDefaultAsync(r => r.Id == raceId);
+
+            if(race == null)
+            {
+                return NotFound();
+            }
+
+            race.Status += 1;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("Details", new { id = raceId });
+        }
     }
 
     public class RaceDetailsViewModel

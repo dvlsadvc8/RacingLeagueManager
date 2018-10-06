@@ -52,7 +52,7 @@
                 <div class="col-md-2 text-right">
                     @if (Model.RaceDetailsViewModel.Status != Data.Models.RaceStatus.Certified)
                     {
-                        <form method="post">
+                        <form method="post" asp-page-handler="status" asp-route-raceId="@Model.RaceDetailsViewModel.RaceId">
                             @Html.Raw(Model.RaceDetailsViewModel.GetStatusButtonHtml())
                         </form>
                     }
@@ -111,14 +111,17 @@
                             @Html.DisplayFor(modelItem => item.Points)
                         </td>
                         <td>
-                            <a asp-page="../RaceResult/Create" asp-route-raceId="@Model.RaceDetailsViewModel.RaceId" asp-route-seriesEntryId="@item.SeriesEntryId">Add Result</a>
+                            @if (Model.RaceDetailsViewModel.Status == Data.Models.RaceStatus.Open)
+                            {
+                                <a asp-page="../RaceResult/Create" asp-route-raceId="@Model.RaceDetailsViewModel.RaceId" asp-route-seriesEntryId="@item.SeriesEntryId">Add Result</a>
+                            }
                         </td>
-                        @if (item.TotalTime != null)
-                        {
-                            <td>
+                        <td>
+                            @if ((item.TotalTime != null) && (Model.RaceDetailsViewModel.Status == Data.Models.RaceStatus.Closed))
+                            {
                                 <a asp-page="../Penalty/Create" asp-route-raceResultId="@item.RaceResultId">Add Penalty</a>
-                            </td>
-                        }
+                            }
+                        </td>
                     </tr>
                 }
             </table>
