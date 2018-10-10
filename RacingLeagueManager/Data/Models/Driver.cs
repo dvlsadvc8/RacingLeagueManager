@@ -14,6 +14,8 @@ namespace RacingLeagueManager.Data.Models
         public Guid OwnedLeagueId { get; set; }
         public League OwnedLeague { get; set; }
 
+        public ICollection<RaceResult> RaceResults { get; set; }
+
         public Driver() : base()
         {
 

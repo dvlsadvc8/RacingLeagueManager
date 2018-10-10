@@ -26,6 +26,16 @@ namespace RacingLeagueManager.Data.Models
         public int Place { get; set; }
         public int Points { get; set; }
 
+        public ResultType? ResultType { get; set; }
+        
+
         public virtual ICollection<Penalty> Penalties { get; set; }
+    }
+
+    public enum ResultType
+    {
+        Finished,
+        DNF,
+        DNS
     }
 }

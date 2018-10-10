@@ -20,6 +20,7 @@ namespace RacingLeagueManager.Data.Models
     public enum DriverType
     {
         Primary,
-        Reserve
+        Reserve,
+        Retired
     }
 }

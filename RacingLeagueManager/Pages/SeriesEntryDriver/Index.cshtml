@@ -14,28 +14,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SeriesEntryDriver[0].LeagueDriver)
+                @*@Html.DisplayNameFor(model => model.SeriesEntryDriver[0].LeagueDriver)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SeriesEntryDriver[0].SeriesEntry)
+                @*@Html.DisplayNameFor(model => model.SeriesEntryDriver[0].SeriesEntry)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SeriesEntryDriver[0].DriverType)
+                @*@Html.DisplayNameFor(model => model.SeriesEntryDriver[0].DriverType)*@
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.SeriesEntryDriver) {
+@foreach (var item in Model.Drivers) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.LeagueDriver.LeagueId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SeriesEntry.Id)
+                @Html.DisplayFor(modelItem => item.DriverName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DriverType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DNFPercent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DNSPercent)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

@@ -50,5 +50,20 @@ namespace RacingLeagueManager.Pages.RaceResult
 
             return RedirectToPage("./Index");
         }
+
+        public async Task<IActionResult> OnPostDnfAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            RaceResult.ResultType = ResultType.DNF;
+
+            _context.RaceResult.Add(RaceResult);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
+        }
     }
 }
