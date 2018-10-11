@@ -66,7 +66,6 @@ namespace RacingLeagueManager.Pages.Race
                 RaceResultViewModel raceResultViewModel = new RaceResultViewModel()
                 {
                     SeriesEntryId = entry.Id,
-                    //Place
                     RaceNumber = entry.RaceNumber,
                     CarName = entry.Car.Name,
                     TeamName = entry.Team.Name,
@@ -80,38 +79,99 @@ namespace RacingLeagueManager.Pages.Race
                     raceResultViewModel.BestLap = raceResult.BestLap;
                     raceResultViewModel.TotalTime = raceResult.TotalTime;
                     raceResultViewModel.PenaltySeconds = raceResult.Penalties.Sum(p => p.Seconds);
-                    raceResultViewModel.OfficialTime = raceResultViewModel.TotalTime.Add(new TimeSpan(0,0,raceResultViewModel.PenaltySeconds));
+                    raceResultViewModel.OfficialTime = raceResultViewModel.TotalTime?.Add(new TimeSpan(0,0,raceResultViewModel.PenaltySeconds));
+                    raceResultViewModel.Place = raceResult.Place;
+                    raceResultViewModel.ResultType = raceResult.ResultType;
                 }
 
                 ResultsList.Add(raceResultViewModel);
             }
 
-            RaceDetailsViewModel = new RaceDetailsViewModel()
+            if (Race.Status != RaceStatus.Certified)
             {
-                RaceId = Race.Id,
-                TrackName = Race.Track.Name,
-                SeriesId = Race.SeriesId,
-                SeriesName = Race.Series.Name,
-                Laps = Race.Laps,
-                RaceDate = Race.RaceDate,
-                Status = Race.Status,
-                Results = ResultsList.OrderBy(r => r.OfficialTime).Select((x, index) => 
-                    new RaceResultViewModel()
-                    {
-                        Place = index + 1,
-                        BestLap = x.BestLap,
-                        CarName = x.CarName,
-                        OfficialTime = x.OfficialTime,
-                        PenaltySeconds = x.PenaltySeconds,
-                        Points = x.Points,
-                        RaceNumber = x.RaceNumber,
-                        RaceResultId = x.RaceResultId,
-                        SeriesEntryId = x.SeriesEntryId,
-                        TeamName = x.TeamName,
-                        TotalTime = x.TotalTime,
-                        Username = x.Username
-                    }).ToList()
-            };
+                RaceDetailsViewModel = new RaceDetailsViewModel()
+                {
+                    RaceId = Race.Id,
+                    TrackName = Race.Track.Name,
+                    SeriesId = Race.SeriesId,
+                    SeriesName = Race.Series.Name,
+                    Laps = Race.Laps,
+                    RaceDate = Race.RaceDate,
+                    Status = Race.Status,
+                    Results = ResultsList.Where(r => r.TotalTime != null).OrderBy(r => r.OfficialTime).Select((x, index) =>
+                        new RaceResultViewModel()
+                        {
+                            Place = index + 1,
+                            BestLap = x.BestLap,
+                            CarName = x.CarName,
+                            OfficialTime = x.OfficialTime,
+                            PenaltySeconds = x.PenaltySeconds,
+                            Points = x.Points,
+                            RaceNumber = x.RaceNumber,
+                            RaceResultId = x.RaceResultId,
+                            SeriesEntryId = x.SeriesEntryId,
+                            TeamName = x.TeamName,
+                            TotalTime = x.TotalTime,
+                            Username = x.Username,
+                            ResultType = x.ResultType
+                        }).ToList()
+                };
+
+                RaceDetailsViewModel.Results.AddRange(
+                    ResultsList
+                        .Where(r => r.TotalTime == null)
+                        .OrderBy(r => r.Place)
+                        .Select((x, index) =>
+                            new RaceResultViewModel()
+                            {
+                                Place = RaceDetailsViewModel.Results.Count + 1,
+                                BestLap = x.BestLap,
+                                CarName = x.CarName,
+                                OfficialTime = x.OfficialTime,
+                                PenaltySeconds = x.PenaltySeconds,
+                                Points = x.Points,
+                                RaceNumber = x.RaceNumber,
+                                RaceResultId = x.RaceResultId,
+                                SeriesEntryId = x.SeriesEntryId,
+                                TeamName = x.TeamName,
+                                TotalTime = x.TotalTime,
+                                Username = x.Username,
+                                ResultType = x.ResultType
+                            }
+                        )
+                );
+            }
+            else
+            {
+                RaceDetailsViewModel = new RaceDetailsViewModel()
+                {
+                    RaceId = Race.Id,
+                    TrackName = Race.Track.Name,
+                    SeriesId = Race.SeriesId,
+                    SeriesName = Race.Series.Name,
+                    Laps = Race.Laps,
+                    RaceDate = Race.RaceDate,
+                    Status = Race.Status,
+                    Results = ResultsList.OrderBy(r => r.Place).Select(x =>
+                        new RaceResultViewModel()
+                        {
+                            Place = x.Place,
+                            BestLap = x.BestLap,
+                            CarName = x.CarName,
+                            OfficialTime = x.OfficialTime,
+                            PenaltySeconds = x.PenaltySeconds,
+                            Points = x.Points,
+                            RaceNumber = x.RaceNumber,
+                            RaceResultId = x.RaceResultId,
+                            SeriesEntryId = x.SeriesEntryId,
+                            TeamName = x.TeamName,
+                            TotalTime = x.TotalTime,
+                            Username = x.Username,
+                            ResultType = x.ResultType
+                        }).ToList()
+                };
+            }
+            
 
             return Page();
         }
@@ -204,9 +264,10 @@ namespace RacingLeagueManager.Pages.Race
         public string CarName { get; set; }
         public string TeamName { get; set; }
         public int Points { get; set; }
-        public TimeSpan BestLap { get; set; }
-        public TimeSpan TotalTime { get; set; }
+        public TimeSpan? BestLap { get; set; }
+        public TimeSpan? TotalTime { get; set; }
         public int PenaltySeconds { get; set; }
-        public TimeSpan OfficialTime { get; set; }
+        public TimeSpan? OfficialTime { get; set; }
+        public ResultType? ResultType { get; set; }
     }
 }

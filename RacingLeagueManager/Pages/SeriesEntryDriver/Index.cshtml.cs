@@ -24,10 +24,6 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
 
         public async Task OnGetAsync(Guid seriesId)
         {
-            int raceCount = 10;
-
-            //var raceResults = await _context.RaceResult.Include(r => r.Race).Where(r => r.Race.SeriesId == seriesId).ToListAsync();
-
             var query = _context.SeriesEntryDriver
                 .Include(s => s.LeagueDriver)
                     .ThenInclude(ld => ld.Driver)
@@ -40,10 +36,10 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                     DriverId = s.DriverId,
                     DriverName = s.LeagueDriver.Driver.UserName,
                     DriverType = s.DriverType,
-                    DNFCount = s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNF).Count()
-                    //DNFPercent = (s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNF).Count() / (decimal)raceCount) * 100,
-                    //DNSPercent = (s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNS).Count() / (decimal)raceCount) * 100
-
+                    RaceResultCount = s.LeagueDriver.Driver.RaceResults.Count(),
+                    DNFCount = s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNF).Count(),
+                    DNSCount = s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNS).Count(),
+                    PenaltyPoints = s.LeagueDriver.Driver.RaceResults.Sum(r => r.PenaltyPoints)
                 });
 
             Drivers = await query.ToListAsync();
@@ -55,17 +51,55 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
         public Guid DriverId { get; set; }
         public string DriverName { get; set; }
         public DriverType DriverType { get; set; }
+        public int RaceResultCount { get; set; }
+        public int PenaltyPoints { get; set; }
         //public int RaceCount { get; set; }
         public int DNFCount { get; set; }
+        public int DNSCount { get; set; }
         public decimal DNFPercent
         {
             get
             {
-                return (DNFCount / (decimal)10.00) * 100;
+                if(RaceResultCount > 0)
+                {
+                    return (DNFCount / (decimal)RaceResultCount) * 100;
+                }
+                else
+                {
+                    return 0;
+                }
+                
             }
         }
-        //public int DNSCount { get; set; }
-        public decimal DNSPercent { get; set; }
+
+        public decimal DNSPercent
+        {
+            get
+            {
+                if (RaceResultCount > 0)
+                {
+                    return (DNSCount / (decimal)RaceResultCount) * 100;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        public decimal PenaltyPointPercent
+        {
+            get
+            {
+                if (RaceResultCount > 0)
+                {
+                    return (PenaltyPoints / (decimal)RaceResultCount) * 100;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
 
     }
 }

@@ -45,6 +45,8 @@ namespace RacingLeagueManager.Pages.RaceResult
                 return Page();
             }
 
+            RaceResult.ResultType = ResultType.Finished;
+
             _context.RaceResult.Add(RaceResult);
             await _context.SaveChangesAsync();
 
@@ -63,7 +65,22 @@ namespace RacingLeagueManager.Pages.RaceResult
             _context.RaceResult.Add(RaceResult);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("Race/Details", new { id = RaceResult.RaceId });
+        }
+
+        public async Task<IActionResult> OnPostDnsAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            RaceResult.ResultType = ResultType.DNS;
+
+            _context.RaceResult.Add(RaceResult);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Race/Details", new { id = RaceResult.RaceId });
         }
     }
 }

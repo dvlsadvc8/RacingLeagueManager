@@ -5,24 +5,39 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Series Drivers</h2>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @*@Html.DisplayNameFor(model => model.SeriesEntryDriver[0].LeagueDriver)*@
+                Driver
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.SeriesEntryDriver[0].SeriesEntry)*@
+                Driver Type
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.SeriesEntryDriver[0].DriverType)*@
+                No. Races
             </th>
-            <th></th>
+            <th>
+                No. DNFs
+            </th>
+            <th>
+                DNF %
+            </th>
+            <th>
+                No. DNSs
+            </th>
+            <th>
+                DNS %
+            </th>
+            <th>
+                Penalty Points
+            </th>
+            <th>
+                Penalty %
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -35,15 +50,25 @@
                 @Html.DisplayFor(modelItem => item.DriverType)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.RaceResultCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DNFCount)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.DNFPercent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DNSCount)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DNSPercent)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.DisplayFor(modelItem => item.PenaltyPoints)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PenaltyPointPercent)
             </td>
         </tr>
 }

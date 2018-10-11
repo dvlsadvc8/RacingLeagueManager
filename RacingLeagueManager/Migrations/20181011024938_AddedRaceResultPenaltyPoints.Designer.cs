@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RacingLeagueManager.Data;
 
 namespace RacingLeagueManager.Migrations
 {
     [DbContext(typeof(RacingLeagueManagerContext))]
-    partial class RacingLeagueManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20181011024938_AddedRaceResultPenaltyPoints")]
+    partial class AddedRaceResultPenaltyPoints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,7 +290,7 @@ namespace RacingLeagueManager.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<TimeSpan?>("BestLap");
+                    b.Property<TimeSpan>("BestLap");
 
                     b.Property<Guid>("DriverId");
 
@@ -304,7 +306,7 @@ namespace RacingLeagueManager.Migrations
 
                     b.Property<Guid>("SeriesEntryId");
 
-                    b.Property<TimeSpan?>("TotalTime");
+                    b.Property<TimeSpan>("TotalTime");
 
                     b.HasKey("Id");
 
