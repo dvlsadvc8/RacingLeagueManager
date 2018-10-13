@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -326,8 +328,10 @@ namespace RacingLeagueManager.Pages.Race
         public string CarName { get; set; }
         public string TeamName { get; set; }
         public int Points { get; set; }
+        [DisplayFormat(DataFormatString = "{0:mm\\:ss\\.fff}", ApplyFormatInEditMode = false)]
         public TimeSpan? BestLap { get; set; }
         public TimeSpan? TotalTime { get; set; }
+        [DisplayName("Penalty")]
         public int PenaltySeconds { get; set; }
         public TimeSpan? OfficialTime { get; set; }
         public ResultType? ResultType { get; set; }

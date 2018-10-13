@@ -10,6 +10,7 @@ namespace RacingLeagueManager.Data.Models
         public Guid LeagueId { get; set; }
         public Guid DriverId { get; set; }
         public LeagueDriver LeagueDriver { get; set; }
+        public Driver Driver { get; set; }
 
         public Guid SeriesEntryId { get; set; }
         public SeriesEntry SeriesEntry { get; set; }

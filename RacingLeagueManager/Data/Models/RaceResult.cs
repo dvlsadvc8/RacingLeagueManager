@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace RacingLeagueManager.Data.Models
         public Guid SeriesEntryId { get; set; }
         public SeriesEntry SeriesEntry { get; set; }
 
+        [DisplayName("Driver")]
         public Guid DriverId { get; set; }
         public Driver Driver { get; set; }
 

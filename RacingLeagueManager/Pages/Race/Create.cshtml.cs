@@ -43,6 +43,8 @@ namespace RacingLeagueManager.Pages.Race
                 return Page();
             }
 
+            Race.Status = RaceStatus.Pending;
+
             _context.Race.Add(Race);
             await _context.SaveChangesAsync();
 
