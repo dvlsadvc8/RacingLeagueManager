@@ -28,6 +28,7 @@ namespace RacingLeagueManager.Data
         public DbSet<Models.Team> Team { get; set; }
         public DbSet<Models.Rule> Rule { get; set; }
         public DbSet<Models.Penalty> Penalty { get; set; }
+        public DbSet<Models.SeriesDriver> SeriesDriver { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -44,6 +45,25 @@ namespace RacingLeagueManager.Data
 
             builder.Entity<Models.SeriesEntryDriver>()
                 .HasKey(s => new { s.LeagueId, s.DriverId, s.SeriesEntryId });
+
+            builder.Entity<Models.SeriesEntryDriver>()
+                .HasOne(sed => sed.Driver)
+                .WithMany(d => d.SeriesEntryDrivers)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Models.SeriesDriver>()
+                .HasKey(s => new { s.DriverId, s.SeriesId });
+
+            builder.Entity<Models.SeriesDriver>()
+                .HasOne(s => s.LeagueDriver)
+                .WithMany(ld => ld.SeriesDrivers)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Models.LeagueDriver>()
+                .HasMany(ld => ld.SeriesDrivers)
+                .WithOne(s => s.LeagueDriver)
+                .OnDelete(DeleteBehavior.Restrict);
+                
 
             //builder.Entity<SeriesEntry>()
             //    .HasOne(se => se.LeagueDriver)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,11 @@ namespace RacingLeagueManager.Pages.Series
     public class DetailsModel : PageModel
     {
         private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
+        private readonly UserManager<Driver> _userManager;
 
-        public DetailsModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public DetailsModel(UserManager<Driver> userManager, RacingLeagueManager.Data.RacingLeagueManagerContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -48,6 +51,36 @@ namespace RacingLeagueManager.Pages.Series
             }
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostJoinAsync(Guid? seriesId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            if (seriesId == null)
+            {
+                return BadRequest();
+            }
+
+            Data.Models.Series series = await _context.Series.FirstOrDefaultAsync(s => s.Id == seriesId);
+            Driver driver = await _userManager.GetUserAsync(User);
+
+            Data.Models.SeriesDriver seriesDriver = new Data.Models.SeriesDriver()
+            {
+                SeriesId = seriesId.Value,
+                LeagueId = series.LeagueId,
+                DriverId = driver.Id,
+                Status = "Available"
+            };
+
+
+            _context.SeriesDriver.Add(seriesDriver);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/SeriesDriver/Index", new { seriesId = series.Id });
         }
 
         public string GetStatusCssClass(RaceStatus? status)

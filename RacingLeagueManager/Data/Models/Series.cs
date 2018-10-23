@@ -20,5 +20,7 @@ namespace RacingLeagueManager.Data.Models
         public ICollection<Race> Races { get; set; }
 
         public ICollection<Team> Teams { get; set; }
+
+        public ICollection<SeriesDriver> SeriesDrivers { get; set; }
     }
 }

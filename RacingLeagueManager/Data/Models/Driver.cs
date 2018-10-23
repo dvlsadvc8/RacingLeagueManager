@@ -16,6 +16,8 @@ namespace RacingLeagueManager.Data.Models
 
         public ICollection<RaceResult> RaceResults { get; set; }
 
+        public ICollection<SeriesEntryDriver> SeriesEntryDrivers { get; set; }
+
         public Driver() : base()
         {
 

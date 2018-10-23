@@ -22,5 +22,6 @@ namespace RacingLeagueManager.Data.Models
         public string Status { get; set; }
 
         public ICollection<SeriesEntryDriver> SeriesEntryDrivers { get; set; }
+        public ICollection<SeriesDriver> SeriesDrivers { get; set; }
     }
 }

@@ -29,16 +29,28 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             }
 
             var leagueId = seriesEntry.Series.LeagueId;
-            var takenDriverList = await _context.LeagueDriver
-                .Include(l => l.SeriesEntryDrivers)
-                .Where(l => l.SeriesEntryDrivers.Any(s => s.SeriesEntry.SeriesId == seriesEntry.SeriesId)).ToListAsync();
 
-            var availableDriverList = await _context.LeagueDriver
-                .Where(l => l.LeagueId == leagueId)
-                .Include(l => l.Driver)
-                .Except(takenDriverList)
-                .OrderBy(s => s.PreQualifiedTime)
-                .Select(s => new { DriverId = s.DriverId, DisplayValue = s.PreQualifiedTime + " " + s.Driver.UserName}).ToListAsync();
+
+
+            //var takenDriverList = await _context.LeagueDriver
+            //    .Include(l => l.SeriesEntryDrivers)
+            //    .Where(l => l.SeriesEntryDrivers.Any(s => s.SeriesEntry.SeriesId == seriesEntry.SeriesId)).ToListAsync();
+
+
+            var availableDriverList = await _context.SeriesDriver
+                .Where(s => s.SeriesId == seriesEntry.SeriesId && s.Status == "Available")
+                .Include(s => s.LeagueDriver)
+                    .ThenInclude(ld => ld.Driver)
+                .OrderBy(s => s.LeagueDriver.PreQualifiedTime)
+                .Select(s => new { DriverId = s.DriverId, DisplayValue = s.LeagueDriver.PreQualifiedTime + " " + s.LeagueDriver.Driver.UserName }).ToListAsync();
+
+            //var availableDriverList = await _context.LeagueDriver
+
+            //    .Where(l => l.LeagueId == leagueId)
+            //    .Include(l => l.Driver)
+            //    .Except(takenDriverList)
+            //    .OrderBy(s => s.PreQualifiedTime)
+            //    .Select(s => new { DriverId = s.DriverId, DisplayValue = s.PreQualifiedTime + " " + s.Driver.UserName}).ToListAsync();
 
             ViewData["DriverId"] = new SelectList(availableDriverList, "DriverId", "DisplayValue");
 
@@ -61,9 +73,13 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             }
 
             var teamId = SeriesEntryDriver.SeriesEntry.Team.Id;
+            var seriesId = SeriesEntryDriver.SeriesEntry.SeriesId;
             SeriesEntryDriver.SeriesEntry = null;
 
             _context.SeriesEntryDriver.Add(SeriesEntryDriver);
+            var driver = await _context.SeriesDriver.FirstOrDefaultAsync(s => s.SeriesId == seriesId && s.DriverId == SeriesEntryDriver.DriverId);
+            driver.Status = "Active";
+
             await _context.SaveChangesAsync();
 
             return RedirectToPage("../Team/Details", new { id = teamId });
