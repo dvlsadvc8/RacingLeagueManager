@@ -5,8 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>@Model.LeagueDrivers.LeagueName</h2>
-<h3>Member Index</h3>
+<h3>@Model.LeagueDrivers.LeagueName</h3>
 
 @if (Model.LeagueDrivers.PendingDrivers.Count > 0)
 {
@@ -53,12 +52,14 @@
                                     @Html.DisplayFor(modelItem => item.RaceNumber)
                                 </td>*@
                             <td>
-                                <form method="post" asp-page-handler="Approve" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId">
-                                    <button>Approve</button>
-                                </form> |
-                                <a asp-page-handler="Approve" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId">Approve</a> |
+                                
+                                <form style="display:inline;margin:0px;padding:0px;" method="post" >
+                                    <input class="btn btn-default" type="submit" asp-page-handler="Approve" value="Approve" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId" />
+                                    <input class="btn btn-default" type="submit" asp-page-handler="Delete" value="Deny" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId" />
+                                </form>
+                                @*<a asp-page-handler="Approve" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId">Approve</a> |*@
                                 @*@Html.ActionLink("Approve", "Edit", new { driverId = item.DriverId, leagueId = item.LeagueId }) |*@
-                                <a asp-page-handler="Delete" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId">Deny</a>
+                                @*<a asp-page-handler="Delete" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId">Deny</a>*@
                                 @*@Html.ActionLink("Deny", "Delete", new { driverId=item.DriverId, leagueId = item.LeagueId })*@
                             </td>
                         </tr>

@@ -23,6 +23,7 @@ namespace RacingLeagueManager.Pages.Series
         }
 
         public Data.Models.Series Series { get; set; }
+        public bool IsJoinable { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -33,6 +34,7 @@ namespace RacingLeagueManager.Pages.Series
 
             Series = await _context.Series
                 .Include(s => s.Owner)
+                .Include(s => s.SeriesDrivers)
                 .Include(s => s.SeriesEntries)
                     .ThenInclude(s => s.Car)
                 .Include(s => s.SeriesEntries)
@@ -49,6 +51,9 @@ namespace RacingLeagueManager.Pages.Series
             {
                 return NotFound();
             }
+
+            Driver driver = await _userManager.GetUserAsync(User);
+            IsJoinable = !Series.SeriesDrivers.Any(sd => sd.DriverId == driver.Id);
 
             return Page();
         }

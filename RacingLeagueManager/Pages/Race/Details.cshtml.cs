@@ -206,7 +206,7 @@ namespace RacingLeagueManager.Pages.Race
                 model.Results.AddRange(
                     ResultsList
                         .Where(r => r.TotalTime == null)
-                        .OrderBy(r => r.Place)
+                        .OrderBy(r => r.ResultType).ThenBy(r => r.BestLap)
                         .Select((x, index) =>
                             new RaceResultViewModel()
                             {

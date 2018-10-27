@@ -14,34 +14,52 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SeriesEntry[0].Series)
+                Place
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SeriesEntry[0].Car)
+                Drivers
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SeriesEntry[0].RaceNumber)
+                @Html.DisplayNameFor(model => model.Standings[0].RaceNumber)
             </th>
-            <th></th>
+            <th>
+                Team
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Standings[0].Car)
+            </th>
+            <th>Points</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.SeriesEntry) {
+@foreach (var item in Model.Standings) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Series.Id)
+                @Html.DisplayFor(modelItem => item.Place)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Car.Id)
+                @Html.DisplayFor(modelItem => item.Drivers)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RaceNumber)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Team)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Points)
+            </td>
+
+
+            @*<td>
+            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+        </td>*@
         </tr>
 }
     </tbody>

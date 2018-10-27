@@ -71,7 +71,7 @@ namespace RacingLeagueManager.Pages.LeagueDriver
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage();
+            return RedirectToPage("/LeagueDriver/Index", new { leagueId });
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(Guid leagueId, Guid driverId)

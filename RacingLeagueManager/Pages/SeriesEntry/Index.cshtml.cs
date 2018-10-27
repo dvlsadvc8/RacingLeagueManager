@@ -19,13 +19,74 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             _context = context;
         }
 
-        public IList<Data.Models.SeriesEntry> SeriesEntry { get;set; }
+        //public IList<Data.Models.SeriesEntry> SeriesEntry { get;set; }
+        public IList<StandingsViewModel> Standings { get; set; }
 
-        public async Task OnGetAsync()
+
+        public async Task OnGetAsync(Guid? seriesId)
         {
-            SeriesEntry = await _context.SeriesEntry
+            if(seriesId == null)
+            {
+                NotFound();
+            }
+
+            var seriesEntries = await _context.SeriesEntry
                 .Include(s => s.Car)
-                .Include(s => s.Series).ToListAsync();
+                .Include(s => s.Team)
+                .Include(s => s.Series)
+                .Include(s => s.RaceResults)
+                .Include(s => s.SeriesEntryDrivers)
+                    .ThenInclude(sed => sed.LeagueDriver)
+                        .ThenInclude(ld => ld.Driver).ToListAsync();
+
+            if(seriesEntries == null)
+            {
+                NotFound();
+            }
+
+            Standings = BuildModel(seriesEntries).ToList();
         }
+
+        private IEnumerable<StandingsViewModel> BuildModel(IList<Data.Models.SeriesEntry> seriesEntryList)
+        {
+            List<StandingsViewModel> modelList = new List<StandingsViewModel>();
+
+            modelList = seriesEntryList.Select(x =>
+                new StandingsViewModel()
+                {
+                    Car = x.Car.Name,
+                    Drivers = string.Join(" | ", x.SeriesEntryDrivers.Select(sed => sed.LeagueDriver.Driver.UserName)),
+                    RaceNumber = x.RaceNumber,
+                    Team = x.Team.Name,
+                    Points = x.RaceResults.Sum(r => r.Points)
+                }
+            ).ToList();
+
+            var standings = modelList.OrderByDescending(x => x.Points).Select((x, i) =>
+                new StandingsViewModel()
+                {
+                    Place = i + 1,
+                    RaceNumber = x.RaceNumber,
+                    Car = x.Car,
+                    Drivers = x.Drivers,
+                    Team = x.Team,
+                    Points = x.Points
+                }
+            );
+
+            return standings;
+        }
+    }
+
+
+
+    public class StandingsViewModel
+    {
+        public int Place { get; set; }
+        public string Drivers { get; set; }
+        public string RaceNumber { get; set; }
+        public string Team { get; set; }
+        public string Car { get; set; }
+        public int Points { get; set; }
     }
 }

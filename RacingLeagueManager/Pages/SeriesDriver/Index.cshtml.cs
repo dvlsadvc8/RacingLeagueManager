@@ -31,7 +31,9 @@ namespace RacingLeagueManager.Pages.SeriesDriver
             SeriesDriver = await _context.SeriesDriver
                 .Include(s => s.LeagueDriver)
                     .ThenInclude(ld => ld.Driver)
-                .Include(s => s.Series).OrderBy(s => s.LeagueDriver.PreQualifiedTime).ToListAsync();
+                .Include(s => s.Series)
+                .Where(s => s.SeriesId == seriesId.Value)
+                .OrderBy(s => s.LeagueDriver.PreQualifiedTime).ToListAsync();
         }
     }
 }

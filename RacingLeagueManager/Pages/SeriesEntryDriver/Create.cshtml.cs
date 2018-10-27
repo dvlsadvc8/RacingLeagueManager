@@ -42,7 +42,7 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                 .Include(s => s.LeagueDriver)
                     .ThenInclude(ld => ld.Driver)
                 .OrderBy(s => s.LeagueDriver.PreQualifiedTime)
-                .Select(s => new { DriverId = s.DriverId, DisplayValue = s.LeagueDriver.PreQualifiedTime + " " + s.LeagueDriver.Driver.UserName }).ToListAsync();
+                .Select(s => new { DriverId = s.DriverId, DisplayValue = s.LeagueDriver.PreQualifiedTime.ToString(@"mm\:ss\.fff") + " " + s.LeagueDriver.Driver.UserName }).ToListAsync();
 
             //var availableDriverList = await _context.LeagueDriver
 
@@ -58,12 +58,15 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             //ViewData["TeamId"] = seriesEntry.Team.Id;
 
             SeriesEntryDriver = new Data.Models.SeriesEntryDriver() { SeriesEntryId = seriesEntry.Id, LeagueId = seriesEntry.Series.LeagueId, SeriesEntry = seriesEntry};
+            SeriesId = seriesEntry.Series.Id;
 
             return Page();
         }
 
         [BindProperty]
         public Data.Models.SeriesEntryDriver SeriesEntryDriver { get; set; }
+        [BindProperty]
+        public Guid SeriesId { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -77,8 +80,21 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             SeriesEntryDriver.SeriesEntry = null;
 
             _context.SeriesEntryDriver.Add(SeriesEntryDriver);
-            var driver = await _context.SeriesDriver.FirstOrDefaultAsync(s => s.SeriesId == seriesId && s.DriverId == SeriesEntryDriver.DriverId);
-            driver.Status = "Active";
+            var driver = await _context.SeriesDriver.FirstOrDefaultAsync(s => s.SeriesId == SeriesId && s.DriverId == SeriesEntryDriver.DriverId);
+
+            if(SeriesEntryDriver.DriverType == DriverType.Primary)
+            {
+                driver.Status = "Unavailable - Primary";
+            }
+            else if(SeriesEntryDriver.DriverType == DriverType.Reserve)
+            {
+                driver.Status = "Available - Reserve";
+            }
+            else
+            {
+                driver.Status = "Unavailable - Retired";
+            }
+            
 
             await _context.SaveChangesAsync();
 

@@ -55,7 +55,7 @@ namespace RacingLeagueManager.Pages.Penalty
             _context.Penalty.Add(Penalty);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Race/Details", new { id = RaceResult.RaceId });
         }
     }
 }
