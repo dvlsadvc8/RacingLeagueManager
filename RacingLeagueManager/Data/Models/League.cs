@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RacingLeagueManager.Data.Models
@@ -10,6 +11,7 @@ namespace RacingLeagueManager.Data.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsPublic { get; set; }
+        [DisplayFormat(DataFormatString ="{0:MM/dd/yyy}", ApplyFormatInEditMode = false)]
         public DateTime CreatedDate { get; set; }
 
         public Guid OwnerId { get; set; }

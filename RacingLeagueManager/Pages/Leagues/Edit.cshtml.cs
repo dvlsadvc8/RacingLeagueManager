@@ -46,30 +46,42 @@ namespace RacingLeagueManager.Pages.Leagues
                 return Page();
             }
 
-            _context.Attach(League).State = EntityState.Modified;
+            var league = await _context.League.FirstOrDefaultAsync(l => l.Id == League.Id);
 
-            try
+            if(league == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LeagueExists(League.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return RedirectToPage("./Index");
+            //_context.Attach(League).State = EntityState.Modified;
+
+            league.Name = League.Name;
+            league.Description = League.Description;
+
+            await _context.SaveChangesAsync();
+
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!LeagueExists(League.Id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            return RedirectToPage("/Leagues/Details", new { id = league.Id });
         }
 
-        private bool LeagueExists(Guid id)
-        {
-            return _context.League.Any(e => e.Id == id);
-        }
+        //private bool LeagueExists(Guid id)
+        //{
+        //    return _context.League.Any(e => e.Id == id);
+        //}
     }
 }

@@ -48,25 +48,39 @@ namespace RacingLeagueManager.Pages.Series
                 return Page();
             }
 
-            _context.Attach(Series).State = EntityState.Modified;
+            var series = await _context.Series.FirstOrDefaultAsync(l => l.Id == Series.Id);
 
-            try
+            if (series == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SeriesExists(Series.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return RedirectToPage("./Index");
+            //_context.Attach(League).State = EntityState.Modified;
+
+            series.Name = Series.Name;
+            series.Description = Series.Description;
+
+            await _context.SaveChangesAsync();
+
+            //_context.Attach(Series).State = EntityState.Modified;
+
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!SeriesExists(Series.Id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            return RedirectToPage("./Details", new { id = Series.Id });
         }
 
         private bool SeriesExists(Guid id)

@@ -38,8 +38,8 @@ namespace RacingLeagueManager.Pages.LeagueDriver
             {
                 return NotFound();
             }
-           ViewData["DriverId"] = new SelectList(_context.Users, "Id", "Id");
-           ViewData["LeagueId"] = new SelectList(_context.League, "Id", "Id");
+           //ViewData["DriverId"] = new SelectList(_context.Users, "Id", "Id");
+           //ViewData["LeagueId"] = new SelectList(_context.League, "Id", "Id");
             return Page();
         }
 
@@ -50,23 +50,34 @@ namespace RacingLeagueManager.Pages.LeagueDriver
                 return Page();
             }
 
-            _context.Attach(LeagueDriver).State = EntityState.Modified;
+            var leagueDriver = await _context.LeagueDriver.FirstOrDefaultAsync(d => d.DriverId == LeagueDriver.DriverId && d.LeagueId == LeagueDriver.LeagueId);
 
-            try
+            if(leagueDriver == null)
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LeagueDriverExists(LeagueDriver.LeagueId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            leagueDriver.PreQualifiedTime = LeagueDriver.PreQualifiedTime;
+
+            await _context.SaveChangesAsync();
+
+            //_context.Attach(LeagueDriver).State = EntityState.Modified;
+
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!LeagueDriverExists(LeagueDriver.LeagueId))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
 
             return RedirectToPage("./Index", new { leagueId = LeagueDriver.LeagueId });
         }

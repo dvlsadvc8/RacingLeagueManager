@@ -38,8 +38,7 @@ namespace RacingLeagueManager.Pages.Team
             {
                 return NotFound();
             }
-           ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "Id");
-           ViewData["SeriesId"] = new SelectList(_context.Series, "Id", "Id");
+
             return Page();
         }
 
@@ -50,23 +49,29 @@ namespace RacingLeagueManager.Pages.Team
                 return Page();
             }
 
-            _context.Attach(Team).State = EntityState.Modified;
+            var team = await _context.Team.FirstOrDefaultAsync(t => t.Id == Team.Id);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TeamExists(Team.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            team.Name = Team.Name;
+
+            await _context.SaveChangesAsync();
+
+            //_context.Attach(Team).State = EntityState.Modified;
+
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!TeamExists(Team.Id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
 
             return RedirectToPage("./Index");
         }

@@ -21,6 +21,8 @@ namespace RacingLeagueManager.Pages.SeriesEntry
 
         //public IList<Data.Models.SeriesEntry> SeriesEntry { get;set; }
         public IList<StandingsViewModel> Standings { get; set; }
+        public string SeriesName { get; set; }
+        public Guid SeriesId { get; set; }
 
 
         public async Task OnGetAsync(Guid? seriesId)
@@ -45,6 +47,8 @@ namespace RacingLeagueManager.Pages.SeriesEntry
             }
 
             Standings = BuildModel(seriesEntries).ToList();
+            SeriesName = seriesEntries[0].Series.Name;
+            SeriesId = seriesEntries[0].SeriesId;
         }
 
         private IEnumerable<StandingsViewModel> BuildModel(IList<Data.Models.SeriesEntry> seriesEntryList)

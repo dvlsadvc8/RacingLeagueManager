@@ -49,7 +49,7 @@ namespace RacingLeagueManager.Pages.LeagueDriver
 
             LeagueDrivers.LeagueId = league.Id;
             LeagueDrivers.LeagueName = league.Name;
-            LeagueDrivers.ActiveDrivers = league.LeagueDrivers.Where(d => d.Status == "Active" || d.Status == null).ToList();
+            LeagueDrivers.ActiveDrivers = league.LeagueDrivers.Where(d => d.Status == "Active" || d.Status == null).OrderBy(d => d.PreQualifiedTime).ToList();
             LeagueDrivers.PendingDrivers = league.LeagueDrivers.Where(d => d.Status == "Pending").ToList();
         }
 

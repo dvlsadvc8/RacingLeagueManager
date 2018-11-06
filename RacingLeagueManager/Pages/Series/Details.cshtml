@@ -24,21 +24,39 @@
 
 
             <div class="row">
-                <div class="col-md-10">
-                    <strong>Details</strong>
-                </div>
-                <div class="col-md-2 text-right">
-                    @if (Model.IsJoinable)
-                    {
-                        <form method="post" asp-page-handler="join" asp-route-seriesId="@Model.Series.Id">
-                            <button type="submit" style="box-sizing:content-box;" class="btn btn-link">Join Series</button>
-                        </form>
-                    }
 
-                </div>
+
+                @if (Model.IsJoinable)
+                {
+                    <div class="col-md-10">
+                        <strong>Details</strong>
+                    </div>
+                    <div class="col-md-1 text-right">
+                        <a asp-page="./Edit" asp-route-id="@Model.Series.Id">Edit</a>
+                    </div>
+                    <div class="col-md-1 text-right">
+                        <form method="post" asp-page-handler="join" asp-route-seriesId="@Model.Series.Id">
+                            <button type="submit" style="display:inline;margin:0px;padding:0px;margin-bottom:0px" class="btn btn-link">Join Series</button>
+                        </form>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="col-md-11">
+                        <strong>Details</strong>
+                    </div>
+                    <div class="col-md-1 text-right">
+                        <a asp-page="./Edit" asp-route-id="@Model.Series.Id">Edit</a>
+                    </div>
+
+                }
             </div>
 
 
+               
+
+            
 
         </div>
         <div class="panel-body">

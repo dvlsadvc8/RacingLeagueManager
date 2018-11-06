@@ -19,7 +19,8 @@
                 <input asp-for="Team.Name" class="form-control" />
                 <span asp-validation-for="Team.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
+                
                 <label asp-for="Team.SeriesId" class="control-label"></label>
                 <select asp-for="Team.SeriesId" class="form-control" asp-items="ViewBag.SeriesId"></select>
                 <span asp-validation-for="Team.SeriesId" class="text-danger"></span>
@@ -28,7 +29,7 @@
                 <label asp-for="Team.OwnerId" class="control-label"></label>
                 <select asp-for="Team.OwnerId" class="form-control" asp-items="ViewBag.OwnerId"></select>
                 <span asp-validation-for="Team.OwnerId" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>

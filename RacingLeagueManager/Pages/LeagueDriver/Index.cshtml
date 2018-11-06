@@ -22,12 +22,12 @@
                         <th>
                             @Html.DisplayNameFor(model => model.LeagueDrivers.PendingDrivers[0].PreQualifiedTime)
                         </th>
-                        <th>
+                        @*<th>
                             @Html.DisplayNameFor(model => model.LeagueDrivers.PendingDrivers[0].TrueSkillRating)
                         </th>
                         <th>
                             Attendance Percentage
-                        </th>
+                        </th>*@
                         @*<th>
                                 @Html.DisplayNameFor(model => model.LeagueDriver[0].RaceNumber)
                             </th>*@
@@ -44,10 +44,10 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.PreQualifiedTime)
                             </td>
-                            <td>
+                            @*<td>
                                 @Html.DisplayFor(modelItem => item.TrueSkillRating)
                             </td>
-                            <td></td>
+                            <td></td>*@
                             @*<td>
                                     @Html.DisplayFor(modelItem => item.RaceNumber)
                                 </td>*@
@@ -83,12 +83,12 @@
                     <th>
                         @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].PreQualifiedTime)
                     </th>
-                    <th>
+                    @*<th>
                         @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].TrueSkillRating)
                     </th>
                     <th>
                         Attendance Percentage
-                    </th>
+                    </th>*@
                     @*<th>
                             @Html.DisplayNameFor(model => model.LeagueDriver[0].RaceNumber)
                         </th>*@
@@ -105,17 +105,17 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.PreQualifiedTime)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.TrueSkillRating)
                         </td>
-                        <td></td>
+                        <td></td>*@
                         @*<td>
                                 @Html.DisplayFor(modelItem => item.RaceNumber)
                             </td>*@
                         <td>
                             <a asp-page="./Edit" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId">Edit</a> |
                             @*@Html.ActionLink("Edit", "Edit", new { leagueId = item.LeagueId, driverId = item.DriverId }) |*@
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
                             @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                         </td>
                     </tr>
