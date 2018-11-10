@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,8 +17,9 @@ namespace RacingLeagueManager.Data.Models
         public Team Team { get; set; }
 
         public Car Car { get; set; }
+        [Display(Name = "Car")]
         public Guid CarId { get; set; }
-
+        [Display(Name ="Race Number")]
         public string RaceNumber { get; set; }
 
         public ICollection<RaceResult> RaceResults { get; set; }

@@ -5,7 +5,11 @@
     ViewData["Title"] = "Details";
 }
 
-<h2><a asp-page="/Series/Details" asp-route-id="@Model.RaceDetailsViewModel.SeriesId">@Model.RaceDetailsViewModel.SeriesName</a> \ @Model.RaceDetailsViewModel.TrackName</h2>
+@*<h6>GT RACING CHAMPIONSHIP</h6>*@
+<h3>@Model.RaceDetailsViewModel.SeriesName</h3>
+<a asp-page="/Series/Details" asp-route-id="@Model.RaceDetailsViewModel.SeriesId">Series Details</a>
+
+<hr />
 
 <div>
 
@@ -13,7 +17,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-md-10">
-                    <strong>Race Details</strong>
+                    <strong>@Model.RaceDetailsViewModel.TrackName</strong>
                 </div>
                 <div class="col-md-2 text-right">
                     <a asp-page="./Edit" asp-route-id="@Model.RaceDetailsViewModel.RaceId">Edit</a>

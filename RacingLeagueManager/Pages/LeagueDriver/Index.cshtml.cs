@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ namespace RacingLeagueManager.Pages.LeagueDriver
 
         //public IList<Data.Models.LeagueDriver> LeagueDriver { get;set; }
         public LeagueDriverIndexViewModel LeagueDrivers { get; set; }
+        public Guid LeagueId { get; set; }
 
         public async Task OnGetAsync(Guid leagueId)
         {
@@ -28,6 +30,8 @@ namespace RacingLeagueManager.Pages.LeagueDriver
             {
                 NotFound();
             }
+
+            LeagueId = leagueId;
 
             var league = await _context.League
                 .Include(l => l.LeagueDrivers)
@@ -49,7 +53,16 @@ namespace RacingLeagueManager.Pages.LeagueDriver
 
             LeagueDrivers.LeagueId = league.Id;
             LeagueDrivers.LeagueName = league.Name;
-            LeagueDrivers.ActiveDrivers = league.LeagueDrivers.Where(d => d.Status == "Active" || d.Status == null).OrderBy(d => d.PreQualifiedTime).ToList();
+            LeagueDrivers.ActiveDrivers = league.LeagueDrivers.Where(d => d.Status == "Active" || d.Status == null)
+                .OrderBy(d => d.PreQualifiedTime)
+                .Select((x,i) => new LeagueDriverViewModel()
+                {
+                    Rank = i + 1,
+                    DriverName = x.Driver.UserName,
+                    DriverId = x.DriverId,
+                    PreQualifiedTime = x.PreQualifiedTime
+                }).ToList();
+
             LeagueDrivers.PendingDrivers = league.LeagueDrivers.Where(d => d.Status == "Pending").ToList();
         }
 
@@ -100,7 +113,20 @@ namespace RacingLeagueManager.Pages.LeagueDriver
     {
         public Guid LeagueId { get; set; }
         public string LeagueName { get; set; }
-        public IList<Data.Models.LeagueDriver> ActiveDrivers { get; set; }
+        public IList<LeagueDriverViewModel> ActiveDrivers { get; set; }
         public IList<Data.Models.LeagueDriver> PendingDrivers { get; set; }
+    }
+
+    public class LeagueDriverViewModel
+    {
+        [Display(Name = "Rank")]
+        public int Rank { get; set; }
+        public Guid DriverId { get; set; }
+        [Display(Name ="Member Name")]
+        public string DriverName { get; set; }
+        [DisplayFormat(DataFormatString = "{0:mm\\:ss\\.fff}", ApplyFormatInEditMode = true)]
+        [Display(Name ="Prequalifier Time")]
+        public TimeSpan PreQualifiedTime { get; set; }
+        
     }
 }

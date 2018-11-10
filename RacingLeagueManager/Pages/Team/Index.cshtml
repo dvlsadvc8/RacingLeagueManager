@@ -5,47 +5,58 @@
     ViewData["Title"] = "Teams";
 }
 
-<h2>@ViewData["SeriesName"]</h2>
-<a asp-page="../Series/Details" asp-route-id="@ViewData["SeriesId"]">Back to Series</a>
-<h3>Racing Teams</h3>
+<h3>@ViewData["SeriesName"] Teams</h3>
+<a asp-page="../Series/Details" asp-route-id="@ViewData["SeriesId"]">Series Details</a>
+<hr />
 
-<p>
-    <a asp-page="Create" asp-route-seriesId="@ViewData["SeriesId"]">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Team[0].Name)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Team[0].Series)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Team[0].Owner)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Team) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Series.Id)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.UserName)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-6"><strong>Race Teams</strong></div>
+            <div class="col-lg-6 text-right">
+                <a asp-page="Create" asp-route-seriesId="@ViewData["SeriesId"]">Create New</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Team[0].Name)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.Team[0].Series)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Team[0].Owner)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Team)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Series.Id)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Owner.UserName)
+                        </td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
 
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
+</div>
+

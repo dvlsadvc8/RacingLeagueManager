@@ -5,9 +5,8 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
-
-<h4>Team</h4>
+<h3>@Model.Team.Series.Name - Edit Team</h3>
+<a asp-page="./Index" asp-route-seriesId="@Model.Team.Series.Id">Team Index</a>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -37,9 +36,6 @@
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -5,10 +5,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Series Drivers</h2>
+<h3>@Model.SeriesName Driver Statistics</h3>
+<a asp-page="/Series/Details" asp-route-id="@Model.SeriesId">Series Details</a>
+<hr />
 
-
-<table class="table">
+<table class="table table-bordered table-hover table-condensed">
     <thead>
         <tr>
             <th>
@@ -41,36 +42,38 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Drivers) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DriverName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DriverType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RaceResultCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DNFCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DNFPercent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DNSCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DNSPercent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PenaltyPoints)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PenaltyPointPercent)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Drivers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RaceResultCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DNFCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DNFPercent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DNSCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DNSPercent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PenaltyPoints)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PenaltyPointPercent)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+

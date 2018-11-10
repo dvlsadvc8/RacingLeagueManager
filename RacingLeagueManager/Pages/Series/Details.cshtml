@@ -6,9 +6,10 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h3>@Html.DisplayFor(model => model.Series.Name)</h3>
+<h3>@Html.DisplayFor(model => model.Series.League.Name): @Html.DisplayFor(model => model.Series.Name)</h3>
 
 <div>
+    <a asp-page="../Leagues/Details" asp-route-id="@Model.Series.LeagueId">League Details</a> |
     <a asp-page="../SeriesDriver/Index" asp-route-seriesId="@Model.Series.Id">Roster</a> |
     <a asp-page="../Team/Index" asp-route-seriesId="@Model.Series.Id">Teams</a> |
     <a asp-page="/SeriesEntryDriver/Index" asp-route-seriesId="@Model.Series.Id">Drivers</a> |
@@ -54,9 +55,9 @@
             </div>
 
 
-               
 
-            
+
+
 
         </div>
         <div class="panel-body">
@@ -171,8 +172,4 @@
     *@
 
 
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Series.Id">Edit</a> |
-    <a asp-page="../Leagues/Details" asp-route-id="@Model.Series.LeagueId">Back to League</a>
 </div>

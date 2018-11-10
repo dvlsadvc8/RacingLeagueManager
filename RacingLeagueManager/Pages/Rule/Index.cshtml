@@ -5,10 +5,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h2><a asp-page="/Leagues/Details" asp-route-id="@Model.League.Id">@Model.League.Name</a> \ Rules</h2>
+<h3>@Model.League.Name Rules</h3>
+
 
 <p>
-    <a asp-page="Create" asp-route-leagueId="@Model.League.Id">Create New</a>
+    <a asp-page="/Leagues/Details" asp-route-id="@Model.League.Id">League Details</a> | 
+    <a asp-page="Create" asp-route-leagueId="@Model.League.Id">New Rule</a>
 </p>
 <table class="table">
     <thead>

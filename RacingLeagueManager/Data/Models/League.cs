@@ -12,6 +12,7 @@ namespace RacingLeagueManager.Data.Models
         public string Description { get; set; }
         public bool IsPublic { get; set; }
         [DisplayFormat(DataFormatString ="{0:MM/dd/yyy}", ApplyFormatInEditMode = false)]
+        [Display(Name="Created Date")]
         public DateTime CreatedDate { get; set; }
 
         public Guid OwnerId { get; set; }

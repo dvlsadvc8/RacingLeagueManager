@@ -5,7 +5,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h3>@Model.LeagueDrivers.LeagueName</h3>
+<h3>@Model.LeagueDrivers.LeagueName Members</h3>
+<a asp-page="/Leagues/Details" asp-route-id="@Model.LeagueId">League Details</a>
+<br />
+<br />
 
 @if (Model.LeagueDrivers.PendingDrivers.Count > 0)
 {
@@ -23,11 +26,11 @@
                             @Html.DisplayNameFor(model => model.LeagueDrivers.PendingDrivers[0].PreQualifiedTime)
                         </th>
                         @*<th>
-                            @Html.DisplayNameFor(model => model.LeagueDrivers.PendingDrivers[0].TrueSkillRating)
-                        </th>
-                        <th>
-                            Attendance Percentage
-                        </th>*@
+                                @Html.DisplayNameFor(model => model.LeagueDrivers.PendingDrivers[0].TrueSkillRating)
+                            </th>
+                            <th>
+                                Attendance Percentage
+                            </th>*@
                         @*<th>
                                 @Html.DisplayNameFor(model => model.LeagueDriver[0].RaceNumber)
                             </th>*@
@@ -45,15 +48,15 @@
                                 @Html.DisplayFor(modelItem => item.PreQualifiedTime)
                             </td>
                             @*<td>
-                                @Html.DisplayFor(modelItem => item.TrueSkillRating)
-                            </td>
-                            <td></td>*@
+                                    @Html.DisplayFor(modelItem => item.TrueSkillRating)
+                                </td>
+                                <td></td>*@
                             @*<td>
                                     @Html.DisplayFor(modelItem => item.RaceNumber)
                                 </td>*@
                             <td>
-                                
-                                <form style="display:inline;margin:0px;padding:0px;" method="post" >
+
+                                <form style="display:inline;margin:0px;padding:0px;" method="post">
                                     <input class="btn btn-default" type="submit" asp-page-handler="Approve" value="Approve" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId" />
                                     <input class="btn btn-default" type="submit" asp-page-handler="Delete" value="Deny" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId" />
                                 </form>
@@ -78,17 +81,20 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].Driver)
+                        Rank
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].DriverName)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].PreQualifiedTime)
                     </th>
                     @*<th>
-                        @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].TrueSkillRating)
-                    </th>
-                    <th>
-                        Attendance Percentage
-                    </th>*@
+                            @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].TrueSkillRating)
+                        </th>
+                        <th>
+                            Attendance Percentage
+                        </th>*@
                     @*<th>
                             @Html.DisplayNameFor(model => model.LeagueDriver[0].RaceNumber)
                         </th>*@
@@ -100,23 +106,26 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Driver.UserName)
+                            @Html.DisplayFor(modelItem => item.Rank)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DriverName)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PreQualifiedTime)
                         </td>
                         @*<td>
-                            @Html.DisplayFor(modelItem => item.TrueSkillRating)
-                        </td>
-                        <td></td>*@
+                                @Html.DisplayFor(modelItem => item.TrueSkillRating)
+                            </td>
+                            <td></td>*@
                         @*<td>
                                 @Html.DisplayFor(modelItem => item.RaceNumber)
                             </td>*@
                         <td>
-                            <a asp-page="./Edit" asp-route-leagueId="@item.LeagueId" asp-route-driverId="@item.DriverId">Edit</a> |
+                            <a asp-page="./Edit" asp-route-leagueId="@Model.LeagueId" asp-route-driverId="@item.DriverId">Edit</a>
                             @*@Html.ActionLink("Edit", "Edit", new { leagueId = item.LeagueId, driverId = item.DriverId }) |*@
                             @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                            @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                         </td>
                     </tr>
                 }

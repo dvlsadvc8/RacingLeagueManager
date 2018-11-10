@@ -28,7 +28,7 @@ namespace RacingLeagueManager.Pages.Race
             }
 
             ViewData["TrackId"] = new SelectList(_context.Track, "Id", "Name");
-            Race = new Data.Models.Race() { SeriesId = seriesId, RaceDate = DateTime.Today };
+            Race = new Data.Models.Race() { SeriesId = seriesId, RaceDate = DateTime.Today, Series=series };
 
             return Page();
         }

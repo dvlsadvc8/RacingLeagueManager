@@ -21,9 +21,15 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
 
         //public IList<Data.Models.SeriesEntryDriver> SeriesEntryDriver { get;set; }
         public IList<SeriesEntryDriverViewModel> Drivers { get; set; }
+        public Guid SeriesId { get; set; }
+        public string SeriesName {get; set; }
 
         public async Task OnGetAsync(Guid seriesId)
         {
+            var series = await _context.Series.FirstOrDefaultAsync(s => s.Id == seriesId);
+            SeriesId = series.Id;
+            SeriesName = series.Name;
+
             var query = _context.SeriesEntryDriver
                 .Include(s => s.LeagueDriver)
                     .ThenInclude(ld => ld.Driver)
@@ -43,6 +49,8 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                 });
 
             Drivers = await query.ToListAsync();
+
+            
         }
     }
 

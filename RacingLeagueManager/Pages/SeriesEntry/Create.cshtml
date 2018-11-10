@@ -5,9 +5,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>@Model.SeriesEntry.Series.Name</h2>
-
-<h4>Create Entry for @Model.SeriesEntry.Team.Name Team</h4>
+<h3>@Model.SeriesEntry.Series.Name - Create @Model.SeriesEntry.Team.Name Entry </h3>
+<a asp-page="../Team/Details" asp-route-id="@Model.SeriesEntry.TeamId">Team Details</a>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -36,9 +35,6 @@
     </div>
 </div>
 
-<div>
-    <a asp-page="../Team/Details" asp-route-id="@Model.SeriesEntry.TeamId">Back to @Model.SeriesEntry.Team.Name</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

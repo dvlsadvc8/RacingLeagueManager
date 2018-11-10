@@ -5,61 +5,39 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>@Model.Team.Series.Name</h2>
-<a asp-page="../Series/Details" asp-route-id="@Model.Team.SeriesId">Back to Series</a>
-<h3>@Model.Team.Name</h3>
+<h3>@Model.Team.Series.Name Team</h3>
+<a asp-page="../Series/Details" asp-route-id="@Model.Team.SeriesId">Series Details</a> |
+<a asp-page="./Index" asp-route-seriesId="@Model.Team.SeriesId">Teams</a>
+<hr />
 
-<div>
-    <h4>Team</h4>
-    <hr />
-    @*<dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Team.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Team.Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Team.Series)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Team.Series.Id)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Team.Owner)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Team.Owner.Id)
-            </dd>
-        </dl>*@
-
-    <div class="row">
-        <div class="col-md-12 font-bold">
-            @Html.DisplayNameFor(model => model.Team.Owner)
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-6 font-bold">
+                @Model.Team.Name
+            </div>
+            <div class="col-lg-6 text-right">
+                <a asp-page="./Edit" asp-route-id="@Model.Team.Id">Edit</a>
+            </div>
         </div>
+        
     </div>
-    <div class="row">
-        <div class="col-md-12">
+    <div class="panel-body">
+        <div class="col-md-1 font-bold">
+            @Html.DisplayNameFor(model => model.Team.Owner): 
+        </div>
+        <div class="col-lg-11">
             @Html.DisplayFor(model => model.Team.Owner.UserName)
         </div>
     </div>
 </div>
-
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Team.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
-
-<h3>Entries</h3>
-<p>
-    <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@Model.Team.SeriesId" asp-route-teamId="@Model.Team.Id">New Entry</a>
-</p>
-<table class="table">
+   
+<table class="table table-bordered table-condensed table-hover">
     <tr>
         <th>Number</th>
         <th>Car</th>
         <th>Drivers</th>
-        <th></th>
+        <th><a asp-page="../SeriesEntry/Create" asp-route-seriesId="@Model.Team.SeriesId" asp-route-teamId="@Model.Team.Id">New Entry</a></th>
     </tr>
     @foreach (var item in Model.Team.SeriesEntries)
     {
@@ -77,7 +55,7 @@
                     {
                         @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).LeagueDriver.Driver.UserName)
                         @Html.Raw(" - ")
-                        @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).DriverType )
+                        @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).DriverType)
                         if ((item.SeriesEntryDrivers.Count - i) > 1)
                         {
                             @Html.Raw(",<br />");
@@ -88,9 +66,9 @@
 
 
                 @*@foreach (var driver in item.SeriesEntryDrivers)
-        {
-            @Html.DisplayFor(modelItem => driver.LeagueDriver.Driver.UserName)
-        }*@
+                    {
+                        @Html.DisplayFor(modelItem => driver.LeagueDriver.Driver.UserName)
+                    }*@
 
             </td>
             <td>

@@ -5,47 +5,92 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h3>@Html.DisplayFor(m => m.SeriesDrivers[0].SeriesName) Roster</h3>
+<a asp-page="/Series/Details" asp-route-id="@Model.SeriesId">Series Details</a>
+<br />
+<br />
+@*<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>Roster</strong>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-1">Rank</div>
+            <div class="col-lg-3">Member Name</div>
+            <div class="col-lg-4">Prequalifier Time</div>
+            <div class="col-lg-4">Status</div>
+        </div>
 
-@*<p>
-    <a asp-page="Create">Create New</a>
-</p>*@
-<table class="table">
-    <thead>
-        <tr>
 
-            <th>
-                @Html.DisplayNameFor(model => model.SeriesDriver[0].LeagueDriver.Driver.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SeriesDriver[0].LeagueDriver.PreQualifiedTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SeriesDriver[0].Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.SeriesDriver) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LeagueDriver.Driver.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LeagueDriver.PreQualifiedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            
-            
-            @*<td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>*@
-        </tr>
-}
-    </tbody>
-</table>
+        @foreach (var item in Model.SeriesDriver)
+        {
+            <div class="row">
+                <div class="col-lg-1">Rank</div>
+                <div class="col-lg-3">@Html.DisplayFor(modelItem => item.LeagueDriver.Driver.UserName)</div>
+                <div class="col-lg-4">@Html.DisplayFor(modelItem => item.LeagueDriver.PreQualifiedTime)</div>
+                <div class="col-lg-4">@Html.DisplayFor(modelItem => item.Status)</div>
+            </div>
+        }
+    </div>
+
+</div>*@
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-3">
+                <strong>Roster</strong>
+            </div>
+            <div class="col-lg-9 text-right">
+                <span class="label label-info">All league members who joined to participate in the series.</span>
+            </div>
+        </div>
+        
+    </div>
+    <div class="panel-body">
+        <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Rank
+                </th>
+                <th>
+                    Driver Name
+                </th>
+                <th>
+                    Prequalifier Time
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SeriesDrivers[0].Status)
+                </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SeriesDrivers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rank)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DriverName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PreQualifiedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+
+
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    </div>
+</div>
+    
