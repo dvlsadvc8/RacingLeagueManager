@@ -2,29 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Race
 {
-    public class CreateModel : PageModel
+    public class CreateModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
 
-        public CreateModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public CreateModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
-        public IActionResult OnGet(Guid seriesId)
+        public async Task<IActionResult> OnGetAsync(Guid seriesId)
         {
             Data.Models.Series series = _context.Series.FirstOrDefault(s => s.Id == seriesId);
             if(series == null)
             {
                 return NotFound();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, series,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
             }
 
             ViewData["TrackId"] = new SelectList(_context.Track, "Id", "Name");
@@ -41,6 +54,20 @@ namespace RacingLeagueManager.Pages.Race
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            Data.Models.Series series = _context.Series.FirstOrDefault(s => s.Id == Race.SeriesId);
+            if (series == null)
+            {
+                return NotFound();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, series,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
             }
 
             Race.Status = RaceStatus.Pending;

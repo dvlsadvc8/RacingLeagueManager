@@ -31,6 +31,13 @@ namespace RacingLeagueManager.Pages.Series
                 return NotFound();
             }
 
+            var userIsMember = _context.LeagueDriver.Any(l => l.DriverId == new Guid(_userManager.GetUserId(User)) && l.LeagueId == league.Id);
+
+            if(!userIsMember)
+            {
+                return Forbid();
+            }
+
             Series = new Data.Models.Series() { LeagueId = leagueId };
 
             return Page();
@@ -44,6 +51,13 @@ namespace RacingLeagueManager.Pages.Series
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var userIsMember = _context.LeagueDriver.Any(l => l.DriverId == new Guid(_userManager.GetUserId(User)) && l.LeagueId == Series.LeagueId);
+
+            if (!userIsMember)
+            {
+                return Forbid();
             }
 
             Driver driver = await _userManager.GetUserAsync(User);

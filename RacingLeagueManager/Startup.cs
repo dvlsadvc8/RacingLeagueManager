@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RacingLeagueManager.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using RacingLeagueManager.Authorization;
 
 namespace RacingLeagueManager
 {
@@ -78,7 +79,11 @@ namespace RacingLeagueManager
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            
+            // Authorization handlers.
+            services.AddScoped<IAuthorizationHandler, LeagueAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, SeriesAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, LeagueDriverAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, RuleAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

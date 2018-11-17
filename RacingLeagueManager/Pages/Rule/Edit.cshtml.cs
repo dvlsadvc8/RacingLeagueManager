@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Rule
 {
-    public class EditModel : PageModel
+    public class EditModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
-
-        public EditModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        
+        public EditModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -37,7 +42,15 @@ namespace RacingLeagueManager.Pages.Rule
             {
                 return NotFound();
             }
-           
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, Rule,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
             return Page();
         }
 
@@ -48,7 +61,24 @@ namespace RacingLeagueManager.Pages.Rule
                 return Page();
             }
 
-            _context.Attach(Rule).State = EntityState.Modified;
+            var rule = await _context.Rule
+                .Include(r => r.League).FirstOrDefaultAsync(m => m.Id == Rule.Id);
+
+            if(rule == null)
+            {
+                return NotFound();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, Rule,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+
+            //_context.Attach(Rule).State = EntityState.Modified;
 
             try
             {

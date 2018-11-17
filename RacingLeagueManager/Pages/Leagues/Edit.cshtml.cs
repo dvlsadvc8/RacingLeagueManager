@@ -2,22 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Leagues
 {
-    public class EditModel : PageModel
+    public class EditModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
-
-        public EditModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+       
+        public EditModel(
+            RacingLeagueManagerContext context, 
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -36,6 +42,15 @@ namespace RacingLeagueManager.Pages.Leagues
             {
                 return NotFound();
             }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, League,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
             return Page();
         }
 
@@ -51,6 +66,14 @@ namespace RacingLeagueManager.Pages.Leagues
             if(league == null)
             {
                 return NotFound();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, league,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
             }
 
             //_context.Attach(League).State = EntityState.Modified;

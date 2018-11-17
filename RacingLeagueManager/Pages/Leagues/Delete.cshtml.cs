@@ -38,22 +38,22 @@ namespace RacingLeagueManager.Pages.Leagues
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> OnPostAsync(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            League = await _context.League.FindAsync(id);
+        //    League = await _context.League.FindAsync(id);
 
-            if (League != null)
-            {
-                _context.League.Remove(League);
-                await _context.SaveChangesAsync();
-            }
+        //    if (League != null)
+        //    {
+        //        _context.League.Remove(League);
+        //        await _context.SaveChangesAsync();
+        //    }
 
-            return RedirectToPage("./Index");
-        }
+        //    return RedirectToPage("./Index");
+        //}
     }
 }

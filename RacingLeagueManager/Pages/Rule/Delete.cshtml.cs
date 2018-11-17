@@ -41,18 +41,18 @@ namespace RacingLeagueManager.Pages.Rule
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            Rule = await _context.Rule.FindAsync(id);
+            //Rule = await _context.Rule.FindAsync(id);
 
-            if (Rule != null)
-            {
-                _context.Rule.Remove(Rule);
-                await _context.SaveChangesAsync();
-            }
+            //if (Rule != null)
+            //{
+            //    _context.Rule.Remove(Rule);
+            //    await _context.SaveChangesAsync();
+            //}
 
             return RedirectToPage("./Index");
         }
