@@ -21,7 +21,7 @@
             </div>
             <div class="collapse navbar-collapse">
                 <p class="navbar-text">
-                    Use this space to summarize your privacy and cookie use policy.
+                    This site uses cookies to provide you a better experience. Please accept.
                 </p>
                 <div class="navbar-right">
                     <a asp-page="/Privacy" class="btn btn-info navbar-btn">Learn More</a>
@@ -34,7 +34,7 @@
         (function () {
             document.querySelector("#cookieConsent button[data-cookie-string]").addEventListener("click", function (el) {
                 document.cookie = el.target.dataset.cookieString;
-                document.querySelector("#cookieConsent").classList.add("hIdden");
+                document.querySelector("#cookieConsent").classList.add("hidden");
             }, false);
         })();
     </script>

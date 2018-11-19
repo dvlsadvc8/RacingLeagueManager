@@ -84,6 +84,8 @@ namespace RacingLeagueManager
             services.AddScoped<IAuthorizationHandler, SeriesAuthorizationHandler>();
             services.AddScoped<IAuthorizationHandler, LeagueDriverAuthorizationHandler>();
             services.AddScoped<IAuthorizationHandler, RuleAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, SeriesDriverAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, TeamAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

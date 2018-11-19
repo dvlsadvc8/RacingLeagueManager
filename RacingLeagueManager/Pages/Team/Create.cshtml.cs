@@ -23,11 +23,21 @@ namespace RacingLeagueManager.Pages.Team
             _context = context;
         }
 
-        public async Task<IActionResult> OnGet(Guid seriesId)
+        public async Task<IActionResult> OnGet(Guid seriesId, Guid? driverId)
         {
             if(seriesId == null)
             {
                 return NotFound();
+            }
+
+            if(driverId == null)
+            {
+                driverId = ((Driver)(await _userManager.GetUserAsync(User))).Id;
+            }
+
+            if(_context.Team.Any(t => t.OwnerId == driverId && t.SeriesId == seriesId))
+            {
+                return BadRequest();
             }
 
             var series = await _context.Series.FirstOrDefaultAsync(s => s.Id == seriesId);
@@ -36,7 +46,9 @@ namespace RacingLeagueManager.Pages.Team
                 return NotFound();
             }
 
-            Team = new Data.Models.Team() { SeriesId = series.Id, Series = series };
+            Team = new Data.Models.Team() { SeriesId = series.Id, OwnerId = driverId.Value, Series = series };
+
+
 
             return Page();
         }
@@ -51,8 +63,8 @@ namespace RacingLeagueManager.Pages.Team
                 return Page();
             }
 
-            Driver driver = await _userManager.GetUserAsync(User);
-            Team.OwnerId = driver.Id;
+            //Driver driver = await _userManager.GetUserAsync(User);
+            //Team.OwnerId = driver.Id;
 
             _context.Team.Add(Team);
             await _context.SaveChangesAsync();

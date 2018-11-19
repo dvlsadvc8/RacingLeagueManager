@@ -83,7 +83,13 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
-
+                    @if(item.Rank <= 8)
+                    {
+                        <td>
+                            @Html.ActionLink("Create Team", "Create", "Team", new { seriesId = Model.SeriesId, driverId = item.DriverId })
+                        </td>
+                    }
+                   
 
                    
                 </tr>
