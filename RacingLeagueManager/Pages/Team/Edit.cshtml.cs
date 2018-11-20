@@ -2,22 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Team
 {
-    public class EditModel : PageModel
+    public class EditModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
+        
 
-        public EditModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public EditModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -39,6 +45,14 @@ namespace RacingLeagueManager.Pages.Team
                 return NotFound();
             }
 
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, Team,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
             return Page();
         }
 
@@ -52,6 +66,15 @@ namespace RacingLeagueManager.Pages.Team
             var team = await _context.Team.FirstOrDefaultAsync(t => t.Id == Team.Id);
 
             team.Name = Team.Name;
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, team,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
 
             await _context.SaveChangesAsync();
 
@@ -73,12 +96,12 @@ namespace RacingLeagueManager.Pages.Team
             //    }
             //}
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new { id = team.Id });
         }
 
-        private bool TeamExists(Guid id)
-        {
-            return _context.Team.Any(e => e.Id == id);
-        }
+        //private bool TeamExists(Guid id)
+        //{
+        //    return _context.Team.Any(e => e.Id == id);
+        //}
     }
 }

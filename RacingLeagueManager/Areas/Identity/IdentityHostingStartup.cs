@@ -15,7 +15,15 @@ namespace RacingLeagueManager.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
+
+                //services.AddIdentity<Driver, IdentityRole>()
+                //.AddDefaultUI()
+                //.AddRoles<IdentityRole>()
+                //.AddRoleManager<RoleManager<IdentityRole>>()
+                //.AddDefaultTokenProviders()
+                //.AddEntityFrameworkStores<RacingLeagueManagerContext>();
             });
         }
     }

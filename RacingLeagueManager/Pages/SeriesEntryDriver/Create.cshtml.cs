@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.SeriesEntryDriver
 {
-    public class CreateModel : PageModel
+    public class CreateModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
 
-        public CreateModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public CreateModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         public async Task<IActionResult> OnGet(Guid seriesEntryId)
@@ -26,6 +31,14 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             if(seriesEntry == null)
             {
                 return NotFound();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, seriesEntry.Team,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
             }
 
             var leagueId = seriesEntry.Series.LeagueId;
@@ -57,8 +70,9 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             //ViewData["DriverId"] = new SelectList(await _context.LeagueDriver.Include(l => l.Driver).Where(l => l.LeagueId == seriesEntry.Series.LeagueId).ToListAsync(), "DriverId", "Driver.UserName");
             //ViewData["TeamId"] = seriesEntry.Team.Id;
 
-            SeriesEntryDriver = new Data.Models.SeriesEntryDriver() { SeriesEntryId = seriesEntry.Id, LeagueId = seriesEntry.Series.LeagueId, SeriesEntry = seriesEntry};
-            SeriesId = seriesEntry.Series.Id;
+            SeriesEntryDriver = new Data.Models.SeriesEntryDriver() { SeriesEntryId = seriesEntry.Id, LeagueId = seriesEntry.Series.LeagueId};
+            SeriesId = seriesEntry.SeriesId;
+            TeamId = seriesEntry.TeamId;
 
             return Page();
         }
@@ -67,6 +81,8 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
         public Data.Models.SeriesEntryDriver SeriesEntryDriver { get; set; }
         [BindProperty]
         public Guid SeriesId { get; set; }
+        [BindProperty]
+        public Guid TeamId { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -75,9 +91,24 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                 return Page();
             }
 
-            var teamId = SeriesEntryDriver.SeriesEntry.Team.Id;
-            var seriesId = SeriesEntryDriver.SeriesEntry.SeriesId;
-            SeriesEntryDriver.SeriesEntry = null;
+            //var teamId = SeriesEntryDriver.SeriesEntry.Team.Id;
+            //var seriesId = SeriesEntryDriver.SeriesEntry.SeriesId;
+
+            var team = await _context.Team.FirstOrDefaultAsync(t => t.Id == TeamId);
+
+            if(team == null)
+            {
+                return BadRequest();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, team,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
 
             _context.SeriesEntryDriver.Add(SeriesEntryDriver);
             var driver = await _context.SeriesDriver.FirstOrDefaultAsync(s => s.SeriesId == SeriesId && s.DriverId == SeriesEntryDriver.DriverId);
@@ -90,15 +121,15 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             {
                 driver.Status = "Available - Reserve";
             }
-            else
-            {
-                driver.Status = "Unavailable - Retired";
-            }
+            //else
+            //{
+            //    driver.Status = "Unavailable - Retired";
+            //}
             
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("../Team/Details", new { id = teamId });
+            return RedirectToPage("../Team/Details", new { id = team.Id });
         }
     }
 }

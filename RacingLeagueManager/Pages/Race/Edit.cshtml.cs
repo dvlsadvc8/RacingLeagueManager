@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Race
 {
-    public class EditModel : PageModel
+    public class EditModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
-
-        public EditModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+       
+        public EditModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -30,14 +35,23 @@ namespace RacingLeagueManager.Pages.Race
                 return NotFound();
             }
 
-            Race = await _context.Race
+            Race = await _context.Race.Include(r => r.Series)
                 .Include(r => r.Track).FirstOrDefaultAsync(m => m.Id == id);
 
             if (Race == null)
             {
                 return NotFound();
             }
-           ViewData["TrackId"] = new SelectList(_context.Track, "Id", "Name");
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, Race.Series,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+            ViewData["TrackId"] = new SelectList(_context.Track, "Id", "Name");
             return Page();
         }
 
@@ -48,23 +62,45 @@ namespace RacingLeagueManager.Pages.Race
                 return Page();
             }
 
-            _context.Attach(Race).State = EntityState.Modified;
+            var race = await _context.Race.Include(r => r.Series)
+                .Include(r => r.Track).FirstOrDefaultAsync(m => m.Id == Race.Id);
 
-            try
+            if (race == null)
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, race.Series,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
             {
-                if (!RaceExists(Race.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return Forbid();
             }
+
+            race.Laps = Race.Laps;
+            race.RaceDate = Race.RaceDate;
+            race.TrackId = Race.TrackId;
+
+            await _context.SaveChangesAsync();
+
+            //_context.Attach(Race).State = EntityState.Modified;
+
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!RaceExists(Race.Id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
 
             return RedirectToPage("./Index");
         }

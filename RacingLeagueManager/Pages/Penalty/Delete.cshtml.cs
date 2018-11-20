@@ -41,18 +41,18 @@ namespace RacingLeagueManager.Pages.Penalty
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            Penalty = await _context.Penalty.FindAsync(id);
+            //Penalty = await _context.Penalty.FindAsync(id);
 
-            if (Penalty != null)
-            {
-                _context.Penalty.Remove(Penalty);
-                await _context.SaveChangesAsync();
-            }
+            //if (Penalty != null)
+            //{
+            //    _context.Penalty.Remove(Penalty);
+            //    await _context.SaveChangesAsync();
+            //}
 
             return RedirectToPage("./Index");
         }

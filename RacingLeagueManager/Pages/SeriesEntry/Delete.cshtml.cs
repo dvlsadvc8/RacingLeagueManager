@@ -42,18 +42,18 @@ namespace RacingLeagueManager.Pages.SeriesEntry
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            SeriesEntry = await _context.SeriesEntry.FindAsync(id);
+            //SeriesEntry = await _context.SeriesEntry.FindAsync(id);
 
-            if (SeriesEntry != null)
-            {
-                _context.SeriesEntry.Remove(SeriesEntry);
-                await _context.SaveChangesAsync();
-            }
+            //if (SeriesEntry != null)
+            //{
+            //    _context.SeriesEntry.Remove(SeriesEntry);
+            //    await _context.SaveChangesAsync();
+            //}
 
             return RedirectToPage("./Index");
         }

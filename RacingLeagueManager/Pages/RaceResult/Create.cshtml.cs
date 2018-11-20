@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.RaceResult
 {
-    public class CreateModel : PageModel
+    public class CreateModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
 
-        public CreateModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public CreateModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         public async Task<IActionResult> OnGetAsync(Guid raceId, Guid seriesEntryId)
@@ -27,11 +32,25 @@ namespace RacingLeagueManager.Pages.RaceResult
                 return NotFound();
             }
 
+            //var user = await _userManager.GetUserAsync(User);
+            //await _userManager.AddToRoleAsync(user, "GlobalAdmin");
+
+
+            RaceResult = new Data.Models.RaceResult() { RaceId = raceId, SeriesEntryId = seriesEntryId };
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, RaceResult,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
             var teamDrivers = await _context.SeriesEntryDriver.Include(sed => sed.Driver).Where(sed => sed.SeriesEntryId == seriesEntryId).Select(sed => new { Id = sed.Driver.Id, UserName = string.Format("{0}-{1}", sed.Driver.UserName, sed.DriverType)}).ToListAsync();
 
             ViewData["DriverId"] = new SelectList(teamDrivers, "Id", "UserName");
 
-            RaceResult = new Data.Models.RaceResult() { RaceId = raceId, SeriesEntryId = seriesEntryId };
+            
 
             return Page();
         }
@@ -45,6 +64,15 @@ namespace RacingLeagueManager.Pages.RaceResult
             {
                 return Page();
             }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, RaceResult,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
 
             RaceResult.ResultType = ResultType.Finished;
 
@@ -61,6 +89,14 @@ namespace RacingLeagueManager.Pages.RaceResult
                 return Page();
             }
 
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, RaceResult,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
             RaceResult.ResultType = ResultType.DNF;
 
             _context.RaceResult.Add(RaceResult);
@@ -74,6 +110,14 @@ namespace RacingLeagueManager.Pages.RaceResult
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, RaceResult,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
             }
 
             RaceResult.ResultType = ResultType.DNS;

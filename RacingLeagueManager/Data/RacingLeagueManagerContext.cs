@@ -9,7 +9,7 @@ using RacingLeagueManager.Data.Models;
 
 namespace RacingLeagueManager.Data
 {
-    public class RacingLeagueManagerContext : IdentityDbContext<Driver, IdentityRole<Guid>, Guid>
+    public class RacingLeagueManagerContext : IdentityDbContext<Driver, IdentityRole<Guid>, Guid>//, Role, Guid> //
     {
         public RacingLeagueManagerContext (DbContextOptions<RacingLeagueManagerContext> options)
             : base(options)

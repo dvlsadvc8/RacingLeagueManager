@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Penalty
 {
-    public class CreateModel : PageModel
+    public class CreateModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
-
-        public CreateModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        
+        public CreateModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         public async Task<IActionResult> OnGetAsync(Guid raceResultId)
@@ -33,6 +38,14 @@ namespace RacingLeagueManager.Pages.Penalty
             if(RaceResult == null)
             {
                 return NotFound();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, RaceResult.SeriesEntry.Series,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
             }
 
             Penalty = new Data.Models.Penalty() { RaceResultId = raceResultId };
@@ -51,6 +64,17 @@ namespace RacingLeagueManager.Pages.Penalty
             {
                 return Page();
             }
+
+            var seriesEntry = _context.SeriesEntry.Include(s => s.Series).FirstOrDefault(s => s.Id == RaceResult.SeriesEntryId);
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, seriesEntry.Series,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
 
             _context.Penalty.Add(Penalty);
             await _context.SaveChangesAsync();

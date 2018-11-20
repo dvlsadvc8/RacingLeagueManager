@@ -41,7 +41,7 @@ namespace RacingLeagueManager.Authorization
             }
 
             if (resource.DriverId == new Guid(_userManager.GetUserId(context.User)) 
-                || context.User.IsInRole("GlobalAdmin") 
+                || context.User.HasClaim("Role", "GlobalAdmin")
                 || context.User.HasClaim("LeagueAdmin", resource.LeagueId.ToString()))
             {
                 context.Succeed(requirement);

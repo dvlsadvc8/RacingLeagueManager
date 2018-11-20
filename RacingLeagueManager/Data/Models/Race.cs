@@ -15,7 +15,7 @@ namespace RacingLeagueManager.Data.Models
 
         public RaceStatus? Status { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:MM/dd/yyyy}")]
         [Display(Name ="Race Date")]
         public DateTime RaceDate { get; set; }
         [Range(1, Int32.MaxValue, ErrorMessage = "Laps must be 1 or more.")]

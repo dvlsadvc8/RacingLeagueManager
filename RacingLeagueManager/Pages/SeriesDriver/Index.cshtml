@@ -64,6 +64,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.SeriesDrivers[0].Status)
                 </th>
+                <th></th>
                 
             </tr>
         </thead>
@@ -86,8 +87,12 @@
                     @if(item.Rank <= 8)
                     {
                         <td>
-                            @Html.ActionLink("Create Team", "Create", "Team", new { seriesId = Model.SeriesId, driverId = item.DriverId })
+                            <a asp-page="/Team/Create" asp-route-seriesId="@Model.SeriesId" asp-route-driverId="@item.DriverId">Create Team</a>
                         </td>
+                    }
+                    else
+                    {
+                        <td></td>
                     }
                    
 

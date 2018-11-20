@@ -2,25 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Team
 {
-    public class CreateModel : PageModel
+    public class CreateModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
-        private readonly UserManager<Driver> _userManager;
+        
 
-        public CreateModel(UserManager<Driver> userManager, RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public CreateModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _userManager = userManager;
-            _context = context;
         }
 
         public async Task<IActionResult> OnGet(Guid seriesId, Guid? driverId)
@@ -46,6 +49,11 @@ namespace RacingLeagueManager.Pages.Team
                 return NotFound();
             }
 
+            if(series.StartDate > DateTime.Now)
+            {
+                return Forbid();
+            }
+
             Team = new Data.Models.Team() { SeriesId = series.Id, OwnerId = driverId.Value, Series = series };
 
 
@@ -65,6 +73,14 @@ namespace RacingLeagueManager.Pages.Team
 
             //Driver driver = await _userManager.GetUserAsync(User);
             //Team.OwnerId = driver.Id;
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, Team,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
 
             _context.Team.Add(Team);
             await _context.SaveChangesAsync();

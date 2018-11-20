@@ -2,24 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Series
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
-        private readonly UserManager<Driver> _userManager;
 
-        public DetailsModel(UserManager<Driver> userManager, RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public DetailsModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _userManager = userManager;
-            _context = context;
         }
 
         public Data.Models.Series Series { get; set; }
@@ -81,6 +83,14 @@ namespace RacingLeagueManager.Pages.Series
                 DriverId = driver.Id,
                 Status = "Available"
             };
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, seriesDriver,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
 
 
             _context.SeriesDriver.Add(seriesDriver);

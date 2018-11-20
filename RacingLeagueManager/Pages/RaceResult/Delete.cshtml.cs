@@ -43,18 +43,18 @@ namespace RacingLeagueManager.Pages.RaceResult
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            RaceResult = await _context.RaceResult.FindAsync(id);
+            //RaceResult = await _context.RaceResult.FindAsync(id);
 
-            if (RaceResult != null)
-            {
-                _context.RaceResult.Remove(RaceResult);
-                await _context.SaveChangesAsync();
-            }
+            //if (RaceResult != null)
+            //{
+            //    _context.RaceResult.Remove(RaceResult);
+            //    await _context.SaveChangesAsync();
+            //}
 
             return RedirectToPage("./Index");
         }

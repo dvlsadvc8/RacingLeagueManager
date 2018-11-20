@@ -83,6 +83,7 @@ namespace RacingLeagueManager.Pages.Series
 
             series.Name = Series.Name;
             series.Description = Series.Description;
+            series.StartDate = Series.StartDate;
 
             await _context.SaveChangesAsync();
 

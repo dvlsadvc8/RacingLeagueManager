@@ -42,18 +42,18 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            SeriesEntryDriver = await _context.SeriesEntryDriver.FindAsync(id);
+            //SeriesEntryDriver = await _context.SeriesEntryDriver.FindAsync(id);
 
-            if (SeriesEntryDriver != null)
-            {
-                _context.SeriesEntryDriver.Remove(SeriesEntryDriver);
-                await _context.SaveChangesAsync();
-            }
+            //if (SeriesEntryDriver != null)
+            //{
+            //    _context.SeriesEntryDriver.Remove(SeriesEntryDriver);
+            //    await _context.SaveChangesAsync();
+            //}
 
             return RedirectToPage("./Index");
         }

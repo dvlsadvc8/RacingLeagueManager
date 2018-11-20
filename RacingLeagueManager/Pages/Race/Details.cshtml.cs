@@ -4,22 +4,27 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 //using Microsoft.EntityFrameworkCore.Internal;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Race
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
-
-        public DetailsModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        
+        public DetailsModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         //public Data.Models.Race Race { get; set; }
@@ -51,14 +56,22 @@ namespace RacingLeagueManager.Pages.Race
                 return NotFound();
             }
 
-            var race = await _context.Race.FirstOrDefaultAsync(r => r.Id == raceId);
+            var race = await _context.Race.Include(r => r.Series).FirstOrDefaultAsync(r => r.Id == raceId);
 
             if(race == null)
             {
                 return NotFound();
             }
 
-            if(race.Status == RaceStatus.Closed)
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, race.Series,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+            if (race.Status == RaceStatus.Closed)
             {
                 try
                 {

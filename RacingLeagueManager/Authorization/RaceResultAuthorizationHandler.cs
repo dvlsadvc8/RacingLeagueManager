@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
 using System;
@@ -11,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace RacingLeagueManager.Authorization
 {
-    public class SeriesDriverAuthorizationHandler
-                : AuthorizationHandler<OperationAuthorizationRequirement, SeriesDriver>
+    public class RaceResultAuthorizationHandler
+                : AuthorizationHandler<OperationAuthorizationRequirement, RaceResult>
     {
         UserManager<Driver> _userManager;
         RacingLeagueManagerContext _context;
 
-        public SeriesDriverAuthorizationHandler(UserManager<Driver>
-            userManager, RacingLeagueManagerContext context)
+        public RaceResultAuthorizationHandler(RacingLeagueManagerContext context, UserManager<Driver>
+            userManager)
         {
             _userManager = userManager;
             _context = context;
@@ -27,7 +28,7 @@ namespace RacingLeagueManager.Authorization
         protected override Task
             HandleRequirementAsync(AuthorizationHandlerContext context,
                                    OperationAuthorizationRequirement requirement,
-                                   SeriesDriver resource)
+                                   RaceResult resource)
         {
             if (context.User == null || resource == null)
             {
@@ -43,24 +44,21 @@ namespace RacingLeagueManager.Authorization
             //    return Task.CompletedTask;
             //}
 
-            if(requirement.Name == Operations.Create.Name)
-            {
-                if(_context.LeagueDriver.Any(l => l.DriverId == resource.DriverId && l.LeagueId == resource.LeagueId && l.Status == "Active"))
-                {
-                    context.Succeed(requirement);
-                }
-            }
-            else
-            {
-                if (context.User.HasClaim("Role", "GlobalAdmin")
-                || context.User.HasClaim("LeagueAdmin", resource.LeagueId.ToString())
-                || context.User.HasClaim("SeriesAdmin", resource.SeriesId.ToString()))
-                {
-                    context.Succeed(requirement);
-                }
-            }
+            var race = _context.Race.Include(r => r.Series).FirstOrDefault(r => r.Id == resource.RaceId);
+            var seriesEntry = _context.SeriesEntry.Include(s => s.Team).FirstOrDefault(s => s.Id == resource.SeriesEntryId);
 
-            
+            var seriesId = race.Series.Id;
+            var teamOwnerId = seriesEntry.Team.OwnerId;
+            var userId = new Guid(_userManager.GetUserId(context.User));
+
+            if (resource.DriverId == userId 
+                || context.User.HasClaim("Role", "GlobalAdmin")
+                || context.User.HasClaim("SeriesAdmin", seriesId.ToString())
+                || teamOwnerId == userId)
+                
+            {
+                context.Succeed(requirement);
+            }
 
             return Task.CompletedTask;
         }
