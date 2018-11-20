@@ -15,6 +15,7 @@
             <div class="form-group">
                 <label asp-for="Input.UserName"></label>
                 <input asp-for="Input.UserName" class="form-control" />
+                <span class="text-info">Please use underscore (_) in place of spaces.</span>
                 <span asp-validation-for="Input.UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
