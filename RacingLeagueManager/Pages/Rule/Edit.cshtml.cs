@@ -97,7 +97,7 @@ namespace RacingLeagueManager.Pages.Rule
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new { leagueId = rule.LeagueId });
         }
 
         private bool RuleExists(Guid id)
