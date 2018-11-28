@@ -57,10 +57,8 @@ namespace RacingLeagueManager.Pages.Rule
                 return Page();
             }
 
-            League league = await _context.League.Where(l => l.Id == Rule.LeagueId).Include(l => l.Rules).FirstOrDefaultAsync();
-            Rule.Number = league.Rules.Count() + 1;
-            league.Rules = null;
-            Rule.League = league;
+            int ruleCount = await _context.Rule.Where(r => r.LeagueId == Rule.LeagueId).CountAsync();
+            Rule.Number = ruleCount + 1; //league.Rules.Count() + 1;
 
             var isAuthorized = await _authorizationService.AuthorizeAsync(
                                                 User, Rule,
@@ -70,12 +68,10 @@ namespace RacingLeagueManager.Pages.Rule
                 return Forbid();
             }
 
-            Rule.League = null;
-
             _context.Rule.Add(Rule);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index", new { leagueId = league.Id });
+            return RedirectToPage("./Index", new { leagueId = Rule.LeagueId });
         }
     }
 }
