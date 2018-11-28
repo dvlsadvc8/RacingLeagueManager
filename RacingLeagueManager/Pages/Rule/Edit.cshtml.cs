@@ -70,14 +70,15 @@ namespace RacingLeagueManager.Pages.Rule
             }
 
             var isAuthorized = await _authorizationService.AuthorizeAsync(
-                                                User, Rule,
+                                                User, rule,
                                                 Operations.Update);
             if (!isAuthorized.Succeeded)
             {
                 return Forbid();
             }
 
-
+            rule.Number = Rule.Number;
+            rule.Description = Rule.Description;
             //_context.Attach(Rule).State = EntityState.Modified;
 
             try
