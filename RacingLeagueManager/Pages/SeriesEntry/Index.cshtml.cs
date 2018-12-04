@@ -59,7 +59,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
                 new StandingsViewModel()
                 {
                     Car = x.Car.Name,
-                    Drivers = string.Join(" | ", x.SeriesEntryDrivers.Select(sed => sed.LeagueDriver.Driver.UserName)),
+                    Drivers = string.Join(" | ", x.SeriesEntryDrivers.Select(sed => sed.LeagueDriver.Driver.DisplayUserName)),
                     RaceNumber = x.RaceNumber,
                     Team = x.Team.Name,
                     Points = x.RaceResults.Sum(r => r.Points)

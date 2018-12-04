@@ -166,7 +166,7 @@ namespace RacingLeagueManager.Pages.Race
                 if (raceResult != null)
                 {
                     raceResultViewModel.RaceResultId = raceResult.Id;
-                    raceResultViewModel.Username = raceResult.Driver.UserName;
+                    raceResultViewModel.DisplayUserName = raceResult.Driver.DisplayUserName;
                     raceResultViewModel.BestLap = raceResult.BestLap;
                     raceResultViewModel.TotalTime = raceResult.TotalTime;
                     raceResultViewModel.PenaltySeconds = raceResult.Penalties.Sum(p => p.Seconds);
@@ -211,7 +211,7 @@ namespace RacingLeagueManager.Pages.Race
                             SeriesEntryId = x.SeriesEntryId,
                             TeamName = x.TeamName,
                             TotalTime = x.TotalTime,
-                            Username = x.Username,
+                            DisplayUserName = x.DisplayUserName,
                             ResultType = x.ResultType
                         }).ToList()
                 };
@@ -234,7 +234,7 @@ namespace RacingLeagueManager.Pages.Race
                                 SeriesEntryId = x.SeriesEntryId,
                                 TeamName = x.TeamName,
                                 TotalTime = x.TotalTime,
-                                Username = x.Username,
+                                DisplayUserName = x.DisplayUserName,
                                 ResultType = x.ResultType
                             }
                         )
@@ -265,7 +265,7 @@ namespace RacingLeagueManager.Pages.Race
                             SeriesEntryId = x.SeriesEntryId,
                             TeamName = x.TeamName,
                             TotalTime = x.TotalTime,
-                            Username = x.Username,
+                            DisplayUserName = x.DisplayUserName,
                             ResultType = x.ResultType
                         }).ToList()
                 };
@@ -337,6 +337,7 @@ namespace RacingLeagueManager.Pages.Race
 
         public int Place { get; set; }
         public string Username { get; set; }
+        public string DisplayUserName { get; set; }
         public string RaceNumber { get; set; }
         public string CarName { get; set; }
         public string TeamName { get; set; }

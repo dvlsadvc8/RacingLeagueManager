@@ -8,6 +8,8 @@ namespace RacingLeagueManager.Data.Models
 {
     public class Driver : IdentityUser<Guid>
     {
+        public string DisplayUserName { get; set; }
+
         public ICollection<LeagueDriver> LeagueDrivers { get; set; }
 
         public ICollection<Series> OwnedSeries { get; set; }

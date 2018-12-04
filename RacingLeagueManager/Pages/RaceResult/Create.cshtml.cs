@@ -46,9 +46,9 @@ namespace RacingLeagueManager.Pages.RaceResult
                 return Forbid();
             }
 
-            var teamDrivers = await _context.SeriesEntryDriver.Include(sed => sed.Driver).Where(sed => sed.SeriesEntryId == seriesEntryId).Select(sed => new { Id = sed.Driver.Id, UserName = string.Format("{0}-{1}", sed.Driver.UserName, sed.DriverType)}).ToListAsync();
+            var teamDrivers = await _context.SeriesEntryDriver.Include(sed => sed.Driver).Where(sed => sed.SeriesEntryId == seriesEntryId).Select(sed => new { Id = sed.Driver.Id, DisplayUserName = string.Format("{0}-{1}", sed.Driver.DisplayUserName, sed.DriverType)}).ToListAsync();
 
-            ViewData["DriverId"] = new SelectList(teamDrivers, "Id", "UserName");
+            ViewData["DriverId"] = new SelectList(teamDrivers, "Id", "DisplayUserName");
 
             
 

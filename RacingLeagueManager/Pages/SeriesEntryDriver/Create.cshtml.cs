@@ -55,7 +55,7 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                 .Include(s => s.LeagueDriver)
                     .ThenInclude(ld => ld.Driver)
                 .OrderBy(s => s.LeagueDriver.PreQualifiedTime)
-                .Select(s => new { DriverId = s.DriverId, DisplayValue = s.LeagueDriver.PreQualifiedTime.ToString(@"mm\:ss\.fff") + " " + s.LeagueDriver.Driver.UserName }).ToListAsync();
+                .Select(s => new { DriverId = s.DriverId, DisplayValue = s.LeagueDriver.PreQualifiedTime.ToString(@"mm\:ss\.fff") + " " + s.LeagueDriver.Driver.DisplayUserName }).ToListAsync();
 
             //var availableDriverList = await _context.LeagueDriver
 

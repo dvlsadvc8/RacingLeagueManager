@@ -62,7 +62,8 @@ namespace RacingLeagueManager.Pages.LeagueDriver
                 .Select((x,i) => new LeagueDriverViewModel()
                 {
                     Rank = i + 1,
-                    DriverName = x.Driver.UserName,
+                    DisplayUserName = x.Driver.DisplayUserName,
+
                     DriverId = x.DriverId,
                     PreQualifiedTime = x.PreQualifiedTime
                 }).ToList();
@@ -144,6 +145,8 @@ namespace RacingLeagueManager.Pages.LeagueDriver
         public Guid DriverId { get; set; }
         [Display(Name ="Member Name")]
         public string DriverName { get; set; }
+        [Display(Name = "Member Name")]
+        public string DisplayUserName { get; set; }
         [DisplayFormat(DataFormatString = "{0:mm\\:ss\\.fff}", ApplyFormatInEditMode = true)]
         [Display(Name ="Prequalifier Time")]
         public TimeSpan PreQualifiedTime { get; set; }

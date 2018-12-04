@@ -47,7 +47,7 @@ namespace RacingLeagueManager.Pages.SeriesDriver
                     Rank = i + 1,
                     DriverId = x.DriverId,
                     LeagueId = x.LeagueId,
-                    DriverName = x.LeagueDriver.Driver.UserName,
+                    DisplayUserName = x.LeagueDriver.Driver.DisplayUserName,
                     PreQualifiedTime = x.LeagueDriver.PreQualifiedTime,
                     Status = x.Status,
                     SeriesName = x.Series.Name
@@ -64,6 +64,7 @@ namespace RacingLeagueManager.Pages.SeriesDriver
         public Guid LeagueId { get; set; }
         public Guid DriverId { get; set; }
         public string DriverName { get; set; }
+        public string DisplayUserName { get; set; }
         [DisplayFormat(DataFormatString = "{0:mm\\:ss\\.fff}", ApplyFormatInEditMode = true)]
         public TimeSpan PreQualifiedTime { get; set; }
         public string Status { get; set; }

@@ -42,7 +42,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <strong>@Html.DisplayNameFor(model => model.League.Owner): </strong>
-                    @Html.DisplayFor(model => model.League.Owner.UserName)
+                    @Html.DisplayFor(model => model.League.Owner.DisplayUserName)
                 </div>
                 <div class="col-md-6">
                     <strong>@Html.DisplayNameFor(model => model.League.CreatedDate): </strong>
@@ -87,7 +87,7 @@
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Owner.UserName)
+                            @Html.DisplayFor(modelItem => item.Owner.DisplayUserName)
                         </td>
                         @*<td>
                                 <a asp-page="../SeriesEntry/Create" asp-route-seriesId="@item.Id">New Entry</a>

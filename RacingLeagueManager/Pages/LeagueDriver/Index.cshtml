@@ -42,7 +42,7 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Driver.UserName)
+                                @Html.DisplayFor(modelItem => item.Driver.DisplayUserName)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.PreQualifiedTime)
@@ -84,7 +84,7 @@
                         Rank
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].DriverName)
+                        @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].DisplayUserName)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.LeagueDrivers.ActiveDrivers[0].PreQualifiedTime)
@@ -109,7 +109,7 @@
                             @Html.DisplayFor(modelItem => item.Rank)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DriverName)
+                            @Html.DisplayFor(modelItem => item.DisplayUserName)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PreQualifiedTime)

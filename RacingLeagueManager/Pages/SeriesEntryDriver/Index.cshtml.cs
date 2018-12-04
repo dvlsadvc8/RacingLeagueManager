@@ -40,7 +40,7 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                 .Select(s => new SeriesEntryDriverViewModel
                 {
                     DriverId = s.DriverId,
-                    DriverName = s.LeagueDriver.Driver.UserName,
+                    DisplayUserName = s.LeagueDriver.Driver.DisplayUserName,
                     DriverType = s.DriverType,
                     RaceResultCount = s.LeagueDriver.Driver.RaceResults.Count(),
                     DNFCount = s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNF).Count(),
@@ -58,6 +58,7 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
     {
         public Guid DriverId { get; set; }
         public string DriverName { get; set; }
+        public string DisplayUserName { get; set; }
         public DriverType DriverType { get; set; }
         public int RaceResultCount { get; set; }
         public int PenaltyPoints { get; set; }
