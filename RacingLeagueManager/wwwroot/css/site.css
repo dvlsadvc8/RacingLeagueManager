@@ -37,9 +37,14 @@ body {
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */
-    .carousel-caption {
+    /*.carousel-caption {
         display: none;
-    }
+    }*/
+}
+
+.carousel-caption {
+    top: 45%;
+    transform: translateY(-100%);
 }
 
 .orange-carousel {
