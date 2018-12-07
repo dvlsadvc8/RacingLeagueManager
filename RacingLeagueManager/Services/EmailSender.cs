@@ -23,7 +23,7 @@ namespace WebPWrecover.Services
 
         public Task Execute(string apiKey, string subject, string message, string email)
         {
-            var client = new SendGridClient(apiKey);
+            var client = new SendGridClient("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");
             var msg = new SendGridMessage()
             {
                 From = new EmailAddress("system@pitboard-dev.com", "Pitboard"),
