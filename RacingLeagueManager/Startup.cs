@@ -16,6 +16,9 @@ using RacingLeagueManager.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using RacingLeagueManager.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using RacingLeagueManager.Services;
+using WebPWrecover.Services;
 
 namespace RacingLeagueManager
 {
@@ -85,6 +88,14 @@ namespace RacingLeagueManager
                 config.Filters.Add(new AuthorizeFilter(policy));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // Email Setup
+            // requires
+            // using Microsoft.AspNetCore.Identity.UI.Services;
+            // using WebPWrecover.Services;
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
 
             // Authorization handlers.
             services.AddScoped<IAuthorizationHandler, LeagueAuthorizationHandler>();

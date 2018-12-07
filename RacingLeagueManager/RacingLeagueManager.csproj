@@ -1,14 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-RacingLeagueManager-77D9DD3F-614B-4DCE-B38A-403C3DF9FD7C</UserSecretsId>
+    <UserSecretsId>aspnet-WebPWrecover-1234</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ErikEJ.EntityFrameworkCore.DgmlBuilder" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" PrivateAssets="All" />
+    <PackageReference Include="SendGrid" Version="9.10.0" />
   </ItemGroup>
 
   <ItemGroup>
