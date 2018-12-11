@@ -48,7 +48,7 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                     PenaltyPoints = s.LeagueDriver.Driver.RaceResults.Sum(r => r.PenaltyPoints)
                 });
 
-            Drivers = await query.ToListAsync();
+            Drivers = await query.Distinct().ToListAsync();
 
             
         }
