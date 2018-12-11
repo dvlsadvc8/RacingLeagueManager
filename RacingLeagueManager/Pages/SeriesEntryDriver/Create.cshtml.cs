@@ -51,7 +51,7 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
 
 
             var availableDriverList = await _context.SeriesDriver
-                .Where(s => s.SeriesId == seriesEntry.SeriesId && s.Status == "Available")
+                .Where(s => s.SeriesId == seriesEntry.SeriesId && s.Status != "Unavailable - Primary")
                 .Include(s => s.LeagueDriver)
                     .ThenInclude(ld => ld.Driver)
                 .OrderBy(s => s.LeagueDriver.PreQualifiedTime)
