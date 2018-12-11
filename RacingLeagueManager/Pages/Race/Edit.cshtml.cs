@@ -102,7 +102,7 @@ namespace RacingLeagueManager.Pages.Race
             //    }
             //}
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new { id = race.Id });
         }
 
         private bool RaceExists(Guid id)
