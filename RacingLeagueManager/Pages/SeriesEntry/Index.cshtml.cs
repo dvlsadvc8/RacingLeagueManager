@@ -40,7 +40,7 @@ namespace RacingLeagueManager.Pages.SeriesEntry
                 .Include(s => s.SeriesEntryDrivers)
                     .ThenInclude(sed => sed.LeagueDriver)
                         .ThenInclude(ld => ld.Driver)
-                .Where(se => se.SeriesId == SeriesId)
+                .Where(se => se.SeriesId == seriesId)
                 .ToListAsync();
 
             if(seriesEntries == null)
