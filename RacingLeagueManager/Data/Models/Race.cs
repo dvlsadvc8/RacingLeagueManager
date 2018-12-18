@@ -25,7 +25,8 @@ namespace RacingLeagueManager.Data.Models
         public Guid SeriesId { get; set; }
         public Series Series { get; set; }
 
-        public bool? IsNight { get; set; }
+        [Display(Name = "Night Race")]
+        public bool IsNight { get; set; }
     }
 
     public enum RaceStatus

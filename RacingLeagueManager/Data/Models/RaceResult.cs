@@ -22,7 +22,9 @@ namespace RacingLeagueManager.Data.Models
         public Guid DriverId { get; set; }
         public Driver Driver { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:hh\\:mm\\:ss\\.fff}", ApplyFormatInEditMode = true)]
         public TimeSpan? BestLap { get; set; }
+        [DisplayFormat(DataFormatString = "{0:hh\\:mm\\:ss}", ApplyFormatInEditMode = true)]
         public TimeSpan? TotalTime { get; set; }
 
         public int Place { get; set; }
@@ -39,6 +41,7 @@ namespace RacingLeagueManager.Data.Models
     {
         Finished,
         DNF,
-        DNS
+        DNS,
+        RC
     }
 }

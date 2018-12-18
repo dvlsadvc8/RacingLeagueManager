@@ -30,6 +30,11 @@
                 <span asp-validation-for="Race.Laps" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Race.IsNight" class="control-label"></label>&nbsp;
+                <input asp-for="Race.IsNight" type="checkbox" class="checkbox checkbox-inline" />
+                @*<span asp-validation-for="Race.IsNight" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>

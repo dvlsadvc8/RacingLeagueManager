@@ -27,6 +27,11 @@
                 <span asp-validation-for="Race.Laps" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Race.IsNight" class="control-label"></label>
+                <input asp-for="Race.IsNight" type="checkbox" class="form-control checkbox" />
+                <span asp-validation-for="Race.IsNight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input asp-for="Race.SeriesId" type="hidden" />
             </div>
             <div class="form-group">

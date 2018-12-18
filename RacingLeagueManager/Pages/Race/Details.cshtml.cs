@@ -120,7 +120,15 @@ namespace RacingLeagueManager.Pages.Race
 
                 if(raceResult.ResultType != ResultType.DNS)
                 {
-                    raceResult.Points = 25 - resultModel.Place;
+                    if(raceResult.ResultType == ResultType.RC)
+                    {
+                        raceResult.Points = 24;
+                        raceResult.Place = 99;
+                    }
+                    else
+                    {
+                        raceResult.Points = 25 - resultModel.Place;
+                    }
                 }
             }
         }
@@ -195,6 +203,7 @@ namespace RacingLeagueManager.Pages.Race
                     SeriesId = Race.SeriesId,
                     SeriesName = Race.Series.Name,
                     Laps = Race.Laps,
+                    DayNight = Race.IsNight? "Night" : "Day",
                     RaceDate = Race.RaceDate,
                     Status = Race.Status,
                     Results = ResultsList.Where(r => r.TotalTime != null).OrderBy(r => r.OfficialTime).Select((x, index) =>
@@ -249,6 +258,7 @@ namespace RacingLeagueManager.Pages.Race
                     SeriesId = Race.SeriesId,
                     SeriesName = Race.Series.Name,
                     Laps = Race.Laps,
+                    DayNight = Race.IsNight ? "Night" : "Day",
                     RaceDate = Race.RaceDate,
                     Status = Race.Status,
                     Results = ResultsList.OrderBy(r => r.Place).Select(x =>
@@ -282,6 +292,8 @@ namespace RacingLeagueManager.Pages.Race
         public Guid SeriesId { get; set; }
         public string SeriesName { get; set; }
         public int Laps { get; set; }
+        [Display(Name = "Track Scenario")]
+        public string DayNight { get; set; }
         public DateTime RaceDate { get; set; }
         public RaceStatus? Status { get; set; }
 

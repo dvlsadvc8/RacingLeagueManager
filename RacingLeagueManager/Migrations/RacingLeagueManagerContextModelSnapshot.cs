@@ -266,7 +266,7 @@ namespace RacingLeagueManager.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool?>("IsNight");
+                    b.Property<bool>("IsNight");
 
                     b.Property<int>("Laps");
 

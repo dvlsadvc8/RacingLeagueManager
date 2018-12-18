@@ -10,7 +10,7 @@ using RacingLeagueManager.Data;
 namespace RacingLeagueManager.Migrations
 {
     [DbContext(typeof(RacingLeagueManagerContext))]
-    [Migration("20181218040203_RaceIsNight")]
+    [Migration("20181218064925_RaceIsNight")]
     partial class RaceIsNight
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -268,7 +268,7 @@ namespace RacingLeagueManager.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool?>("IsNight");
+                    b.Property<bool>("IsNight");
 
                     b.Property<int>("Laps");
 

@@ -81,6 +81,7 @@ namespace RacingLeagueManager.Pages.Race
             race.Laps = Race.Laps;
             race.RaceDate = Race.RaceDate;
             race.TrackId = Race.TrackId;
+            race.IsNight = Race.IsNight;
 
             await _context.SaveChangesAsync();
 

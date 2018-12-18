@@ -43,6 +43,12 @@
                 <dd>
                     @Html.DisplayFor(model => model.RaceDetailsViewModel.Laps)
                 </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RaceDetailsViewModel.DayNight)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RaceDetailsViewModel.DayNight)
+                </dd>
             </dl>
         </div>
     </div>
@@ -121,6 +127,10 @@
                             else if (item.ResultType == Data.Models.ResultType.DNS)
                             {
                                 <span class="label label-danger">DNS</span>
+                            }
+                            else if (item.ResultType == Data.Models.ResultType.RC)
+                            {
+                                <span class="label label-info">Race Control</span>
                             }
                         </td>
                         <td>

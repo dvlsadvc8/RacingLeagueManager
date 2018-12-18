@@ -82,6 +82,29 @@ namespace RacingLeagueManager.Pages.RaceResult
             return RedirectToPage("/Race/Details", new { Id = RaceResult.RaceId });
         }
 
+        public async Task<IActionResult> OnPostRcAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, RaceResult,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+            RaceResult.ResultType = ResultType.RC;
+
+            _context.RaceResult.Add(RaceResult);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Race/Details", new { id = RaceResult.RaceId });
+        }
+
         public async Task<IActionResult> OnPostDnfAsync()
         {
             if (!ModelState.IsValid)

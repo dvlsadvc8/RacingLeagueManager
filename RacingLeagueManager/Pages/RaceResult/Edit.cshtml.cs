@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.RaceResult
 {
-    public class EditModel : PageModel
+    public class EditModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
 
-        public EditModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public EditModel(RacingLeagueManager.Data.RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+            : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -39,38 +44,74 @@ namespace RacingLeagueManager.Pages.RaceResult
             {
                 return NotFound();
             }
-           ViewData["DriverId"] = new SelectList(_context.Users, "Id", "Id");
-           ViewData["RaceId"] = new SelectList(_context.Race, "Id", "Id");
-           ViewData["SeriesEntryId"] = new SelectList(_context.SeriesEntry, "Id", "Id");
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, RaceResult,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+            var teamDrivers = await _context.SeriesEntryDriver
+                .Include(sed => sed.Driver)
+                .Where(sed => sed.SeriesEntryId == RaceResult.SeriesEntryId)
+                .Select(sed => new { Id = sed.Driver.Id, DisplayUserName = string.Format("{0}-{1}", sed.Driver.DisplayUserName, sed.DriverType) })
+                .ToListAsync();
+
+            ViewData["DriverId"] = new SelectList(teamDrivers, "Id", "DisplayUserName");
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
-            //_context.Attach(RaceResult).State = EntityState.Modified;
+            //var raceResult = await _context.RaceResult.Include(r => r.s)//.Attach(RaceResult).State = EntityState.Modified;
 
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!RaceResultExists(RaceResult.Id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
+            var raceResult = await _context.RaceResult
+                .Include(r => r.Driver)
+                .Include(r => r.Race)
+                .Include(r => r.SeriesEntry).FirstOrDefaultAsync(m => m.Id == RaceResult.Id);
 
-            return RedirectToPage("./Index");
+            if(raceResult == null)
+            {
+                return NotFound();
+            }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, raceResult,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+            raceResult.DriverId = RaceResult.DriverId;
+            raceResult.BestLap = RaceResult.BestLap;
+            raceResult.TotalTime = RaceResult.TotalTime;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RaceResultExists(RaceResult.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToPage("../Race/Details", new { id =  raceResult.RaceId });
         }
 
         private bool RaceResultExists(Guid id)

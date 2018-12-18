@@ -9,7 +9,8 @@ namespace RacingLeagueManager.Migrations
             migrationBuilder.AddColumn<bool>(
                 name: "IsNight",
                 table: "Race",
-                nullable: true);
+                nullable: false,
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -45,19 +45,22 @@ namespace RacingLeagueManager.Authorization
             //}
 
             var race = _context.Race.Include(r => r.Series).FirstOrDefault(r => r.Id == resource.RaceId);
-            var seriesEntry = _context.SeriesEntry.Include(s => s.Team).FirstOrDefault(s => s.Id == resource.SeriesEntryId);
+            var seriesEntry = _context.SeriesEntry.Include(s => s.SeriesEntryDrivers).Include(s => s.Team).FirstOrDefault(s => s.Id == resource.SeriesEntryId);
 
             var seriesId = race.Series.Id;
             var teamOwnerId = seriesEntry.Team.OwnerId;
             var userId = new Guid(_userManager.GetUserId(context.User));
+            var ids = seriesEntry.SeriesEntryDrivers.Select(s => s.DriverId).ToList();
 
-            if (resource.DriverId == userId 
-                || context.User.HasClaim("Role", "GlobalAdmin")
-                || context.User.HasClaim("SeriesAdmin", seriesId.ToString())
-                || teamOwnerId == userId)
-                
+            if(race.Status == RaceStatus.Open)
             {
-                context.Succeed(requirement);
+                if (ids.Any(s => s.Equals(userId))
+                    || context.User.HasClaim("Role", "GlobalAdmin")
+                    || context.User.HasClaim("SeriesAdmin", seriesId.ToString())
+                    || teamOwnerId == userId)
+                {
+                    context.Succeed(requirement);
+                }
             }
 
             return Task.CompletedTask;
