@@ -65,7 +65,15 @@ namespace RacingLeagueManager.Pages.Penalty
                 return Page();
             }
 
-            var seriesEntry = _context.SeriesEntry.Include(s => s.Series).FirstOrDefault(s => s.Id == RaceResult.SeriesEntryId);
+            var raceResult = await _context.RaceResult
+                .Include(r => r.Race)
+                    .ThenInclude(r => r.Track)
+                .Include(r => r.Driver)
+                .Include(r => r.SeriesEntry)
+                    .ThenInclude(s => s.Series)
+                .FirstOrDefaultAsync(r => r.Id == Penalty.RaceResultId);
+
+            var seriesEntry = _context.SeriesEntry.Include(s => s.Series).FirstOrDefault(s => s.Id == raceResult.SeriesEntryId);
 
             var isAuthorized = await _authorizationService.AuthorizeAsync(
                                                 User, seriesEntry.Series,
@@ -75,11 +83,10 @@ namespace RacingLeagueManager.Pages.Penalty
                 return Forbid();
             }
 
-
             _context.Penalty.Add(Penalty);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Race/Details", new { id = RaceResult.RaceId });
+            return RedirectToPage("/Race/Details", new { id = raceResult.RaceId });
         }
     }
 }
