@@ -43,6 +43,8 @@ namespace RacingLeagueManager.Pages.Penalty
 
         public async Task<IActionResult> OnPostAsync()
         {
+            throw new NotImplementedException();
+
             //if (!ModelState.IsValid)
             //{
             //    return Page();
@@ -66,7 +68,7 @@ namespace RacingLeagueManager.Pages.Penalty
             //    }
             //}
 
-            return RedirectToPage("./Index");
+            //return RedirectToPage("./Index");
         }
 
         private bool PenaltyExists(Guid id)

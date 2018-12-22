@@ -21,10 +21,15 @@ namespace RacingLeagueManager.Pages.Penalty
 
         public IList<Data.Models.Penalty> Penalty { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(Guid raceResultId)
         {
             Penalty = await _context.Penalty
-                .Include(p => p.RaceResult).ToListAsync();
+                .Include(p => p.RaceResult)
+                    .ThenInclude(rr => rr.Driver)
+                .Include(p => p.RaceResult)
+                    .ThenInclude(p => p.Race)
+                        .ThenInclude(r => r.Track)
+                .Where(p => p.RaceResultId == raceResultId).ToListAsync();
         }
     }
 }

@@ -112,7 +112,14 @@
                             @Html.DisplayFor(modelItem => item.TotalTime)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.PenaltySeconds)
+                            @if (item.PenaltySeconds > 0)
+                            {
+                                <a asp-page="../Penalty/Index" asp-route-raceResultId="@item.RaceResultId">@Html.DisplayFor(modelItem => item.PenaltySeconds)</a>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.PenaltySeconds)
+                            }
                         </td>
                         <td>
                             @if (item.ResultType == Data.Models.ResultType.Finished)

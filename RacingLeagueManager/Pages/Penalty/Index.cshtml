@@ -5,23 +5,22 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Penalties for @Model.Penalty[0].RaceResult.Driver.UserName at @Model.Penalty[0].RaceResult.Race.Track.Name</h2>
+<a asp-page="../Race/Details" asp-route-id="@Model.Penalty[0].RaceResult.RaceId">Back to Race Details</a>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+@*<p>
+    <a asp-page="Create" asp-route-raceResultId="@Model.Penalty[0].RaceResultId">Add Penalty</a>
+</p>*@
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Penalty[0].RaceResult)
+                @Html.DisplayNameFor(model => model.Penalty[0].Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Penalty[0].Seconds)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Penalty[0].Description)
-            </th>
+
             <th></th>
         </tr>
     </thead>
@@ -29,18 +28,16 @@
 @foreach (var item in Model.Penalty) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.RaceResult.Id)
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Seconds)
             </td>
+            
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |*@
+                @*<a asp-page="./Details" asp-route-id="@item.Id">Details</a> |*@
+                @*<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
             </td>
         </tr>
 }

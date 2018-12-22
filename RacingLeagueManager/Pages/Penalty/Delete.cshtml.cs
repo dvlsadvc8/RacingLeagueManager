@@ -41,6 +41,8 @@ namespace RacingLeagueManager.Pages.Penalty
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
+            throw new NotImplementedException();
+
             //if (id == null)
             //{
             //    return NotFound();
@@ -54,7 +56,7 @@ namespace RacingLeagueManager.Pages.Penalty
             //    await _context.SaveChangesAsync();
             //}
 
-            return RedirectToPage("./Index");
+            //return RedirectToPage("./Index");
         }
     }
 }
