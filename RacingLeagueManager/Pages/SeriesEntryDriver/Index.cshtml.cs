@@ -33,7 +33,7 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             var query = _context.SeriesEntryDriver
                 .Include(s => s.LeagueDriver)
                     .ThenInclude(ld => ld.Driver)
-                        .ThenInclude(d => d.RaceResults)
+                        .ThenInclude(d => d.RaceResults).Where(s => s.SeriesEntry.SeriesId == seriesId)
                 .Include(s => s.SeriesEntry)
                 .Where(s => s.SeriesEntry.SeriesId == seriesId)
 
