@@ -35,19 +35,23 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                     .ThenInclude(ld => ld.Driver)
                         .ThenInclude(d => d.RaceResults)
                             .ThenInclude(rr => rr.SeriesEntry)
-                           
-                            
-                .Include(s => s.SeriesEntry)
-                .Where(s => s.SeriesEntry.SeriesId == seriesId && s.LeagueDriver.Driver.RaceResults.Any(rr => rr.SeriesEntry.SeriesId == seriesId))
+
+                .Include(s => s.LeagueDriver)
+                    .ThenInclude(ld => ld.Driver)
+                        .ThenInclude(d => d.RaceResults)
+                            .ThenInclude(r => r.Penalties)
+
+                //.Include(s => s.SeriesEntry)
+                //.Where(s => s.SeriesEntry.SeriesId == seriesId)
                 .Select(s => new SeriesEntryDriverViewModel
                 {
                     DriverId = s.DriverId,
                     DisplayUserName = s.LeagueDriver.Driver.DisplayUserName,
                     DriverType = s.DriverType,
-                    RaceResultCount = s.LeagueDriver.Driver.RaceResults.Count(),
-                    DNFCount = s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNF).Count(),
-                    DNSCount = s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNS).Count(),
-                    PenaltyPoints = s.LeagueDriver.Driver.RaceResults.Sum(r => r.PenaltyPoints)
+                    RaceResultCount = s.LeagueDriver.Driver.RaceResults.Where(rr => rr.SeriesEntry.SeriesId == seriesId).Count(),
+                    DNFCount = s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNF && r.SeriesEntry.SeriesId == seriesId).Count(),
+                    DNSCount = s.LeagueDriver.Driver.RaceResults.Where(r => r.ResultType == ResultType.DNS && r.SeriesEntry.SeriesId == seriesId).Count(),
+                    PenaltyPoints = s.LeagueDriver.Driver.RaceResults.Where(r => r.SeriesEntry.SeriesId == seriesId && r.Penalties.Count() > 0).Count() //Sum(r => r.Penalties.Count() > 1 ? 1 : 0)
                 });
 
             Drivers = await query.Distinct().ToListAsync();
