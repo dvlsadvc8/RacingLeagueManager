@@ -1,0 +1,54 @@
+﻿@page
+@model RacingLeagueManager.Pages.Team.StandingsModel
+
+@{
+    ViewData["Title"] = "Standings";
+}
+
+<h3>@Model.SeriesName Team Standings</h3>
+<a asp-page="/Series/Details" asp-route-id="@Model.SeriesId">Series Details</a>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamStandingsViewModel[0].Place)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamStandingsViewModel[0].TeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamStandingsViewModel[0].CarName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamStandingsViewModel[0].Points)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TeamStandingsViewModel)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Place)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeamName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CarName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Points)
+                </td>
+                @*<td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
