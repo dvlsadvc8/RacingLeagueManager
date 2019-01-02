@@ -14,10 +14,15 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="RaceResult.Id" />
-            
+
             <div class="form-group">
                 <label asp-for="RaceResult.DriverId" class="control-label"></label>
                 <select asp-for="RaceResult.DriverId" class="form-control" asp-items="ViewBag.DriverId"></select>
+            </div>
+            <div class="form-group-lg">
+                <span class="label l label-danger ">PAY CLOSE ATTENTION TO THE REQUIRED TIME FORMATS!!</span><br />
+                <span class="label l label-danger">BEST LAP: 1 min 23 sec lap (1:23.456) should be entered 00:01:23.456!!</span><br />
+                <span class="label l label-danger">TOTAL TIME: 1 hr 23 mins 45 secs should be entered 01:23:45!!</span>
             </div>
             <div class="form-group">
                 <label asp-for="RaceResult.BestLap" class="control-label"></label>
@@ -32,15 +37,15 @@
                 <span asp-validation-for="RaceResult.TotalTime" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="RaceResult.Place" class="control-label"></label>
-                <input asp-for="RaceResult.Place" class="form-control" />
-                <span asp-validation-for="RaceResult.Place" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RaceResult.Points" class="control-label"></label>
-                <input asp-for="RaceResult.Points" class="form-control" />
-                <span asp-validation-for="RaceResult.Points" class="text-danger"></span>
-            </div>*@
+            <label asp-for="RaceResult.Place" class="control-label"></label>
+            <input asp-for="RaceResult.Place" class="form-control" />
+            <span asp-validation-for="RaceResult.Place" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="RaceResult.Points" class="control-label"></label>
+            <input asp-for="RaceResult.Points" class="form-control" />
+            <span asp-validation-for="RaceResult.Points" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
