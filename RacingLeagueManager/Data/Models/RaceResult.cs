@@ -42,6 +42,7 @@ namespace RacingLeagueManager.Data.Models
         Finished,
         DNF,
         DNS,
-        RC
+        RC,
+        DQ
     }
 }

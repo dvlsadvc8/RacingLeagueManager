@@ -88,5 +88,41 @@ namespace RacingLeagueManager.Pages.Penalty
 
             return RedirectToPage("/Race/Details", new { id = raceResult.RaceId });
         }
+
+        public async Task<IActionResult> OnPostDqAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var raceResult = await _context.RaceResult
+                .Include(r => r.Race)
+                    .ThenInclude(r => r.Track)
+                .Include(r => r.Driver)
+                .Include(r => r.SeriesEntry)
+                    .ThenInclude(s => s.Series)
+                .FirstOrDefaultAsync(r => r.Id == Penalty.RaceResultId);
+
+            var seriesEntry = _context.SeriesEntry.Include(s => s.Series).FirstOrDefault(s => s.Id == raceResult.SeriesEntryId);
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, seriesEntry.Series,
+                                                Operations.Create);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+            raceResult.ResultType = ResultType.DQ;
+            raceResult.Points = 0;
+            raceResult.Place = 98;
+            Penalty.Seconds = 9999;
+
+            _context.Penalty.Add(Penalty);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Race/Details", new { id = raceResult.RaceId });
+        }
     }
 }

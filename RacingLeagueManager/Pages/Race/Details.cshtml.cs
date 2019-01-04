@@ -125,6 +125,11 @@ namespace RacingLeagueManager.Pages.Race
                         raceResult.Points = 24;
                         raceResult.Place = 99;
                     }
+                    else if(raceResult.ResultType == ResultType.DQ)
+                    {
+                        raceResult.Points = 0;
+                        raceResult.Place = 98;
+                    }
                     else
                     {
                         raceResult.Points = 25 - resultModel.Place;
@@ -206,7 +211,7 @@ namespace RacingLeagueManager.Pages.Race
                     DayNight = Race.IsNight? "Night" : "Day",
                     RaceDate = Race.RaceDate,
                     Status = Race.Status,
-                    Results = ResultsList.Where(r => r.TotalTime != null).OrderBy(r => r.OfficialTime).Select((x, index) =>
+                    Results = ResultsList.Where(r => r.ResultType == ResultType.Finished).OrderBy(r => r.OfficialTime).Select((x, index) =>
                         new RaceResultViewModel()
                         {
                             Place = index + 1,
@@ -227,8 +232,8 @@ namespace RacingLeagueManager.Pages.Race
 
                 model.Results.AddRange(
                     ResultsList
-                        .Where(r => r.TotalTime == null)
-                        .OrderBy(r => r.ResultType).ThenBy(r => r.BestLap)
+                        .Where(r => r.ResultType != ResultType.Finished)
+                        .OrderBy(r => r.ResultType).ThenBy(r => r.OfficialTime)
                         .Select((x, index) =>
                             new RaceResultViewModel()
                             {
@@ -356,6 +361,7 @@ namespace RacingLeagueManager.Pages.Race
         public int Points { get; set; }
         [DisplayFormat(DataFormatString = "{0:mm\\:ss\\.fff}", ApplyFormatInEditMode = false)]
         public TimeSpan? BestLap { get; set; }
+        [DisplayFormat(DataFormatString = "{0:hh\\:mm\\:ss\\.f}", ApplyFormatInEditMode = false)]
         public TimeSpan? TotalTime { get; set; }
         [DisplayName("Penalty")]
         public int PenaltySeconds { get; set; }

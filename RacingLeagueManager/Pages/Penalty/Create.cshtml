@@ -33,6 +33,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-default" />
+                <input type="submit" value="Disqualify" class="btn btn-default" asp-page-handler="Dq" />
                 <a asp-page="/Race/Details" asp-route-Id="@Model.RaceResult.Race.Id" class="btn btn-default">Cancel</a>
             </div>
         </form>

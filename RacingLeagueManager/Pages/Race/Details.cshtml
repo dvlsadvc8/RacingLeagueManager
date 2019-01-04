@@ -91,7 +91,11 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Place)
+                            @if (item.Place < 98)
+                            {
+                                @Html.DisplayFor(modelItem => item.Place)
+                            }
+
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.DisplayUserName)
@@ -109,7 +113,11 @@
                             @Html.DisplayFor(modelItem => item.BestLap)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.TotalTime)
+                            @if (item.ResultType != Data.Models.ResultType.DQ)
+                            {
+                                @Html.DisplayFor(modelItem => item.TotalTime)
+                            }
+
                         </td>
                         <td>
                             @if (item.PenaltySeconds > 0)
@@ -129,15 +137,19 @@
                             }
                             else if (item.ResultType == Data.Models.ResultType.DNF)
                             {
-                                <span class="label label-warning">DNF</span>
+                                <span class="label label-default">DNF</span>
                             }
                             else if (item.ResultType == Data.Models.ResultType.DNS)
                             {
-                                <span class="label label-danger">DNS</span>
+                                <span class="label label-warning">DNS</span>
                             }
                             else if (item.ResultType == Data.Models.ResultType.RC)
                             {
                                 <span class="label label-info">Race Control</span>
+                            }
+                            else if (item.ResultType == Data.Models.ResultType.DQ)
+                            {
+                                <span class="label label-danger">DQ</span>
                             }
                         </td>
                         <td>

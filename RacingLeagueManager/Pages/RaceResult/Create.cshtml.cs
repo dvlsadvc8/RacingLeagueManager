@@ -72,8 +72,7 @@ namespace RacingLeagueManager.Pages.RaceResult
             {
                 return Forbid();
             }
-
-
+            
             RaceResult.ResultType = ResultType.Finished;
 
             _context.RaceResult.Add(RaceResult);
@@ -120,6 +119,9 @@ namespace RacingLeagueManager.Pages.RaceResult
                 return Forbid();
             }
 
+            var race = await _context.Race.FirstOrDefaultAsync(r => r.Id == RaceResult.RaceId);
+
+            RaceResult.TotalTime = RaceResult.BestLap * race.Laps;
             RaceResult.ResultType = ResultType.DNF;
 
             _context.RaceResult.Add(RaceResult);
