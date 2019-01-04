@@ -113,7 +113,7 @@
                             @Html.DisplayFor(modelItem => item.BestLap)
                         </td>
                         <td>
-                            @if (item.ResultType != Data.Models.ResultType.DQ)
+                            @if (item.ResultType == Data.Models.ResultType.Finished) 
                             {
                                 @Html.DisplayFor(modelItem => item.TotalTime)
                             }
