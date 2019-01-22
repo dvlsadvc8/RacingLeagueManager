@@ -29,7 +29,7 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
             var series = await _context.Series.FirstOrDefaultAsync(s => s.Id == seriesId);
             SeriesId = series.Id;
             SeriesName = series.Name;
-
+            
             var query = _context.SeriesEntryDriver
                 .Include(s => s.LeagueDriver)
                     .ThenInclude(ld => ld.Driver)
@@ -41,8 +41,9 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                         .ThenInclude(d => d.RaceResults)
                             .ThenInclude(r => r.Penalties)
 
-                //.Include(s => s.SeriesEntry)
-                //.Where(s => s.SeriesEntry.SeriesId == seriesId)
+                .Include(s => s.SeriesEntry)
+                .Where(s => s.SeriesEntry.SeriesId == seriesId)
+                
                 .Select(s => new SeriesEntryDriverViewModel
                 {
                     DriverId = s.DriverId,
