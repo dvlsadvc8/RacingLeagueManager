@@ -113,28 +113,32 @@ namespace RacingLeagueManager.Pages.Race
             {
                 var raceResult = raceResultList.FirstOrDefault(r => r.Id == resultModel.RaceResultId);
 
-                if(raceResult.Place == 0)
+                if(raceResult != null)
                 {
-                    raceResult.Place = resultModel.Place;
-                }
+                    if (raceResult.Place == 0)
+                    {
+                        raceResult.Place = resultModel.Place;
+                    }
 
-                if(raceResult.ResultType != ResultType.DNS)
-                {
-                    if(raceResult.ResultType == ResultType.RC)
+                    if (raceResult.ResultType != ResultType.DNS)
                     {
-                        raceResult.Points = 24;
-                        raceResult.Place = 99;
-                    }
-                    else if(raceResult.ResultType == ResultType.DQ)
-                    {
-                        raceResult.Points = 0;
-                        raceResult.Place = 98;
-                    }
-                    else
-                    {
-                        raceResult.Points = 25 - resultModel.Place;
+                        if (raceResult.ResultType == ResultType.RC)
+                        {
+                            raceResult.Points = 24;
+                            raceResult.Place = 99;
+                        }
+                        else if (raceResult.ResultType == ResultType.DQ)
+                        {
+                            raceResult.Points = 0;
+                            raceResult.Place = 98;
+                        }
+                        else
+                        {
+                            raceResult.Points = 25 - resultModel.Place;
+                        }
                     }
                 }
+                
             }
         }
 
@@ -167,29 +171,55 @@ namespace RacingLeagueManager.Pages.Race
             {
                 var raceResult = entry.RaceResults.FirstOrDefault(r => r.RaceId == Race.Id);
 
-                RaceResultViewModel raceResultViewModel = new RaceResultViewModel()
+                if (Race.Status == RaceStatus.Certified)
                 {
-                    SeriesEntryId = entry.Id,
-                    RaceNumber = entry.RaceNumber,
-                    CarName = entry.Car.Name,
-                    TeamName = entry.Team.Name,
-                    //Points
-                };
+                    RaceResultViewModel raceResultViewModel = new RaceResultViewModel();
 
-                if (raceResult != null)
-                {
-                    raceResultViewModel.RaceResultId = raceResult.Id;
-                    raceResultViewModel.DisplayUserName = raceResult.Driver.DisplayUserName;
-                    raceResultViewModel.BestLap = raceResult.BestLap;
-                    raceResultViewModel.TotalTime = raceResult.TotalTime;
-                    raceResultViewModel.PenaltySeconds = raceResult.Penalties.Sum(p => p.Seconds);
-                    raceResultViewModel.OfficialTime = raceResultViewModel.TotalTime?.Add(new TimeSpan(0, 0, raceResultViewModel.PenaltySeconds));
-                    raceResultViewModel.Place = raceResult.Place;
-                    raceResultViewModel.ResultType = raceResult.ResultType;
-                    raceResultViewModel.Points = raceResult.Points;
+                    if (raceResult != null)
+                    {
+                        raceResultViewModel.SeriesEntryId = entry.Id;
+                        raceResultViewModel.RaceNumber = entry.RaceNumber;
+                        raceResultViewModel.CarName = entry.Car.Name;
+                        raceResultViewModel.TeamName = entry.Team.Name;
+                        raceResultViewModel.RaceResultId = raceResult.Id;
+                        raceResultViewModel.DisplayUserName = raceResult.Driver.DisplayUserName;
+                        raceResultViewModel.BestLap = raceResult.BestLap;
+                        raceResultViewModel.TotalTime = raceResult.TotalTime;
+                        raceResultViewModel.PenaltySeconds = raceResult.Penalties.Sum(p => p.Seconds);
+                        raceResultViewModel.OfficialTime = raceResultViewModel.TotalTime?.Add(new TimeSpan(0, 0, raceResultViewModel.PenaltySeconds));
+                        raceResultViewModel.Place = raceResult.Place;
+                        raceResultViewModel.ResultType = raceResult.ResultType;
+                        raceResultViewModel.Points = raceResult.Points;
+
+                        ResultsList.Add(raceResultViewModel);
+                    }
+
+                    
                 }
+                else
+                {
+                    RaceResultViewModel raceResultViewModel = new RaceResultViewModel();
 
-                ResultsList.Add(raceResultViewModel);
+                    raceResultViewModel.SeriesEntryId = entry.Id;
+                    raceResultViewModel.RaceNumber = entry.RaceNumber;
+                    raceResultViewModel.CarName = entry.Car.Name;
+                    raceResultViewModel.TeamName = entry.Team.Name;
+                       
+                    if (raceResult != null)
+                    {
+                        raceResultViewModel.RaceResultId = raceResult.Id;
+                        raceResultViewModel.DisplayUserName = raceResult.Driver.DisplayUserName;
+                        raceResultViewModel.BestLap = raceResult.BestLap;
+                        raceResultViewModel.TotalTime = raceResult.TotalTime;
+                        raceResultViewModel.PenaltySeconds = raceResult.Penalties.Sum(p => p.Seconds);
+                        raceResultViewModel.OfficialTime = raceResultViewModel.TotalTime?.Add(new TimeSpan(0, 0, raceResultViewModel.PenaltySeconds));
+                        raceResultViewModel.Place = raceResult.Place;
+                        raceResultViewModel.ResultType = raceResult.ResultType;
+                        raceResultViewModel.Points = raceResult.Points;
+                    }
+
+                    ResultsList.Add(raceResultViewModel);
+                }
             }
 
             return ResultsList;
