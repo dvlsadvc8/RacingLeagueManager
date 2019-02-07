@@ -60,6 +60,7 @@ namespace RacingLeagueManager.Pages
                     .Where(r => r.Series.SeriesDrivers.Any(sd => sd.DriverId == user.Id)
                         && r.RaceDate > DateTime.Now.AddDays(-10)
                         && r.RaceDate < DateTime.Now.AddDays(20))
+                    .OrderBy(r => r.RaceDate)
                     .ToListAsync();
 
             }
