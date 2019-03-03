@@ -42,7 +42,7 @@ namespace RacingLeagueManager.Pages.SeriesEntryDriver
                             .ThenInclude(r => r.Penalties)
 
                 .Include(s => s.SeriesEntry)
-                .Where(s => s.SeriesEntry.SeriesId == seriesId)
+                .Where(s => s.SeriesEntry.SeriesId == seriesId && s.DriverType != DriverType.Retired)
                 
                 .Select(s => new SeriesEntryDriverViewModel
                 {
