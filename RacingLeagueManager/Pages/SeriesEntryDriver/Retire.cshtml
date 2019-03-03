@@ -1,0 +1,35 @@
+﻿@page
+@model RacingLeagueManager.Pages.SeriesEntryDriver.RetireModel
+
+@{
+    ViewData["Title"] = "Retire";
+}
+
+<h2>Retire Driver</h2>
+
+<h3>Are you sure you want to retire this driver? <span class="label label-danger">THIS CANNOT BE UNDONE!</span></h3>
+<div>
+    <hr />
+    <dl>
+        <dt>
+            Driver Name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SeriesEntryDriver.LeagueDriver.Driver.DisplayUserName)
+        </dd>
+        <dt>
+            Driver Type
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SeriesEntryDriver.DriverType)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="SeriesEntryDriver.LeagueId" />
+        <input type="hidden" asp-for="SeriesEntryDriver.DriverId" />
+        <input type="hidden" asp-for="SeriesEntryDriver.SeriesEntryId" />
+        <input type="submit" value="Retire" class="btn btn-default" /> |
+        <a asp-page="../Team/Details" asp-route-id="@Model.SeriesEntryDriver.SeriesEntry.TeamId">Back to Team</a>
+    </form>
+</div>

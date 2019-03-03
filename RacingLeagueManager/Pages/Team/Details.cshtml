@@ -51,14 +51,25 @@
             <td>
                 @if (item.SeriesEntryDrivers != null)
                 {
+                    
+
                     for (int i = 0; i < item.SeriesEntryDrivers.Count; i++)
                     {
                         @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).LeagueDriver.Driver.DisplayUserName)
-                        @Html.Raw(" - ")
-                        @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).DriverType)
+                        <span class="label label-info">@Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).DriverType)</span>
+
+                        @if (item.SeriesEntryDrivers.ElementAt(i).DriverType == Data.Models.DriverType.Reserve)
+                        {
+                            <a asp-page="../SeriesEntryDriver/Promote" asp-route-leagueId="@item.Series.LeagueId" asp-route-seriesEntryId="@item.Id" asp-route-driverId="@item.SeriesEntryDrivers.ElementAt(i).DriverId">Promote</a>@Html.Raw("&nbsp;|&nbsp;")
+                        }
+                        @if (item.SeriesEntryDrivers.ElementAt(i).DriverType != Data.Models.DriverType.Retired)
+                        {
+                            <a asp-page="../SeriesEntryDriver/Retire" asp-route-leagueId="@item.Series.LeagueId" asp-route-seriesEntryId="@item.Id" asp-route-driverId="@item.SeriesEntryDrivers.ElementAt(i).DriverId">Retire</a>
+                        }
+
                         if ((item.SeriesEntryDrivers.Count - i) > 1)
                         {
-                            @Html.Raw(",<br />");
+                            @Html.Raw("<br />");
                         }
                     }
                 }
@@ -66,9 +77,9 @@
 
 
                 @*@foreach (var driver in item.SeriesEntryDrivers)
-                    {
-                        @Html.DisplayFor(modelItem => driver.LeagueDriver.Driver.UserName)
-                    }*@
+        {
+            @Html.DisplayFor(modelItem => driver.LeagueDriver.Driver.UserName)
+        }*@
 
             </td>
             <td>

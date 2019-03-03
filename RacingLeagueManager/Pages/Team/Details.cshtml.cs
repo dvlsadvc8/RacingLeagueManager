@@ -43,6 +43,12 @@ namespace RacingLeagueManager.Pages.Team
             {
                 return NotFound();
             }
+
+            foreach(var entry in Team.SeriesEntries)
+            {
+                entry.SeriesEntryDrivers = entry.SeriesEntryDrivers.OrderBy(s => s.DriverType).ToList();
+            }
+
             return Page();
         }
     }

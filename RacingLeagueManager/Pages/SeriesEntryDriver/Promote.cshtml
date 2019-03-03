@@ -1,0 +1,35 @@
+﻿@page
+@model RacingLeagueManager.Pages.SeriesEntryDriver.PromoteModel
+
+@{
+    ViewData["Title"] = "Promote";
+}
+
+<h2>Promote Driver</h2>
+
+<h3>Are you sure you want to promote this driver to primary?</h3>
+<div>
+    <hr />
+    <dl>
+        <dt>
+            Driver Name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SeriesEntryDriver.LeagueDriver.Driver.DisplayUserName)
+        </dd>
+        <dt>
+            Driver Type
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SeriesEntryDriver.DriverType)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="SeriesEntryDriver.LeagueId" />
+        <input type="hidden" asp-for="SeriesEntryDriver.DriverId" />
+        <input type="hidden" asp-for="SeriesEntryDriver.SeriesEntryId" />
+        <input type="submit" value="Promote" class="btn btn-default" /> |
+        <a asp-page="../Team/Details" asp-route-id="@Model.SeriesEntryDriver.SeriesEntry.TeamId">Back to Team</a>
+    </form>
+</div>
