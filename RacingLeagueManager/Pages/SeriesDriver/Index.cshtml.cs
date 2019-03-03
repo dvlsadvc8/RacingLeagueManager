@@ -51,7 +51,7 @@ namespace RacingLeagueManager.Pages.SeriesDriver
                     PreQualifiedTime = x.LeagueDriver.PreQualifiedTime,
                     Status = x.Status,
                     SeriesName = x.Series.Name
-                })
+                }).OrderBy(d => d.Status).ThenBy(d => d.PreQualifiedTime)
                 .ToList();
         }
 
