@@ -52,25 +52,33 @@
                 @if (item.SeriesEntryDrivers != null)
                 {
                     
+                    
 
-                    for (int i = 0; i < item.SeriesEntryDrivers.Count; i++)
+                    @for (int i = 0; i < item.SeriesEntryDrivers.Count; i++)
                     {
-                        @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).LeagueDriver.Driver.DisplayUserName)
-                        <span class="label label-info">@Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).DriverType)</span>
+                        <div class="row">
+                            <div class="col-md-8">
+                                @Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).LeagueDriver.Driver.DisplayUserName)
+                                <span class="label label-info">@Html.DisplayFor(modelItem => item.SeriesEntryDrivers.ElementAt(i).DriverType)</span>
+                            </div>
+                            <div class="col-md-2">
+                                @if (item.SeriesEntryDrivers.ElementAt(i).DriverType == Data.Models.DriverType.Reserve)
+                                {
+                                    <a class="btn btn-default btn-sm" asp-page="../SeriesEntryDriver/Promote" asp-route-leagueId="@item.Series.LeagueId" asp-route-seriesEntryId="@item.Id" asp-route-driverId="@item.SeriesEntryDrivers.ElementAt(i).DriverId">Promote</a>
+                                }
+                            </div>
+                            <div class="col-md-2">
+                                @if (item.SeriesEntryDrivers.ElementAt(i).DriverType != Data.Models.DriverType.Retired)
+                                {
+                                    <a class="btn btn-default btn-sm" asp-page="../SeriesEntryDriver/Retire" asp-route-leagueId="@item.Series.LeagueId" asp-route-seriesEntryId="@item.Id" asp-route-driverId="@item.SeriesEntryDrivers.ElementAt(i).DriverId">Retire</a>
+                                }
+                            </div>
+                        </div>
 
-                        @if (item.SeriesEntryDrivers.ElementAt(i).DriverType == Data.Models.DriverType.Reserve)
-                        {
-                            <a asp-page="../SeriesEntryDriver/Promote" asp-route-leagueId="@item.Series.LeagueId" asp-route-seriesEntryId="@item.Id" asp-route-driverId="@item.SeriesEntryDrivers.ElementAt(i).DriverId">Promote</a>@Html.Raw("&nbsp;|&nbsp;")
-                        }
-                        @if (item.SeriesEntryDrivers.ElementAt(i).DriverType != Data.Models.DriverType.Retired)
-                        {
-                            <a asp-page="../SeriesEntryDriver/Retire" asp-route-leagueId="@item.Series.LeagueId" asp-route-seriesEntryId="@item.Id" asp-route-driverId="@item.SeriesEntryDrivers.ElementAt(i).DriverId">Retire</a>
-                        }
-
-                        if ((item.SeriesEntryDrivers.Count - i) > 1)
+                        @*if ((item.SeriesEntryDrivers.Count - i) > 1)
                         {
                             @Html.Raw("<br />");
-                        }
+                        }*@
                     }
                 }
 
