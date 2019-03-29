@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Penalty
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
-
-        public DeleteModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public DeleteModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -30,33 +34,57 @@ namespace RacingLeagueManager.Pages.Penalty
             }
 
             Penalty = await _context.Penalty
-                .Include(p => p.RaceResult).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.RaceResult)
+                    .ThenInclude(r => r.SeriesEntry)
+                        .ThenInclude(s => s.Series)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Penalty == null)
             {
                 return NotFound();
             }
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, Penalty.RaceResult.SeriesEntry.Series,
+                                                Operations.Delete);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
+            Penalty = await _context.Penalty
+                .Include(p => p.RaceResult)
+                    .ThenInclude(r => r.SeriesEntry)
+                        .ThenInclude(s => s.Series)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
-            //Penalty = await _context.Penalty.FindAsync(id);
+            if (Penalty == null)
+            {
+                return NotFound();   
+            }
 
-            //if (Penalty != null)
-            //{
-            //    _context.Penalty.Remove(Penalty);
-            //    await _context.SaveChangesAsync();
-            //}
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, Penalty.RaceResult.SeriesEntry.Series,
+                                                Operations.Delete);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
 
-            //return RedirectToPage("./Index");
+            _context.Penalty.Remove(Penalty);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new { raceResultId = Penalty.RaceResultId });
         }
     }
 }

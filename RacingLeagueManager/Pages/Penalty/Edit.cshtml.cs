@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RacingLeagueManager.Authorization;
 using RacingLeagueManager.Data;
 using RacingLeagueManager.Data.Models;
+using RacingLeagueManager.Pages.Shared;
 
 namespace RacingLeagueManager.Pages.Penalty
 {
-    public class EditModel : PageModel
+    public class EditModel : DI_BasePageModel
     {
-        private readonly RacingLeagueManager.Data.RacingLeagueManagerContext _context;
-
-        public EditModel(RacingLeagueManager.Data.RacingLeagueManagerContext context)
+        public EditModel(RacingLeagueManagerContext context,
+            IAuthorizationService authorizationService,
+            UserManager<Driver> userManager)
+        : base(context, authorizationService, userManager)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -31,44 +35,70 @@ namespace RacingLeagueManager.Pages.Penalty
             }
 
             Penalty = await _context.Penalty
-                .Include(p => p.RaceResult).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.RaceResult)
+                    .ThenInclude(r => r.SeriesEntry)
+                        .ThenInclude(s => s.Series)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (Penalty == null)
             {
                 return NotFound();
             }
-           ViewData["RaceResultId"] = new SelectList(_context.RaceResult, "Id", "Id");
+
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, Penalty.RaceResult.SeriesEntry.Series,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            throw new NotImplementedException();
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
             //_context.Attach(Penalty).State = EntityState.Modified;
 
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!PenaltyExists(Penalty.Id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
+            var penalty = await _context.Penalty
+                .Include(p => p.RaceResult)
+                    .ThenInclude(r => r.SeriesEntry)
+                        .ThenInclude(s => s.Series)
+                .FirstOrDefaultAsync(m => m.Id == Penalty.Id);
 
-            //return RedirectToPage("./Index");
+            var isAuthorized = await _authorizationService.AuthorizeAsync(
+                                                User, penalty.RaceResult.SeriesEntry.Series,
+                                                Operations.Update);
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+            penalty.Seconds = Penalty.Seconds;
+            penalty.Description = Penalty.Description;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PenaltyExists(penalty.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToPage("./Index", new { raceResultId = penalty.RaceResultId });
         }
 
         private bool PenaltyExists(Guid id)

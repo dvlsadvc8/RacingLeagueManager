@@ -41,6 +41,9 @@ namespace RacingLeagueManager.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
+            public string UserName { get; set; }
+            
+            [Required]
             [EmailAddress]
             public string Email { get; set; }
 
@@ -65,6 +68,7 @@ namespace RacingLeagueManager.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                UserName = userName,
                 Email = email,
                 PhoneNumber = phoneNumber
             };
@@ -85,6 +89,24 @@ namespace RacingLeagueManager.Areas.Identity.Pages.Account.Manage
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var userName = await _userManager.GetUserNameAsync(user);
+            if(Input.UserName != userName)
+            {
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, Input.UserName);
+                if(!setUserNameResult.Succeeded)
+                {
+                    //var userId = await _userManager.GetUserIdAsync(user);
+                    throw new InvalidOperationException($"Unexpected error occured setting Username for user with ID '{user.Id}'.");
+                }
+
+                user.DisplayUserName = Input.UserName;
+                var updateResult = await _userManager.UpdateAsync(user);
+                if(!updateResult.Succeeded)
+                {
+                    throw new InvalidOperationException($"Unexpected error occured setting Username for user with ID '{user.Id}'.");
+                }
             }
 
             var email = await _userManager.GetEmailAsync(user);
