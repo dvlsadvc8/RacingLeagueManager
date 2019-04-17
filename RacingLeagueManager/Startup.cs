@@ -19,6 +19,7 @@ using RacingLeagueManager.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using RacingLeagueManager.Services;
 using WebPWrecover.Services;
+using Moserware.Skills;
 
 namespace RacingLeagueManager
 {

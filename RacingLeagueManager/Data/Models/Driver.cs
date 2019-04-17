@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Moserware.Skills;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,18 @@ namespace RacingLeagueManager.Data.Models
         public ICollection<Series> OwnedSeries { get; set; }
         public Guid OwnedLeagueId { get; set; }
         public League OwnedLeague { get; set; }
+
+        public double TrueSkillMean { get; set; }
+        public double TrueSkillStandardDeviation { get; set; }
+        public double TrueSkillConservativeRating { get; set; }
+
+        public Rating Rating
+        {
+            get
+            {
+                return new Rating(TrueSkillMean, TrueSkillStandardDeviation);
+            }
+        }
 
         public ICollection<RaceResult> RaceResults { get; set; }
 

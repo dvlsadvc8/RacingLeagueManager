@@ -71,7 +71,7 @@ namespace RacingLeagueManager.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new Driver { UserName = Input.UserName, Email = Input.Email, DisplayUserName = Input.UserName };
+                var user = new Driver { UserName = Input.UserName, Email = Input.Email, DisplayUserName = Input.UserName, TrueSkillMean = 1000.0, TrueSkillStandardDeviation = 1000.0/3.0 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

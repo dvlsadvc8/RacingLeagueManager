@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Moserware.Skills;
 using RacingLeagueManager.Authorization;
 //using Microsoft.EntityFrameworkCore.Internal;
 using RacingLeagueManager.Data;
@@ -19,7 +20,6 @@ namespace RacingLeagueManager.Pages.Race
 {
     public class DetailsModel : DI_BasePageModel
     {
-        
         public DetailsModel(RacingLeagueManagerContext context,
             IAuthorizationService authorizationService,
             UserManager<Driver> userManager)
@@ -107,8 +107,7 @@ namespace RacingLeagueManager.Pages.Race
             RaceDetailsViewModel model = GetViewModel(race, GetResultsList(race));
 
             List<Data.Models.RaceResult> raceResultList = await _context.RaceResult.Where(r => r.RaceId == race.Id).ToListAsync();
-
-
+            
             foreach(var resultModel in model.Results)
             {
                 var raceResult = raceResultList.FirstOrDefault(r => r.Id == resultModel.RaceResultId);
@@ -138,7 +137,37 @@ namespace RacingLeagueManager.Pages.Race
                         }
                     }
                 }
-                
+            }
+
+            if(race.Series.TrueSkillRanked)
+            {
+                CalculateTrueSkill(raceResultList.FindAll(r => r.ResultType == ResultType.Finished).OrderBy(r => r.Place));
+            }
+        }
+
+        private void CalculateTrueSkill(IOrderedEnumerable<Data.Models.RaceResult> raceResultList)
+        {
+            var gameInfo = new GameInfo(1000.0, 1000.0 / 3.0, 1000.0 / 6.0, 1000.0 / 300, 0.0); //GameInfo.DefaultGameInfo;
+
+            List<Moserware.Skills.Team> teams = new List<Moserware.Skills.Team>();
+            List<int> ranks = new List<int>();
+            foreach(var result in raceResultList)
+            {
+                var player = new Player(result.Driver);
+                var team = new Moserware.Skills.Team(player, result.Driver.Rating);
+
+                teams.Add(team);
+                ranks.Add(result.Place);
+            }
+
+            var newRatings = TrueSkillCalculator.CalculateNewRatings(gameInfo, teams.Select(t => t.AsDictionary()), ranks.ToArray());
+
+            foreach(var rating in newRatings)
+            {
+                var driver = (Driver)rating.Key.Id;
+                driver.TrueSkillMean = rating.Value.Mean;
+                driver.TrueSkillStandardDeviation = rating.Value.StandardDeviation;
+                driver.TrueSkillConservativeRating = rating.Value.ConservativeRating;
             }
         }
 
@@ -190,6 +219,7 @@ namespace RacingLeagueManager.Pages.Race
                         raceResultViewModel.Place = raceResult.Place;
                         raceResultViewModel.ResultType = raceResult.ResultType;
                         raceResultViewModel.Points = raceResult.Points;
+                        raceResultViewModel.TrueSkillRating = raceResult.Driver.TrueSkillMean;
 
                         ResultsList.Add(raceResultViewModel);
                     }
@@ -216,6 +246,7 @@ namespace RacingLeagueManager.Pages.Race
                         raceResultViewModel.Place = raceResult.Place;
                         raceResultViewModel.ResultType = raceResult.ResultType;
                         raceResultViewModel.Points = raceResult.Points;
+                        raceResultViewModel.TrueSkillRating = raceResult.Driver.TrueSkillMean;
                     }
 
                     ResultsList.Add(raceResultViewModel);
@@ -256,6 +287,7 @@ namespace RacingLeagueManager.Pages.Race
                             TeamName = x.TeamName,
                             TotalTime = x.TotalTime,
                             DisplayUserName = x.DisplayUserName,
+                            TrueSkillRating = x.TrueSkillRating,
                             ResultType = x.ResultType
                         }).ToList()
                 };
@@ -279,6 +311,7 @@ namespace RacingLeagueManager.Pages.Race
                                 TeamName = x.TeamName,
                                 TotalTime = x.TotalTime,
                                 DisplayUserName = x.DisplayUserName,
+                                TrueSkillRating = x.TrueSkillRating,
                                 ResultType = x.ResultType
                             }
                         )
@@ -311,6 +344,7 @@ namespace RacingLeagueManager.Pages.Race
                             TeamName = x.TeamName,
                             TotalTime = x.TotalTime,
                             DisplayUserName = x.DisplayUserName,
+                            TrueSkillRating = x.TrueSkillRating,
                             ResultType = x.ResultType
                         }).ToList()
                 };
@@ -397,5 +431,6 @@ namespace RacingLeagueManager.Pages.Race
         public int PenaltySeconds { get; set; }
         public TimeSpan? OfficialTime { get; set; }
         public ResultType? ResultType { get; set; }
+        public double TrueSkillRating { get; set; }
     }
 }

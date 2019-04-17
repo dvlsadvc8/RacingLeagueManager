@@ -16,6 +16,8 @@ namespace RacingLeagueManager.Data.Models
         public Guid OwnerId { get; set; }
         public Driver Owner { get; set; }
 
+        public bool TrueSkillRanked { get; set; }
+
         public DateTime? StartDate { get; set; }
 
         public ICollection<SeriesEntry> SeriesEntries { get; set; }
